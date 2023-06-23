@@ -1,0 +1,8 @@
+spring:
+  jpa:
+    show-sql: true # show what database will do on terminal.
+    properties:
+      hibernate:
+        format_sql: true # show it with form that is good to look.
+
+    defer-datasource-initialization: true # Create table and execute query.
