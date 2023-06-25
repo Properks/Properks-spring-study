@@ -10,11 +10,11 @@ import java.util.List;
 public class TestController {
 
     @Autowired
-    TestService testService;
+    MemberService testService;
 
     @GetMapping("/test") // Get "/test" command and send it to business layer
     public List<Member> getAllMember() {
-        return testService.getAllMember();
+        return testService.test();
     }
 
 }
