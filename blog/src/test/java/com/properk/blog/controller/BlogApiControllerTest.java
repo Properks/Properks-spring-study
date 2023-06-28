@@ -3,6 +3,7 @@ package com.properk.blog.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.properk.blog.domain.Article;
 import com.properk.blog.dto.AddArticleRequest;
+import com.properk.blog.dto.ArticleResponse;
 import com.properk.blog.repository.BlogRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +20,9 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -68,5 +71,25 @@ class BlogApiControllerTest {
         assertThat(articleList).hasSize(1);
         assertThat(articleList.get(0).getTitle()).isEqualTo(title);
         assertThat(articleList.get(0).getContent()).isEqualTo(content);
+    }
+
+    @DisplayName("searchArticle() : Success finding article")
+    @Test
+    public void searchArticle() throws Exception {
+        //given
+        final String url = "/api/article/{id}";
+        final String title = "title";
+        final String content = "content";
+        Article savedArticle = blogRepository.save(Article.builder().title(title).content(content).build());
+
+        //when
+        final ResultActions result = mockMvc.perform(get(url, savedArticle.getId()));
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value(title))
+                .andExpect(jsonPath("$.content").value(content));
+
     }
 }
