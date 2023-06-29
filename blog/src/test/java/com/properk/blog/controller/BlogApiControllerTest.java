@@ -20,8 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,11 +72,11 @@ class BlogApiControllerTest {
         assertThat(articleList.get(0).getContent()).isEqualTo(content);
     }
 
-    @DisplayName("searchArticle() : Success finding article")
+    @DisplayName("searchArticleById() : Success searching article by id")
     @Test
-    public void searchArticle() throws Exception {
+    public void searchArticleById() throws Exception {
         //given
-        final String url = "/api/article/{id}";
+        final String url = "/api/articles/{id}";
         final String title = "title";
         final String content = "content";
         Article savedArticle = blogRepository.save(Article.builder().title(title).content(content).build());
@@ -91,5 +90,48 @@ class BlogApiControllerTest {
                 .andExpect(jsonPath("$.title").value(title))
                 .andExpect(jsonPath("$.content").value(content));
 
+    }
+
+    @DisplayName("searchArticle() : Success finding article")
+    @Test
+    public void searchArticle() throws Exception{
+
+        //given
+        final String url = "/api/articles";
+        final String title = "title";
+        final String content = "content";
+
+        Article savedArticle = blogRepository.save(Article.builder().title(title).content(content).build());
+
+        //when
+        ResultActions result = mockMvc.perform(get(url));
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].title").value(savedArticle.getTitle()))
+                .andExpect(jsonPath("$[0].content").value(savedArticle.getContent()));
+    }
+
+    @DisplayName("deleteArticle() : Success deleting article")
+    @Test
+    public void deleteArticle() throws Exception{
+
+        //given
+        final String url = "/api/articles/{id}";
+        final String title = "title";
+        final String content = "content";
+
+        Article savedArticle = blogRepository.save(Article.builder().title(title).content(content).build());
+
+        //when
+        ResultActions result = mockMvc.perform(delete(url, savedArticle.getId()));
+
+        //then
+        result.andExpect(status().isOk());
+
+        List<Article> articleList = blogRepository.findAll();
+        assertThat(articleList).isEmpty();
     }
 }

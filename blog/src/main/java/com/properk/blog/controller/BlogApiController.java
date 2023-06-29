@@ -33,9 +33,15 @@ public class BlogApiController {
 
     }
 
-    @GetMapping("/api/article/{id}")
+    @GetMapping("/api/articles/{id}")
     public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id) {
         ArticleResponse article = new ArticleResponse(blogService.findById(id));
         return ResponseEntity.ok().body(article);
+    }
+
+    @DeleteMapping("/api/articles/{id}")
+    public ResponseEntity<Void> deleteArticle(@PathVariable long id) {
+        blogService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }

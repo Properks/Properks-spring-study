@@ -27,4 +27,8 @@ public class BlogService {
         return blogRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found" + id));
         // orElseThrow -> if Service can't found in database, throw Exception like this
     }
+
+    public void delete(long id) {
+        blogRepository.deleteById(id);
+    }
 }
