@@ -2,7 +2,9 @@ package com.properk.blog.service;
 
 import com.properk.blog.domain.Article;
 import com.properk.blog.dto.AddArticleRequest;
+import com.properk.blog.dto.UpdateArticleRequest;
 import com.properk.blog.repository.BlogRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +32,12 @@ public class BlogService {
 
     public void delete(long id) {
         blogRepository.deleteById(id);
+    }
+
+    @Transactional // if this method has error while updating, cancel this method as if it wasn't worked.
+    public Article update(long id,UpdateArticleRequest updateArticleRequest) {
+        Article article = blogRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not found"));
+        article.update(updateArticleRequest.getTitle(), updateArticleRequest.getContent());
+        return article;
     }
 }

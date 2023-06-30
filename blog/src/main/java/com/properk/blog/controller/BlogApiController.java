@@ -3,6 +3,7 @@ package com.properk.blog.controller;
 import com.properk.blog.domain.Article;
 import com.properk.blog.dto.AddArticleRequest;
 import com.properk.blog.dto.ArticleResponse;
+import com.properk.blog.dto.UpdateArticleRequest;
 import com.properk.blog.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,5 +44,15 @@ public class BlogApiController {
     public ResponseEntity<Void> deleteArticle(@PathVariable long id) {
         blogService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/api/articles/{id}")
+    public ResponseEntity<Article> updateArticle(
+            @PathVariable long id,
+            @RequestBody UpdateArticleRequest updateArticleRequest
+    ) {
+        Article updatedArticle = blogService.update(id, updateArticleRequest);
+        return ResponseEntity.ok().body(updatedArticle);
+
     }
 }

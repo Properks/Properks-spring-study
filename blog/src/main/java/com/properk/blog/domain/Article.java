@@ -16,14 +16,19 @@ public class Article {
     @Column(name = "id", updatable = false)
     private long id;
 
-    @Column(name = "title", updatable = false)
+    @Column(name = "title")
     private String title;
 
-    @Column(name = "content", updatable = false)
+    @Column(name = "content")
     private String content;
 
     @Builder // Can use "Article.builder().title(String).content(String).build();" form for increased readability.
     public Article(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
     }

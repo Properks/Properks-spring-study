@@ -3,7 +3,7 @@ package com.properk.blog.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.properk.blog.domain.Article;
 import com.properk.blog.dto.AddArticleRequest;
-import com.properk.blog.dto.ArticleResponse;
+import com.properk.blog.dto.UpdateArticleRequest;
 import com.properk.blog.repository.BlogRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -133,5 +133,32 @@ class BlogApiControllerTest {
 
         List<Article> articleList = blogRepository.findAll();
         assertThat(articleList).isEmpty();
+    }
+
+    @DisplayName("updateArticle() : Success updating article")
+    @Test
+    public void updateArticle() throws Exception{
+
+        // given
+        final String url = "/api/articles/{id}";
+        final String title = "new title";
+        final String content = "new content";
+        Article savedArticle = blogRepository.save(Article.builder().title("title").content("content").build());
+
+        UpdateArticleRequest updateRequest = new UpdateArticleRequest(title, content);
+        final String request = objectMapper.writeValueAsString(updateRequest);
+
+        // when
+        ResultActions result = mockMvc.perform(put(url, savedArticle.getId())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(request));
+
+        // then
+        Article updatedArticle = blogRepository.findById(savedArticle.getId()).get();
+
+        result.andExpect(status().isOk());
+
+        assertThat(updatedArticle.getTitle()).isEqualTo(title);
+        assertThat(updatedArticle.getContent()).isEqualTo(content);
     }
 }
