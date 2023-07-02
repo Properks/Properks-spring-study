@@ -27,11 +27,11 @@ public class Article {
     private String content;
 
     @CreatedDate
-    @Column(name = "created time")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name="update time")
+    @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
     @Builder // Can use "Article.builder().title(String).content(String).build();" form for increased readability.
