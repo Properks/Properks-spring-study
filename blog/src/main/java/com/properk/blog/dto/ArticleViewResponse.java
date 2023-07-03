@@ -2,16 +2,18 @@ package com.properk.blog.dto;
 
 import com.properk.blog.domain.Article;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
 @Getter
 public class ArticleViewResponse {
 
-    private final long id;
-    private final String title;
-    private final String content;
-    private final LocalDateTime createdAt;
+    private Long id; // Long, In order to check whether id is null or not
+    private String title;
+    private String content;
+    private LocalDateTime createdAt;
 
     public ArticleViewResponse(Article article) {
         this.id = article.getId();
