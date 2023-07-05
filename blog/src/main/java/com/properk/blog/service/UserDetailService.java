@@ -3,14 +3,16 @@ package com.properk.blog.service;
 import com.properk.blog.domain.User;
 import com.properk.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserDetailService {
+public class UserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    @Override
     public User loadUserByUsername(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException(
                 "Not found" + email));

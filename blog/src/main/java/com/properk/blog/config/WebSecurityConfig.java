@@ -17,7 +17,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @Configuration
 public class WebSecurityConfig {
 
-    private final UserDetailService userDetailService;
+    private final UserDetailService userService;
 
     // Deactivate spring security
     @Bean
@@ -47,14 +47,12 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http,
-                                                       BCryptPasswordEncoder bCryptPasswordEncoder,
-                                                       UserDetailService userDetailService) throws Exception {
-        return http
-                .getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailService)
+    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userService)
                 .passwordEncoder(bCryptPasswordEncoder)
-                .and().build();
+                .and()
+                .build();
     }
 
     @Bean
