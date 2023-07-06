@@ -18,41 +18,44 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 public class WebSecurityConfig {
 
     private final UserDetailService userService;
+    private static final String LOGIN = "/login";
 
     // Deactivate spring security
     @Bean
     public WebSecurityCustomizer configure() {
-        return (web) -> web.ignoring()
+        return (web -> web.ignoring()
                 .requestMatchers(toH2Console())
-                .requestMatchers("/static/**");
+                .requestMatchers("/static/**"));
     }
 
     // Configure web-based security for specific http requests
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .authorizeRequests()
-                .requestMatchers("/login", "/signup", "/user").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/articles")
-                .and()
-                .logout()
-                .logoutSuccessUrl("/login")
-                .invalidateHttpSession(true)
-                .and()
+                .authorizeHttpRequests(authentication -> authentication
+                    .requestMatchers(LOGIN, "/signup", "/user").permitAll()
+                    .anyRequest().authenticated())
+                .formLogin(login -> login
+                    .loginPage(LOGIN)
+                    .defaultSuccessUrl("/articles"))
+                .logout(logout -> logout
+                    .logoutSuccessUrl(LOGIN)
+                    .invalidateHttpSession(true))
                 .build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
+    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder
+            , UserDetailService userDetailService) throws Exception {
+
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        authenticationManagerBuilder
                 .userDetailsService(userService)
-                .passwordEncoder(bCryptPasswordEncoder)
-                .and()
-                .build();
+                .passwordEncoder(bCryptPasswordEncoder);
+
+        return authenticationManagerBuilder.build();
     }
 
     @Bean
