@@ -20,7 +20,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", updatable = false)
     private Long id;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -30,7 +30,7 @@ public class User implements UserDetails {
     private String password;
 
     @Builder
-    public User(String email, String password, String Auth) {
+    public User(String email, String password) {
         this.email = email;
         this.password = password;
     }

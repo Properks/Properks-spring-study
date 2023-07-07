@@ -1,10 +1,12 @@
 package com.properk.blog.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
-@Setter
 public class AddUserRequest {
 
     private String email;

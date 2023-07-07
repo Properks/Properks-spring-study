@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
+    <title>Login</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 
     <style>
@@ -17,7 +17,7 @@
         <div class="card bg-dark" style="border-radius: 1rem;">
             <div class="card-body p-5 text-center">
                 <h2 class="text-white">LOGIN</h2>
-                <p class="text-white-50 mt-2 mb-5" style="text-transform: capitalize;">Please login to use service!</p>
+                <p class="text-white-50 mt-2 mb-5" style="text-transform: capitalize;">Please login to use service!<p>
 
                 <div class = "mb-2">
                     <form action="/login" method="POST">
@@ -33,9 +33,8 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
 
-                    <button type="button" class="btn btn-secondary mt-3" style="text-transform: capitalize;"
-                            onclick="location.href='/signup'">sign
-                    up</button>
+                    <button type="button" class="btn btn-secondary mt-3" onclick="location.href='/signup'">Sign
+                    Up</button>
                 </div>
             </div>
         </div>
