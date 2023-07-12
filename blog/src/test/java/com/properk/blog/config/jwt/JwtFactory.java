@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Getter
+@NoArgsConstructor
 public class JwtFactory {
 
     private String subject = "test@email.com";
@@ -20,19 +22,16 @@ public class JwtFactory {
     private Map<String, Object> claims = Collections.emptyMap();
 
     @Builder
-    public JwtFactory(String subject,
-                      Date issuedAt,
-                      Date expiredAt,
-                      Map<String, Object> claims) {
+    public JwtFactory(String subject, Date issuedAt, Date expiredAt, Map<String, Object> claims) {
         this.subject = subject != null ? subject : this.subject;
         this.issuedAt = issuedAt != null ? issuedAt : this.issuedAt;
         this.expiredAt = expiredAt != null ? expiredAt : this.expiredAt;
         this.claims = claims != null ? claims : this.claims;
     }
 
-//    public static JwtFactory withDefaultValues() {
-//        return JwtFactory.builder().build();
-//    }
+    public static JwtFactory withDefaultValues() {
+        return JwtFactory.builder().build();
+    }
 
     public String createToken(JwtProperties jwtProperties) {
         return Jwts.builder()
