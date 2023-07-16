@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class RefreshTokenService {
 
-    private final RefreshTokenRepository refreshTokenREpository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
 
     public RefreshToken findByRefreshToken(String refreshToken) {
-        return refreshTokenREpository.findByRefreshToken(refreshToken)
+        return refreshTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new IllegalArgumentException("Not found refresh token"));
     }
 }
