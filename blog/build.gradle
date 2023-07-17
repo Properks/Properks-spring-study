@@ -40,8 +40,18 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1' // JWT token
     implementation 'javax.xml.bind:jaxb-api:2.3.1' // Automate mapping between xml documents and java objects
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor" // For JwtProperties.java file
+
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 test {
     useJUnitPlatform()
+}
+
+tasks.register('copyPrivate', Copy) {
+    copy {
+        from './Submodule-application'
+        include "*.properties"
+        into 'src/main/resources'
+    }
 }
