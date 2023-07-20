@@ -1,6 +1,8 @@
 package com.properk.blog.config;
 
 import com.properk.blog.config.jwt.TokenProvider;
+import com.properk.blog.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import com.properk.blog.config.oauth.OAuth2SuccessHandler;
 import com.properk.blog.config.oauth.OAuth2UserCustomService;
 import com.properk.blog.repository.RefreshTokenRepository;
 import com.properk.blog.service.UserService;
@@ -14,6 +16,8 @@ import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationSuccessHandler;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -39,6 +43,7 @@ public class WebOAuthSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+        // disable httpBasic, formLogin and session in order to use token
         http
                 .csrf(CsrfConfigurer<HttpSecurity>::disable)
                 .httpBasic(HttpBasicConfigurer<HttpSecurity>::disable)
@@ -48,6 +53,7 @@ public class WebOAuthSecurityConfig {
         http.sessionManagement( session -> session.
                 sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        // Add custom filter
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(author -> author
@@ -56,11 +62,10 @@ public class WebOAuthSecurityConfig {
                 .anyRequest().permitAll());
 
         http.oauth2Login(login -> login
-                .loginPage("/login")
-                .authorizationEndpoint()
-                .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
-                        .successHandler(oAuth2AuthorizationSuccessHandler())
-                        .userInfoEndpoint()
+                        .loginPage("/login").authorizationEndpoint()
+                        .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
+                        .and()
+                        .successHandler(oAuth2SuccessHandler()).userInfoEndpoint()
                         .userService(oAuth2UserCustomService)
                 );
 
@@ -86,15 +91,17 @@ public class WebOAuthSecurityConfig {
     }
 
     @Bean
-    public OAuth2AuthorizationSuccessHandler oAuth2AuthorizationSuccessHandler() {
-        return new OAuth2AuthorizationSuccessHandler(tokenProvider,
+    public OAuth2SuccessHandler oAuth2SuccessHandler() {
+        return new OAuth2SuccessHandler(tokenProvider,
                 refreshTokenRepository,
-                oAuth2AuthorizationRequestBasedOnCookieRepository());
+                oAuth2AuthorizationRequestBasedOnCookieRepository(),
+                userService)
+        ;
     }
 
     @Bean
     public OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
-        return new OAuth2AuthorizationREquestBaseOnCookieRepository(); // TODO: implement it.
+        return new OAuth2AuthorizationRequestBasedOnCookieRepository();
     }
 
 }
