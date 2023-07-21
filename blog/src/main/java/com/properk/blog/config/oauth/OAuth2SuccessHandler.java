@@ -55,9 +55,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     }
 
     private void saveRefreshToken(Long userId, String newRefreshToken) {
-        refreshTokenRepository.findById(userId)
+        RefreshToken refreshtoken = refreshTokenRepository.findById(userId)
                 .map(refreshToken -> refreshToken.update(newRefreshToken))
                 .orElse(new RefreshToken(userId, newRefreshToken));
+        refreshTokenRepository.save(refreshtoken);
     }
 
     private void addRefreshTokenToCookie(HttpServletRequest request, HttpServletResponse response,

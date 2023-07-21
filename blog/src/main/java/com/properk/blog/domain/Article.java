@@ -34,8 +34,12 @@ public class Article {
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "author")
+    private String author;
+
     @Builder // Can use "Article.builder().title(String).content(String).build();" form for increased readability.
-    public Article(String title, String content) {
+    public Article(String author, String title, String content) {
+        this.author = author;
         this.title = title;
         this.content = content;
     }
