@@ -69,7 +69,7 @@ public class WebOAuthSecurityConfig {
                         .userService(oAuth2UserCustomService)
                 );
 
-        http.logout(login -> login.logoutSuccessUrl("/login"));
+        http.logout(logout -> logout.logoutSuccessUrl("/login"));
 
         http.exceptionHandling(exception -> exception
                 .defaultAuthenticationEntryPointFor(

@@ -23,10 +23,10 @@ import java.time.Duration;
 @Component
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private static final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
-    private static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(14);
-    private static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(1);
-    private static final String REDIRECT_PATH = "/articles";
+    public static final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
+    public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(14);
+    public static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(1);
+    public static final String REDIRECT_PATH = "/articles";
 
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;

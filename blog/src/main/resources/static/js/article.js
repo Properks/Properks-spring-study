@@ -102,7 +102,7 @@ function httpRequest(method, url, body, success, fail) {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem('access_token'),
                         'Content-Type': 'application/json'
-                    }
+                    },
                     body: JSON.stringify({
                         refreshToken: getCookie('refresh_token')
                     })

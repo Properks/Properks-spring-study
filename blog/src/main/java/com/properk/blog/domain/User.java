@@ -26,7 +26,7 @@ public class User implements UserDetails {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "nickname", unique = true)
@@ -36,6 +36,12 @@ public class User implements UserDetails {
     public User(String email, String password, String nickname) {
         this.email = email;
         this.password = password;
+        this.nickname = nickname;
+    }
+
+    @Builder
+    public User(String email, String nickname) {
+        this.email = email;
         this.nickname = nickname;
     }
 

@@ -6,6 +6,7 @@ import com.properk.blog.dto.UpdateArticleRequest;
 import com.properk.blog.repository.BlogRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,13 +32,25 @@ public class BlogService {
     }
 
     public void delete(long id) {
+        Article article = blogRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Not Found"));
+        authorizeArticleAuthor(article);
+
         blogRepository.deleteById(id);
     }
 
     @Transactional // if this method has error while updating, cancel this method as if it wasn't worked.
     public Article update(long id,UpdateArticleRequest updateArticleRequest) {
         Article article = blogRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not found"));
+        authorizeArticleAuthor(article);
         article.update(updateArticleRequest.getTitle(), updateArticleRequest.getContent());
         return article;
+    }
+
+    private static void authorizeArticleAuthor(Article article) {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!userName.equals(article.getAuthor())) {
+            throw new IllegalArgumentException("Not Authorized");
+        }
     }
 }
