@@ -68,7 +68,7 @@ function getCookie(key) {
     var result = null;
     var cookie = document.cookie.split(';');
     cookie.some(function (item) {
-        item = item.replace(" ", "");
+        item = item.replace(' ', '');
 
         var dic = item.split('=');
 
@@ -107,8 +107,10 @@ function httpRequest(method, url, body, success, fail) {
                         refreshToken: getCookie('refresh_token')
                     })
                 })
-                    .then((result) => {
-                        localStorage.setItem('access_token', result.accessToken);
+                    .then(response => response.json())
+                    .then(response => {
+                        const token = response.accessToken
+                        localStorage.setItem('access_token', token)
                         httpRequest(method, url, body, success, fail);
                     })
                     .catch((error) => fail());
