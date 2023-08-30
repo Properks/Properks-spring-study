@@ -1,4 +1,4 @@
-package com.jeongmo.revise_blog.dto;
+package com.jeongmo.revise_blog.dto.article;
 
 import com.jeongmo.revise_blog.domain.Article;
 import lombok.AllArgsConstructor;
