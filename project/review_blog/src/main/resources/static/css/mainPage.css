@@ -1,10 +1,20 @@
-* {padding: 5px; text-transform: capitalize; }
-body {margin: 0px; padding: 0px;}
+* {padding: 0; text-transform: capitalize; }
+body {width:100%; margin: 0px; padding: 0;}
 
-.top-header-container { width:100%; height:40px; position: fixed; left: 0%; top:0%; background-color: lightblue;}
-.top-header-wrap {position:relative; display:flex;}
-.home-page-button {height:100%; display:flex; align-items: center; box-sizing: border-box;}
-.btn-container {position:absolute; right:0; top: 0px;}
-.btn-container [class $= btn]{margin-right:5px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; border:1px solid black;}
+.top-header-container {padding:5px; width:100%; height:40px; position: fixed; left: 0%; top:0%; background-color: lightblue;}
+.top-header-wrap {padding: 5px; position:relative; display:flex;}
+.home-page-button {padding:5px; height:100%; display:flex; align-items: center; box-sizing: border-box;}
+.btn-container {padding:5px; position:absolute; right:0; top: 0px;}
+.btn-container [class $= btn]{margin-right:5px; padding:5px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; border:1px solid black;}
 .login-btn {float:left;}
 
+.main-page-img {width:100%; height:200px;}
+.main-page-img img {width: 100%; height: 100%;  object-fit: cover;}
+
+.contents-container {margin:5px; padding:5px; border: 1px double black; display: flex;}
+.sidebar-container {padding:5px; width: 20%; border: 1px solid black; background: beige; align-items: start;}
+.sidebar-title h5, .article-title h5 {margin:0; text-align: center;}
+
+.article-container {padding:5px; width:80%; border: 1px solid black; background: linear-gradient(to right bottom, white, rgb(190, 190, 190));}
+
+#create-article-btn {float:right;}
