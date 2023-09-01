@@ -5,3 +5,7 @@
 	path = project/revise_blog/Submodule-application
 	url = https://github.com/Properks/Submodule-application.git
 	branch = revise_blog
+[submodule "project/review_blog/Submodule-application"]
+	path = project/review_blog/Submodule-application
+	url = https://github.com/Properks/Submodule-application.git
+	branch = revise_blog
