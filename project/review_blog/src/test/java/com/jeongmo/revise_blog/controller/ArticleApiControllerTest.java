@@ -3,6 +3,7 @@ package com.jeongmo.revise_blog.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jeongmo.revise_blog.domain.Article;
 import com.jeongmo.revise_blog.dto.article.CreateArticleRequest;
+import com.jeongmo.revise_blog.dto.article.UpdateArticleRequest;
 import com.jeongmo.revise_blog.repository.ArticleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -118,4 +119,46 @@ class ArticleApiControllerTest {
                 .andExpect(jsonPath("$[1].content").value(savedArticle2.getContent()));
     }
 
+    @DisplayName("deleteArticle() : Success to delete article")
+    @Test
+    void deleteArticle() throws Exception {
+        //given
+        final String url = "/api/article/{id}";
+        final String title = "title";
+        final String content = "content";
+        final Article savedArticle = articleRepository.save(Article.builder().title(title).content(content).build());
+
+        //when
+        mockMvc.perform(delete(url, savedArticle.getId()))
+                .andExpect(status().isOk());
+
+        //then
+        assertThat(articleRepository.findAll()).isEmpty();
+
+    }
+
+    @DisplayName("putArticle() : Success to update article")
+    @Test
+    void putArticle() throws Exception{
+       //given
+       final String url = "/api/article/{id}";
+       final Article savedArticle =
+               articleRepository.save(Article.builder().title("title").content("content").build());
+       final UpdateArticleRequest request = new UpdateArticleRequest("updatedTitle", "updatedContent");
+       final String requestBody = objectMapper.writeValueAsString(request);
+
+       //when
+        ResultActions result = mockMvc.perform(put(url, savedArticle.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody));
+
+        //then
+        result.andExpect(status().isOk());
+
+        Article updatedArticle = articleRepository.findById(savedArticle.getId()).get();
+
+        assertThat(updatedArticle.getTitle()).isEqualTo(request.getTitle());
+        assertThat(updatedArticle.getContent()).isEqualTo(request.getContent());
+
+    }
 }
