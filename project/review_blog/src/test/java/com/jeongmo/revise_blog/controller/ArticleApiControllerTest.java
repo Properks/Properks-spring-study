@@ -2,8 +2,8 @@ package com.jeongmo.revise_blog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jeongmo.revise_blog.domain.Article;
-import com.jeongmo.revise_blog.dto.article.CreateArticleRequest;
-import com.jeongmo.revise_blog.dto.article.UpdateArticleRequest;
+import com.jeongmo.revise_blog.dto.article_api.CreateArticleRequest;
+import com.jeongmo.revise_blog.dto.article_api.UpdateArticleRequest;
 import com.jeongmo.revise_blog.repository.ArticleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +20,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

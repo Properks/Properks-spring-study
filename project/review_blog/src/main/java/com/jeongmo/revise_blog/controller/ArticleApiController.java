@@ -1,9 +1,9 @@
 package com.jeongmo.revise_blog.controller;
 
 import com.jeongmo.revise_blog.domain.Article;
-import com.jeongmo.revise_blog.dto.article.CreateArticleRequest;
-import com.jeongmo.revise_blog.dto.article.FindArticleResponse;
-import com.jeongmo.revise_blog.dto.article.UpdateArticleRequest;
+import com.jeongmo.revise_blog.dto.article_api.CreateArticleRequest;
+import com.jeongmo.revise_blog.dto.article_api.FindArticleResponse;
+import com.jeongmo.revise_blog.dto.article_api.UpdateArticleRequest;
 import com.jeongmo.revise_blog.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,13 +28,15 @@ public class ArticleApiController {
     // GET
     @GetMapping("/api/article/{id}")
     public ResponseEntity<FindArticleResponse> getArticle(@PathVariable Long id) {
-        FindArticleResponse foundArticle = articleService.getArticle(id);
+        FindArticleResponse foundArticle = new FindArticleResponse(articleService.getArticle(id));
         return ResponseEntity.ok().body(foundArticle);
     }
 
     @GetMapping("/api/articles")
     public ResponseEntity<List<FindArticleResponse>> getArticles() {
-        List<FindArticleResponse> foundArticles = articleService.getArticles();
+        List<FindArticleResponse> foundArticles = articleService.getArticles()
+                .stream().map(FindArticleResponse::new)
+                .toList();
         return ResponseEntity.ok().body(foundArticles);
     }
 

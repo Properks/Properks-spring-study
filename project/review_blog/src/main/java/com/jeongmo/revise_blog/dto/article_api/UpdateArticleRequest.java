@@ -1,4 +1,4 @@
-package com.jeongmo.revise_blog.dto.article;
+package com.jeongmo.revise_blog.dto.article_api;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

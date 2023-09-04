@@ -1,9 +1,8 @@
 package com.jeongmo.revise_blog.service;
 
 import com.jeongmo.revise_blog.domain.Article;
-import com.jeongmo.revise_blog.dto.article.CreateArticleRequest;
-import com.jeongmo.revise_blog.dto.article.FindArticleResponse;
-import com.jeongmo.revise_blog.dto.article.UpdateArticleRequest;
+import com.jeongmo.revise_blog.dto.article_api.CreateArticleRequest;
+import com.jeongmo.revise_blog.dto.article_api.UpdateArticleRequest;
 import com.jeongmo.revise_blog.repository.ArticleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,16 +23,14 @@ public class ArticleService {
     }
 
     // Method find an article
-    public FindArticleResponse getArticle(Long id) {
-        return new FindArticleResponse(articleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cannot find Article")));
+    public Article getArticle(Long id) {
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cannot find Article"));
     }
 
     // Method find all article
-    public List<FindArticleResponse> getArticles() {
-        return articleRepository.findAll()
-                .stream().map(FindArticleResponse::new)
-                .toList();
+    public List<Article> getArticles() {
+        return articleRepository.findAll();
     }
 
     // Method update article
