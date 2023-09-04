@@ -6,13 +6,13 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Main Page</title>
-    <link rel="stylesheet" href="../static/css/mainPage.css">
+    <link rel="stylesheet" th:href="@{/css/mainPage.css}">
 </head>
 <body>
     <div class="main-page-container">
         <div class="top-header-container">
             <div class="top-header-wrap">
-                <div class="home-page-button">blog</div>
+                <div class="home-page-button"><a th:href="@{/home}">blog</a></div>
                 <div class="btn-container">
                     <div class="login-btn">login</div>
                     <div class="sign-up-btn">sign up</div>
@@ -22,7 +22,7 @@
 
         <div class="body-container">
             <div class="main-page-img">
-                    <img src="../static/img/backgroud-img.jpg" alt="background-image">
+                    <img th:src="@{/img/backgroud-img.jpg}" alt="background-image">
             </div>
 
             <div class="contents-container">
