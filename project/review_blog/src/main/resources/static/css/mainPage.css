@@ -17,5 +17,8 @@ body {width:100%; margin: 0px; padding: 0;}
 .sidebar-title h5, .article-title h5 {margin:0; text-align: center;}
 
 .article-container {padding:5px; width:80%; border: 1px solid black; background: linear-gradient(to right bottom, white, rgb(190, 190, 190));}
+.article-body-wrap {display: flex;}
+.article-id, #article-view-btn{width:100px; text-align: center;}
+.article-title {width:700px; text-align: center;}
 
 #create-article-btn {float:right;}
