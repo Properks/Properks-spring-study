@@ -9,11 +9,13 @@ import lombok.Getter;
 public class CreateArticleRequest {
     private String title;
     private String content;
+    private String author;
 
     public Article toEntity() {
         return Article.builder()
                 .title(this.title)
                 .content(this.content)
+                .author(this.author)
                 .build();
     }
 }

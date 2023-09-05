@@ -40,15 +40,15 @@
                         <h5>articles</h5>
                     </div>
                     <div class="article-body">
-                        <div class="article-body-title">
+                        <div class="article-body-wrap">
                             <div class="article-id-wrap">No.</div>
                             <div class="article-title-wrap">title</div>
                             <div class="article-author-wrap">author</div>
                         </div>
-                        <div class="article-body-wrap" th:each="article : ${articles}">
-                            <div id="article-id" th:text="${article.id}"></div>
-                            <div id="article-title" th:text="${article.title}"></div>
-                            <div id="article-author"></div>
+                        <div class="articles-body" th:each="article : ${articles}">
+                            <div id="article-id-thyme" th:text="${article.id}"></div>
+                            <div id="article-title-thyme" th:text="${article.title}"></div>
+                            <div id="article-author-thyme" th:text="${article.author}"></div>
                         </div>
                     </div>
                     <button type="button" id="create-article-btn">new article</button>
