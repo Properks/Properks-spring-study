@@ -1,3 +1,6 @@
+@import url("articleList.css");
+@import url("articleView.css");
+
 * {padding: 0; text-transform: capitalize; }
 body {width:100%; margin: 0px; padding: 0;}
 
@@ -16,10 +19,7 @@ body {width:100%; margin: 0px; padding: 0;}
 .sidebar-container {padding:5px; width: 20%; border: 1px solid black; background: beige; align-items: start;}
 .sidebar-title h5, .article-title h5 {margin:0; text-align: center;}
 
-.article-title, .article-body {margin:5px; width: 90%;}
+.article-title, .article-list-container {margin:5px; width: 90%;}
 .article-container {padding:5px; width:80%; border: 1px solid black; background: linear-gradient(to right bottom, white, rgb(190, 190, 190));}
-.article-body-wrap, .articles-body {display: flex; justify-content: space-between; border: 1px black; border-style: solid none solid none;}
-.article-id-wrap, .article-author-wrap, #article-id-thyme, #article-author-thyme {flex:7; max-width: 10%; text-align: center;}
-.article-title-wrap, #article-title-thyme {flex:1; max-width:70%; text-align: center;}
 
 #create-article-btn {float:right;}
