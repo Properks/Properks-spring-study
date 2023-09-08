@@ -5,17 +5,22 @@
     <title>Title</title>
 </head>
 <body>
-<div class="article-view-container">
-    <div class="article-view-title-container">
-
-    </div>
-    <div class="article-view-content-container">
-
-    </div>
-    <div class="article-view-button-container">
-        <button type="button" id="article-view-delete-article-btn">delete</button>
-        <button type="button" id="article-view-modify-article-btn">modify</button>
-    </div>
+<div class="article-view-container" >
+    <article>
+        <input type="hidden" id="article-view-id" th:value="${response.id}">
+        <div class="article-view-title-container">
+            <h4 id="article-view-title" th:text="${response.title}"></h4>
+        </div>
+        <div class="article-view-content-container">
+            <section class="article-view-section">
+                <p th:text="${response.content}"></p>
+            </section>
+        </div>
+        <div class="article-view-button-container">
+            <button type="button" id="article-view-delete-article-btn">delete</button>
+            <button type="button" id="article-view-modify-article-btn">modify</button>
+        </div>
+    </article>
 </div>
 
 </body>

@@ -40,7 +40,11 @@
                         <h5>articles</h5>
                     </div>
 
-                    <div class="article-body" th:replace="articleList.html :: body">
+                    <div th:if="${articles}">
+                        <div class="article-body" th:replace="articleList.html :: body"></div>
+                    </div>
+                    <div th:if="${response}">
+                        <div class="article-body" th:replace="articleView.html :: body"></div>
                     </div>
 
                     <button type="button" id="create-article-btn">new article</button>

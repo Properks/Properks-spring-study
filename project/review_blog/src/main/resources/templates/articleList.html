@@ -16,7 +16,8 @@
   <div class="article-list-body-container">
     <div class="articles-list-body" th:each="article : ${articles}">
       <div id="article-list-id-thyme" th:text="${article.id}"></div>
-      <div id="article-list-title-thyme" th:text="${article.title}"></div>
+      <div id="article-list-title-thyme" th:text="${article.title}"
+           th:onclick="|location.href='@{/article/{id}(id = ${article.id})}'|"></div>
       <div id="article-list-author-thyme" th:text="${article.author}"></div>
     </div>
   </div>
