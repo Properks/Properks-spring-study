@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="../static/css/articleView.css">
 </head>
 <body>
-<div class="article-view-container" >
+<div id="article-view-container" >
     <article>
         <input type="hidden" id="article-view-id" th:value="${response.id}">
         <div class="article-view-title-container">
@@ -16,11 +17,11 @@
                 <p th:text="${response.content}"></p>
             </section>
         </div>
-        <div class="article-view-button-container">
-            <button type="button" id="article-view-delete-article-btn">delete</button>
-            <button type="button" id="article-view-modify-article-btn">modify</button>
-        </div>
     </article>
+</div>
+<div id="article-view-button-container">
+    <button type="button" id="article-view-delete-article-btn">delete</button>
+    <button type="button" id="article-view-modify-article-btn">modify</button>
 </div>
 
 </body>

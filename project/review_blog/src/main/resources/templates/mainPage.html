@@ -40,14 +40,21 @@
                         <h5>articles</h5>
                     </div>
 
+<!--                    article body-->
                     <div th:if="${articles}">
                         <div class="article-body" th:replace="articleList.html :: body"></div>
                     </div>
                     <div th:if="${response}">
-                        <div class="article-body" th:replace="articleView.html :: body"></div>
+                        <div class="article-body" th:replace="articleView.html :: #article-view-container"></div>
                     </div>
 
-                    <button type="button" id="create-article-btn">new article</button>
+<!--                    condition of button-->
+                    <div th:if="${response}">
+                        <div th:replace="articleView.html :: #article-view-button-container"></div>
+                    </div>
+                    <div th:unless="${response}">
+                        <button type="button" id="create-article-btn">new article</button>
+                    </div>
                 </div>
 
             </div>

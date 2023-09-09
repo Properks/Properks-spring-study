@@ -1,1 +1,3 @@
-.article-view-container {}
+.article-view-section {display: block;}
+#article-view-container {margin: 5px; padding:10px; border: 1px solid black; border-radius: 1rem}
+#article-view-delete-article-btn, #article-view-modify-article-btn {float: right}
