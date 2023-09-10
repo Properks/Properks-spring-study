@@ -43,18 +43,18 @@
 <!--                    article body-->
                     <div th:if="${articles}">
                         <div class="article-body" th:replace="articleList.html :: body"></div>
+                        <button type="button" id="create-article-btn"
+                        th:onclick="|location.href='@{/new-article}'|">new article</button>
                     </div>
-                    <div th:if="${response}">
+                    <div th:if="${viewArticle}">
                         <div class="article-body" th:replace="articleView.html :: #article-view-container"></div>
-                    </div>
-
-<!--                    condition of button-->
-                    <div th:if="${response}">
                         <div th:replace="articleView.html :: #article-view-button-container"></div>
                     </div>
-                    <div th:unless="${response}">
-                        <button type="button" id="create-article-btn">new article</button>
+                    <div th:if="${newArticle}">
+                        <div class="article-body" th:replace="newArticle.html :: #new-article-container"></div>
+                        <div th:replace="newArticle.html :: #new-article-button-container"></div>
                     </div>
+
                 </div>
 
             </div>

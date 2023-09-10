@@ -1,5 +1,6 @@
 @import url("articleList.css");
 @import url("articleView.css");
+@import url("newArticle.css");
 
 * {padding: 0; text-transform: capitalize; }
 body {width:100%; margin: 0px; padding: 0;}

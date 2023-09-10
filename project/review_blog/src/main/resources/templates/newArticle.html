@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Article</title>
+</head>
+<body>
+    <div id="new-article-container">
+        <input type="hidden" id="new-article-id" th:value="${newArticle.id}">
+        <div class="new-article-text-container">
+            <label for="new-article-id">title: </label>
+            <input type="text" id="article-text" placeholder="title" th:value="${newArticle.title}">
+        </div>
+        <div class="new-article-text-container">
+            <label for="new-article-content"> content: </label>
+            <textarea name="content" id="new-article-content" cols="30" rows="10" placeholder="content"
+                      th:text="${newArticle.content}"></textarea>
+        </div>
+    </div>
+
+    <div id="new-article-button-container">
+        <button th:if="${newArticle.id} == null" id="new-article-create-btn">create</button>
+        <button th:if="${newArticle.id} != null" id="new-article-modify-btn">modify</button>
+    </div>
+</body>
+</html>
