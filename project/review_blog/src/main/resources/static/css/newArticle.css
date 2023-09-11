@@ -1,7 +1,7 @@
 #new-article-container {margin: 5px; padding:10px; border: 1px solid black; border-radius: 1rem}
 #new-article-container label {float:left; width:80px;}
 #new-article-button-container button {float:right;}
-#new-article-content, #article-text {margin:5px; padding:5px;}
+#new-article-content, #new-article-title {margin:5px; padding:5px;}
 
-#article-text {width:200px; border-radius: 1rem;}
+#new-article-title {width:200px; border-radius: 1rem;}
 #new-article-content {width:500px; border-radius: 1rem;}

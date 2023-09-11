@@ -16,6 +16,7 @@ import java.util.List;
 public class ArticleViewController {
 
     private final ArticleService articleService;
+    private static final String MAIN = "mainPage";
 
     @GetMapping("/home")
     public String mainPage(Model model) {
@@ -23,14 +24,14 @@ public class ArticleViewController {
                 .stream().map(ArticleViewResponse::new)
                 .toList();
         model.addAttribute("articles", articles);
-        return "mainPage";
+        return MAIN;
     }
 
     @GetMapping("/article/{id}")
     public String viewArticle(Model model, @PathVariable Long id) {
         ArticleViewResponse response = new ArticleViewResponse(articleService.getArticle(id));
         model.addAttribute("viewArticle", response);
-        return "mainPage";
+        return MAIN;
     }
 
     @GetMapping("/new-article")
@@ -40,7 +41,7 @@ public class ArticleViewController {
         } else {
             model.addAttribute("newArticle", new ArticleViewResponse());
         }
-        return "mainPage";
+        return MAIN;
     }
 
 }
