@@ -37,3 +37,28 @@ if (modifyButton) {
             })
     })
 }
+
+const createButton = document.getElementById('new-article-create-btn');
+
+// TODO:Have to implement author on body after implementing user
+if (createButton) {
+    createButton.addEventListener('click', event => {
+        let title = document.getElementById('new-article-title').value;
+        let content = document.getElementById('new-article-content').value;
+
+        fetch('/api/article', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title,
+                content: content
+            })
+        })
+            .then(() => {
+                alert('Create article successfully');
+                location.replace('/home');
+            })
+    })
+}
