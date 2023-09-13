@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <!-- <link rel="stylesheet" th:href="@{/css/login.css}"> -->
+    <link rel="stylesheet" href="../static/css/login.css">
+</head>
+<body>
+<div class="main-page-container">
+    <div class="top-header-container">
+        <div class="top-header-wrap">
+            <div class="home-page-button"><a th:href="@{/home}">blog</a></div>
+            <div class="btn-container">
+                <div class="login-btn">login</div>
+                <div class="sign-up-btn">sign up</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-container">
+        <form action="/login" method="post" id="login-form">
+            <label for="login-id">ID:</label>
+            <input type="text" id="login-id">
+            <br>
+            <label for="login-password"> PW:</label>
+            <input type="password" id="login-password">
+            <br>
+            <button type="submit" id="login-submit-btn">login</button>
+        </form>
+    </div>
+
+    <div class="foot-box">
+
+    </div>
+</div>
+
+<script th:src="@{/js/mainPage.js}"></script>
+</body>
+</html>
