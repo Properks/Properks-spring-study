@@ -14,8 +14,8 @@
             <div class="top-header-wrap">
                 <div class="home-page-button"><a th:href="@{/home}">blog</a></div>
                 <div class="btn-container">
-                    <div class="login-btn">login</div>
-                    <div class="sign-up-btn">sign up</div>
+                    <div class="login-btn" th:onclick="|location.href='@{/login}'|">login</div>
+                    <div class="sign-up-btn" th:onclick="|location.href='@{/signup}'|">sign up</div>
                 </div>
             </div>
         </div>

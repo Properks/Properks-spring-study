@@ -1,4 +1,5 @@
 @import url("background.css");
+@import url("signup.css");
 
 body {min-height: 100vh; background: linear-gradient(to right, #54BCF5, #1142D7); display: flex; justify-content: center; align-items: center;}
 
@@ -6,6 +7,6 @@ body {min-height: 100vh; background: linear-gradient(to right, #54BCF5, #1142D7)
 .body-container {padding:10px; border: 1px solid black;  border-radius: 1rem; background-color: white;}
 
 #login-form {position:relative;}
-#login-form label {width:40px; float:left; text-transform: uppercase;}
+#login-form label {width:100px; float:left; text-transform: uppercase;}
 #login-form input {margin:3px;}
 #login-form button {width:100px;}
