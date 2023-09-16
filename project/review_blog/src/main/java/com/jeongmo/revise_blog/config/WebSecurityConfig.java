@@ -37,6 +37,8 @@ public class WebSecurityConfig {
     public MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector intro) {
         return new MvcRequestMatcher.Builder(intro);
     }
+    // This function get HandlerMappingIntrospector from spring(?) and return MvcRequestMatcher.builder
+    // I know reason why filterChain has HttpSecurity as parameter like this function
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector intro) throws Exception {
