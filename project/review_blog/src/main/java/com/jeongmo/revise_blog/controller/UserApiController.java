@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -17,11 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UserApiController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping("/user")
-    public String signup(@RequestParam String email, @RequestParam String password, @RequestParam String nickname) {
-        userService.signup(email, password, nickname);
+    public String signup(@RequestParam("email") String email, @RequestParam("password") String password,
+                         @RequestParam("nickname") String nickname) {
+        userService.save(email, password, nickname);
         return "redirect:/login";
     }
 

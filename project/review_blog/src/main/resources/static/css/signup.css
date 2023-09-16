@@ -1,3 +1,5 @@
+input {text-transform: initial;}
+
 #sign-up-form {position:relative;}
 #sign-up-form label {width:100px; float:left; text-transform: uppercase;}
 #sign-up-form input {margin:3px;}

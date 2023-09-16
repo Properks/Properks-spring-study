@@ -12,13 +12,18 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void signup(String email, String password, String nickname) {
+    public void save(String email, String password, String nickname) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         userRepository.save(User.builder()
                 .email(email)
-                        .password(encoder.encode(password))
-                        .nickname(nickname)
+                .password(encoder.encode(password))
+                .nickname(nickname)
                 .build());
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() ->
+                new IllegalArgumentException("Not Found " + email));
     }
 
 }

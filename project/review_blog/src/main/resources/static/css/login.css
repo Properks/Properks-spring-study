@@ -2,6 +2,7 @@
 @import url("signup.css");
 
 body {min-height: 100vh; background: linear-gradient(to right, #54BCF5, #1142D7); display: flex; justify-content: center; align-items: center;}
+input {text-transform: initial;}
 
 .main-page-container {width:400px; padding:1rem; width:40%; height:100%;}
 .body-container {padding:10px; border: 1px solid black;  border-radius: 1rem; background-color: white;}
