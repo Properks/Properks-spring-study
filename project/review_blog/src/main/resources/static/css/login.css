@@ -1,5 +1,4 @@
 @import url("background.css");
-@import url("signup.css");
 
 body {min-height: 100vh; background: linear-gradient(to right, #54BCF5, #1142D7); display: flex; justify-content: center; align-items: center;}
 input {text-transform: initial;}

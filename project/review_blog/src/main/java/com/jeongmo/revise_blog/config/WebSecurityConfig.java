@@ -15,6 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 
@@ -34,11 +36,32 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer configure() {
         return (web -> web.ignoring()
                 .requestMatchers(toH2Console())
-                .requestMatchers(AntPathRequestMatcher.antMatcher("/static/**"))
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/css/**"))
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/img/**"))
         );
     }
 
-    // TODO: Success to sign up but implement login and fix css application
+    @Bean
+    WebMvcConfigurer webMvcConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addResourceHandlers(ResourceHandlerRegistry registry) {
+                registry.addResourceHandler("/css/**")
+                        .addResourceLocations("classpath:/static/css/")
+                        .setCachePeriod(0)
+                        .resourceChain(false);
+                registry.addResourceHandler("/js/**")
+                        .addResourceLocations("classpath:/static/js/")
+                        .setCachePeriod(0)
+                        .resourceChain(false);
+                registry.addResourceHandler("/img/**")
+                        .addResourceLocations("classpath:/static/img/")
+                        .setCachePeriod(0)
+                        .resourceChain(false);
+            }
+        };
+    }
+
     @Bean
     MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector intro) {
         return new MvcRequestMatcher.Builder(intro);
@@ -47,19 +70,17 @@ public class WebSecurityConfig {
     // I know reason why filterChain has HttpSecurity as parameter like this function
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector intro) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         http
             .authorizeHttpRequests(request -> request
-                    .requestMatchers(mvc(intro).pattern(LOGIN)).permitAll()
-                    .requestMatchers(mvc(intro).pattern("/signup")).permitAll()
-                    .requestMatchers(mvc(intro).pattern("/user")).permitAll()
-                    .requestMatchers(mvc(intro).pattern("/home")).permitAll()
+                    .requestMatchers(mvc.pattern(LOGIN)).permitAll()
+                    .requestMatchers(mvc.pattern("/signup")).permitAll()
+                    .requestMatchers(mvc.pattern("/user")).permitAll()
+                    .requestMatchers(mvc.pattern("/home")).permitAll()
                     .anyRequest().authenticated())
             .formLogin(login ->
                     login.loginPage(LOGIN)
-                            .defaultSuccessUrl("/home")
-                            .usernameParameter("email")
-                            .passwordParameter("password"))
+                            .defaultSuccessUrl("/home"))
             .logout(logout ->
                     logout.logoutUrl("/logout")
                             .logoutSuccessUrl(LOGIN)
