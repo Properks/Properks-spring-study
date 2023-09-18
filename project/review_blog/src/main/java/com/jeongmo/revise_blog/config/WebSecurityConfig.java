@@ -23,6 +23,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 public class WebSecurityConfig {
 
     private static final String LOGIN = "/login";
+    private static final String HOME = "/home";
     private final CustomUserDetailService service;
 
     @Bean
@@ -51,14 +52,14 @@ public class WebSecurityConfig {
                     .requestMatchers(mvc.pattern(LOGIN)).permitAll()
                     .requestMatchers(mvc.pattern("/signup")).permitAll()
                     .requestMatchers(mvc.pattern("/user")).permitAll()
-                    .requestMatchers(mvc.pattern("/home")).permitAll()
+                    .requestMatchers(mvc.pattern(HOME)).permitAll()
                     .anyRequest().authenticated())
             .formLogin(login ->
                     login.loginPage(LOGIN)
-                            .defaultSuccessUrl("/home"))
+                            .defaultSuccessUrl(HOME))
             .logout(logout ->
                     logout.logoutUrl("/logout")
-                            .logoutSuccessUrl(LOGIN)
+                            .logoutSuccessUrl(HOME)
                             .invalidateHttpSession(true))
                 .csrf(CsrfConfigurer<HttpSecurity>::disable);
         return http.build();

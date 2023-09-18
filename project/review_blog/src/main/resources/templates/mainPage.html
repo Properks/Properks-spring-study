@@ -13,7 +13,11 @@
         <div class="top-header-container">
             <div class="top-header-wrap">
                 <div class="home-page-button"><a th:href="@{/home}">blog</a></div>
-                <div class="btn-container">
+                <div class="btn-container" th:if="${loginIn}">
+                    <div class="user-info-btn" th:text="|Username: ${loginIn}|"></div>
+                    <div class="logout-btn" th:onclick="|location.href='@{/logout}'|">logout</div>
+                </div>
+                <div class="btn-container" th:unless="${loginIn}">
                     <div class="login-btn" th:onclick="|location.href='@{/login}'|">login</div>
                     <div class="sign-up-btn" th:onclick="|location.href='@{/signup}'|">sign up</div>
                 </div>

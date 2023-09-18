@@ -8,6 +8,7 @@ body {width:100%; margin: 0px; padding: 0;}
 .btn-container {padding:5px; position:absolute; right:0; top: 0px;}
 .btn-container [class $= btn]{margin-right:5px; padding:5px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; border:1px solid black;}
 .login-btn {float:left;}
+.user-info-btn {float: left; border:none;}
 
 .main-page-img {width:100%; height:200px;}
 .main-page-img img {width: 100%; height: 100%;  object-fit: cover;}

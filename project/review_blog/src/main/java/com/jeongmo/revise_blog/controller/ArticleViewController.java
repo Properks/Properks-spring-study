@@ -1,8 +1,11 @@
 package com.jeongmo.revise_blog.controller;
 
+import com.jeongmo.revise_blog.domain.User;
 import com.jeongmo.revise_blog.dto.article_view.ArticleViewResponse;
 import com.jeongmo.revise_blog.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,23 +22,35 @@ public class ArticleViewController {
     private static final String MAIN = "mainPage";
 
     @GetMapping("/home")
-    public String mainPage(Model model) {
+    public String mainPage(Model model, Authentication authentication) {
         List<ArticleViewResponse> articles = articleService.getArticles()
                 .stream().map(ArticleViewResponse::new)
                 .toList();
+        if (authentication != null && getAuthentication().isAuthenticated()) {
+            User user = (User) getAuthentication().getPrincipal();
+            model.addAttribute("loginIn", user.getNickname());
+        }
         model.addAttribute("articles", articles);
         return MAIN;
     }
 
     @GetMapping("/article/{id}")
-    public String viewArticle(Model model, @PathVariable Long id) {
+    public String viewArticle(Model model, @PathVariable Long id, Authentication authentication) {
         ArticleViewResponse response = new ArticleViewResponse(articleService.getArticle(id));
+        if (authentication != null && getAuthentication().isAuthenticated()) {
+            User user = (User) getAuthentication().getPrincipal();
+            model.addAttribute("loginIn", user.getNickname());
+        }
         model.addAttribute("viewArticle", response);
         return MAIN;
     }
 
     @GetMapping("/new-article")
-    public String newArticle(@RequestParam(required = false) Long id, Model model) {
+    public String newArticle(@RequestParam(required = false) Long id, Model model, Authentication authentication) {
+        if (authentication != null && getAuthentication().isAuthenticated()) {
+            User user = (User) getAuthentication().getPrincipal();
+            model.addAttribute("loginIn", user.getNickname());
+        }
         if (id != null) {
             model.addAttribute("newArticle", new ArticleViewResponse(articleService.getArticle(id)));
         } else {
@@ -44,4 +59,7 @@ public class ArticleViewController {
         return MAIN;
     }
 
+    private Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
 }
