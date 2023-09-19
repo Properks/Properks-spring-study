@@ -1,26 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sign Up</title>
+    <!-- <link rel="stylesheet" th:href="@{/css/login.css}"> -->
+    <link rel="stylesheet" th:href="@{/css/signup.css}">
 </head>
 <body>
-<div class="sign-up-container">
-    <form action="/user" method="post" id="sign-up-form">
-        <label for="sign-up-id">email:</label>
-        <input type="email" id="sign-up-id" name="email">
-        <br>
-        <label for="sign-up-nickname">nickname:</label>
-        <input type="text" id="sign-up-nickname" name="nickname">
-        <br>
-        <label for="sign-up-password">pw:</label>
-        <input type="password" id="sign-up-password" name="password">
-        <br>
-        <label for="sign-up-password-check">pw check:</label>
-        <input type="password" id="sign-up-password-check" disabled>
-        <br>
-        <button type="submit" id="sign-up-submit-btn">sign up</button>
-    </form>
+<div class="main-page-container">
+    <div class="top-header-container">
+        <div class="top-header-wrap">
+            <div class="home-page-button"><a th:href="@{/home}">blog</a></div>
+            <div class="btn-container">
+                <div class="login-btn" th:onclick="|location.href='@{/login}'|">login</div>
+                <div class="sign-up-btn" th:onclick="|location.href='@{/signup}'|">sign up</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-container">
+        <div class="sign-up-container">
+            <form action="/user" method="post" id="sign-up-form">
+                <h4>sign up</h4>
+                <label for="sign-up-email">email:</label>
+                <input type="email" id="sign-up-email" name="email" required>
+                <br>
+                <label for="sign-up-nickname">nickname:</label>
+                <input type="text" id="sign-up-nickname" name="nickname" required>
+                <br>
+                <label for="sign-up-password">pw:</label>
+                <input type="password" id="sign-up-password" name="password" required>
+                <br>
+                <label for="sign-up-password-check">pw check:</label>
+                <input type="password" id="sign-up-password-check" required>
+                <br>
+                <button type="button" id="sign-up-submit-btn">sign up</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="foot-box">
+
+    </div>
 </div>
+
+<script th:src="@{/js/signup.js}"></script>
 </body>
 </html>

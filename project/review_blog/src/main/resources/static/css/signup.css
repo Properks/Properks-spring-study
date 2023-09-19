@@ -1,7 +1,13 @@
 @import url("background.css");
 
 input {text-transform: initial;}
+body {min-height: 100vh; background: linear-gradient(to right, #54BCF5, #1142D7); display: flex; justify-content: center; align-items: center;}
+input {text-transform: initial;}
 
+.main-page-container {width:400px; padding:1rem; width:40%; height:100%;}
+.body-container {padding:10px; border: 1px solid black;  border-radius: 1rem; background-color: white;}
+
+#sign-up-form h4 {width:100%; text-align: center; font-size:1em;}
 #sign-up-form {position:relative;}
 #sign-up-form label {width:100px; float:left; text-transform: uppercase;}
 #sign-up-form input {margin:3px;}
