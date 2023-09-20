@@ -27,4 +27,8 @@ public class UserService {
                 new IllegalArgumentException("Not Found " + email));
     }
 
+    public boolean isDuplicatedEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
 }

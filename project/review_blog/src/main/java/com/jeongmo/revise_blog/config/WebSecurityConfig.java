@@ -52,6 +52,7 @@ public class WebSecurityConfig {
                     .requestMatchers(mvc.pattern(LOGIN)).permitAll()
                     .requestMatchers(mvc.pattern("/signup")).permitAll()
                     .requestMatchers(mvc.pattern("/user")).permitAll()
+                    .requestMatchers(mvc.pattern("/api/email/{email}")).permitAll() // Must input with {}
                     .requestMatchers(mvc.pattern(HOME)).permitAll()
                     .anyRequest().authenticated())
             .formLogin(login ->
