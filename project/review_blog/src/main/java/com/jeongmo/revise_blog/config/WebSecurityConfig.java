@@ -1,20 +1,30 @@
 package com.jeongmo.revise_blog.config;
 
 import com.jeongmo.revise_blog.service.CustomUserDetailService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
+
+import java.io.IOException;
+import java.net.URLEncoder;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
@@ -57,7 +67,8 @@ public class WebSecurityConfig {
                     .anyRequest().authenticated())
             .formLogin(login ->
                     login.loginPage(LOGIN)
-                            .defaultSuccessUrl(HOME))
+                            .defaultSuccessUrl(HOME)
+                            .failureHandler(failureHandler()))
             .logout(logout ->
                     logout.logoutUrl("/logout")
                             .logoutSuccessUrl(HOME)
@@ -80,5 +91,27 @@ public class WebSecurityConfig {
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    AuthenticationFailureHandler failureHandler() {
+        return new AuthenticationFailureHandler() {
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                String username = request.getParameter("username");
+                String errorMsg;
+                if (exception instanceof UsernameNotFoundException) {
+                    errorMsg = username + " doesn't exist";
+                }
+                else if (exception instanceof BadCredentialsException) {
+                    errorMsg = "Check your password";
+                }
+                else {
+                    errorMsg = "Unknown Error";
+                }
+
+                response.sendRedirect("/login?error=" + errorMsg);
+            }
+        };
     }
 }

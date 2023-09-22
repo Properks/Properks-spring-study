@@ -11,3 +11,5 @@ input {text-transform: initial;}
 #login-form label {width:100px; float:left; text-transform: uppercase;}
 #login-form input {margin:3px;}
 #login-form button {width:100px;}
+
+#login-error-msg {margin-left: 110px; display: none; font-size:12px;}
