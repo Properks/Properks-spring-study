@@ -98,6 +98,8 @@ public class WebSecurityConfig {
         provider.setHideUserNotFoundExceptions(false);
         return provider;
     }
+    // Need setHidUserNotFoundException(false) to get UsernameNotFoundException. If i implement failureHandler
+    // without it, UsernameNotFoundException throw new BadCredentialException.
 
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
