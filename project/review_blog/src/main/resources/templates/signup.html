@@ -23,14 +23,13 @@
 
     <div class="body-container">
         <div class="sign-up-container">
-            <form action="/user" method="post" id="sign-up-form">
+            <form action="/user" method="post" id="sign-up-form" onsubmit="return checkSignUpCondition()">
                 <h4>sign up</h4>
                 <div class="sign-up-email-input-container">
                     <label for="sign-up-email">email:</label>
-                    <input type="email" id="sign-up-email" name="email" required>
+                    <input type="email" id="sign-up-email" name="email" required autofocus placeholder="Email">
                     <span id="sign-up-valid-img" class="material-symbols-outlined">check_circle</span>
                     <span id="sign-up-invalid-img" class="material-symbols-outlined">error_outline</span>
-    <!--                TODO: Fix img in newline-->
                     <button type="button" id="duplicate-check-btn">duplicate check</button>
                     <input type="hidden" id="sign-up-email-valid-value" value="none">
                 </div>
@@ -38,22 +37,22 @@
 
                 <div class="sign-up-nickname-input-container">
                     <label for="sign-up-nickname">nickname:</label>
-                    <input type="text" id="sign-up-nickname" name="nickname" required>
+                    <input type="text" id="sign-up-nickname" name="nickname" required placeholder="Nickname">
                 </div>
 
                 <div class="sign-up-password-input-container">
                     <label for="sign-up-password">pw:</label>
-                    <input type="password" id="sign-up-password" name="password" required>
+                    <input type="password" id="sign-up-password" name="password" required placeholder="Password">
                 </div>
                 <div id="sign-up-password-error-msg"></div>
 
                 <div class="sign-up-password-check-input-container">
                     <label for="sign-up-password-check">pw check:</label>
-                    <input type="password" id="sign-up-password-check" required>
+                    <input type="password" id="sign-up-password-check" required placeholder="Password Check">
                 </div>
                 <div id="sign-up-password-check-error-msg"></div>
 
-                <button type="button" id="sign-up-submit-btn">sign up</button>
+                <button type="submit" id="sign-up-submit-btn">sign up</button>
             </form>
         </div>
     </div>

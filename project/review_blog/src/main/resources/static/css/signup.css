@@ -15,6 +15,6 @@ input {text-transform: initial;}
 #sign-up-form label {width:100px; float:left; text-transform: uppercase;}
 #sign-up-form input {margin:3px;}
 #sign-up-form button {width:100px;}
-#sign-up-form [id $= error-msg] {margin-left: 110px; display: none; font-size:12px;}
+#sign-up-form [id $= error-msg] {margin-left: 110px; display: none; font-size:12px; text-transform: initial;}
 
 #sign-up-invalid-img, #sign-up-valid-img {display:none;}

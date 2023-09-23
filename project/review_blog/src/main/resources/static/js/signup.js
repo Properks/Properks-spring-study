@@ -1,6 +1,6 @@
 const submitButton = document.getElementById('sign-up-submit-btn');
 const allSignUpErrorMessage = document.querySelectorAll("[id $= error-msg]");
-submitButton.addEventListener('click', event => {
+function checkSignUpCondition(){
     let email = document.getElementById('sign-up-email').value;
     let nickname = document.getElementById('sign-up-nickname').value;
     let password = document.getElementById('sign-up-password').value;
@@ -28,24 +28,11 @@ submitButton.addEventListener('click', event => {
         errorMessage('sign-up-password-check-error-msg', "Password Check is different from password");
     }
     else {
-        fetch('/user', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email,
-                nickname: nickname,
-                password: password
-            })
-        })
-            .then(() => {
-                alert("Sign Up Successfully");
-                location.replace("/login");
-            })
+        alert("Sign Up SuccessFully");
+        return true;
     }
-
-})
+    return false;
+}
 
 const duplicateCheckButton = document.getElementById('duplicate-check-btn');
 

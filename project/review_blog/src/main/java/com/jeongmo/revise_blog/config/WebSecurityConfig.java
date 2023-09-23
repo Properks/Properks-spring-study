@@ -84,7 +84,6 @@ public class WebSecurityConfig {
 
         builder.userDetailsService(service)
                 .passwordEncoder(passwordEncoder);
-        builder.eraseCredentials(false);
 
         return builder.build();
 
