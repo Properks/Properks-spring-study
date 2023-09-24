@@ -7,6 +7,7 @@ body {width:100%; margin: 0px; padding: 0;}
 .home-page-button a {color: inherit; text-decoration: none;}
 .btn-container {padding:5px; position:absolute; right:0; top: 0px;}
 .btn-container [class $= btn]{margin-right:5px; padding:5px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; border:1px solid black;}
+.btn-container a {color: inherit; text-decoration: none;}
 .login-btn {float:left;}
 .user-info-btn {float: left; border:none;}
 

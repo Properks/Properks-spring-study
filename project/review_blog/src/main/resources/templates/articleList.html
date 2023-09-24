@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-  
+
 <div class="article-list-container">
-  <div class="article-list-body-wrap">
-    <div class="article-list-id-wrap">No.</div>
-    <div class="article-list-title-wrap">title</div>
-    <div class="article-list-author-wrap">author</div>
-  </div>
-  <div class="article-list-body-container">
-    <div class="articles-list-body" th:each="article : ${articles}">
-      <div id="article-list-id-thyme" th:text="${articleStat.count}"></div>
-      <div id="article-list-title-thyme" th:text="${article.title}"
-           th:onclick="|location.href='@{/article/{id}(id = ${article.id})}'|"></div>
-      <div id="article-list-author-thyme" th:text="${article.author}"></div>
+    <div class="article-list-body-wrap">
+        <div class="article-list-id-wrap">No.</div>
+        <div class="article-list-title-wrap">title</div>
+        <div class="article-list-author-wrap">author</div>
     </div>
-  </div>
-</div> 
+    <div class="article-list-body-container">
+        <div class="articles-list-body" th:each="article : ${articles}">
+            <div id="article-list-id-thyme" th:text="${articleStat.count}"></div>
+            <div id="article-list-title-thyme">
+                <a th:href="@{/article/{id}(id = ${article.id})}" th:text="${article.title}"></a>
+            </div>
+            <div id="article-list-author-thyme" th:text="${article.author}"></div>
+        </div>
+    </div>
+</div>
 <!--articleStat =>
 default : {variable name} + Stat
 index : start with 0

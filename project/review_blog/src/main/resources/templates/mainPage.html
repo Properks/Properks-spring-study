@@ -18,8 +18,8 @@
                     <div class="logout-btn" th:onclick="|location.href='@{/logout}'|">logout</div>
                 </div>
                 <div class="btn-container" th:unless="${loginIn}">
-                    <div class="login-btn" th:onclick="|location.href='@{/login}'|">login</div>
-                    <div class="sign-up-btn" th:onclick="|location.href='@{/signup}'|">sign up</div>
+                    <div class="login-btn"><a th:href="@{/login}">login</a></div>
+                    <div class="sign-up-btn"><a th:href="@{/signup}">sign up</a></div>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
             <div class="contents-container">
                 <div class="sidebar-container">
                     <div class="sidebar-title">
-                        <h5>side bar</h5>
+                        <h3>side bar</h3>
                     </div>
                     <div class="sidebar-content">
 
@@ -41,7 +41,7 @@
 
                 <div class="article-container">
                     <div class="article-title">
-                        <h5>articles</h5>
+                        <h3>articles</h3>
                     </div>
 
 <!--                    article body-->

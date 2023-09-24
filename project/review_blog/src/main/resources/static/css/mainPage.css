@@ -5,8 +5,9 @@
 
 .contents-container {margin:5px; padding:5px; border: 1px double black; display: flex;}
 .sidebar-container {padding:5px; width: 20%; border: 1px solid black; background: beige; align-items: start;}
-.sidebar-title h5, .article-title h5 {margin:0; text-align: center;}
+.sidebar-title h3, .article-title h3 {margin:0; text-align: center;}
 
+.sidebar-title {margin: 5px;}
 .article-title, .article-list-container {margin:5px; width: 90%;}
 .article-container {padding:5px; width:80%; border: 1px solid black; background: linear-gradient(to right bottom, white, rgb(190, 190, 190));}
 

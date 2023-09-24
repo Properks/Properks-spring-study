@@ -2,3 +2,5 @@
 .article-list-body-wrap, .article-list-body-container {border: 1px black; border-style: solid none;}
 .article-list-id-wrap, .article-list-author-wrap, #article-list-id-thyme, #article-list-author-thyme {flex:7; max-width: 10%; text-align: center;}
 .article--list-title-wrap, #article-list-title-thyme {flex:1; max-width:70%; text-align: center;}
+
+#article-list-title-thyme a {color:inherit; text-decoration: none;}
