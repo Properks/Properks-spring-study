@@ -9,20 +9,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.logging.Logger;
 
 @RequiredArgsConstructor
-@RestController
+@Controller
 public class UserApiController {
 
-    private final Logger logger = Logger.getLogger(UserApiController.class.toString());
     private final UserService userService;
 
+//    @PostMapping("/user")
+//    public String signup(@RequestBody AddUserRequest dto) {
+//        userService.save(dto);
+//        return "redirect:/login";
+//    }
     @PostMapping("/user")
-    public String signup(@RequestBody AddUserRequest dto) {
-        userService.save(dto);
+    public String signup(@RequestParam("email") String email, @RequestParam("password") String password,
+                         @RequestParam("nickname") String nickname) {
+        userService.save(new AddUserRequest(email, password, nickname));
         return "redirect:/login";
     }
 

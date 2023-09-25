@@ -18,7 +18,7 @@ public class UserService {
         userRepository.save(User.builder()
                 .email(dto.getEmail())
                 .password(encoder.encode(dto.getPassword()))
-                .nickname(dto.getNickname())
+                .nickname(setNicknameWithCode(dto.getNickname()))
                 .build());
     }
 
@@ -31,4 +31,17 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
+    private String setNicknameWithCode(String nickname) {
+        int code = nickname.hashCode() % 10000;
+        String newNickname = nickname + "#" + String.format("%04d", code);
+        while(isDuplicatedNickname(newNickname)) {
+            newNickname = nickname + "#" + String.format("%04d", ++code % 10000);
+        }
+        // FIXME: When 10000 same nickname. doesn't have code
+        return newNickname;
+    }
+
+    private boolean isDuplicatedNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
 }
