@@ -19,11 +19,6 @@ public class UserApiController {
 
     private final UserService userService;
 
-//    @PostMapping("/user")
-//    public String signup(@RequestBody AddUserRequest dto) {
-//        userService.save(dto);
-//        return "redirect:/login";
-//    }
     @PostMapping("/user")
     public String signup(@RequestParam("email") String email, @RequestParam("password") String password,
                          @RequestParam("nickname") String nickname) {

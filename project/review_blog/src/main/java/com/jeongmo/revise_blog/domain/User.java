@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @NoArgsConstructor
 @Entity
@@ -36,6 +37,10 @@ public class User implements UserDetails{
         this.email = email;
         this.password = password;
         this.nickname = nickname;
+    }
+
+    public String getNicknameWithoutCode() {
+        return new StringTokenizer(this.nickname, "#").nextToken();
     }
 
     @Override
