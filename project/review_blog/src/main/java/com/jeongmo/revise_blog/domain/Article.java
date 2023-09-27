@@ -21,11 +21,12 @@ public class Article {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "author")
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "author")
+    private User author;
 
     @Builder
-    public Article(String title, String content, String author) {
+    public Article(String title, String content, User author) {
         this.title = title;
         this.content = content;
         this.author = author;

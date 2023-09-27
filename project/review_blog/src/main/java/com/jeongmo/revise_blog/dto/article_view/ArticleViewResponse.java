@@ -1,6 +1,7 @@
 package com.jeongmo.revise_blog.dto.article_view;
 
 import com.jeongmo.revise_blog.domain.Article;
+import com.jeongmo.revise_blog.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,7 @@ public class ArticleViewResponse {
     private Long id;
     private String title;
     private String content;
-    private String author;
+    private User author;
 
     public ArticleViewResponse(Article article) {
         this.id = article.getId();

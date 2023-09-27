@@ -1,12 +1,15 @@
 package com.jeongmo.revise_blog.service;
 
 import com.jeongmo.revise_blog.domain.Article;
+import com.jeongmo.revise_blog.domain.User;
 import com.jeongmo.revise_blog.dto.article_api.CreateArticleRequest;
 import com.jeongmo.revise_blog.dto.article_api.UpdateArticleRequest;
 import com.jeongmo.revise_blog.repository.ArticleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +22,8 @@ public class ArticleService {
 
     // Method create an new article
     public Article createArticle(@NotNull CreateArticleRequest request) {
-        return articleRepository.save(request.toEntity());
+        User author = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return articleRepository.save(request.toEntity(author));
     }
 
     // Method find an article

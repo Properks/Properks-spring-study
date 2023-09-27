@@ -19,7 +19,7 @@
             <div id="article-list-title-thyme">
                 <a th:href="@{/article/{id}(id = ${article.id})}" th:text="${article.title}"></a>
             </div>
-            <div id="article-list-author-thyme" th:text="${article.author}"></div>
+            <div id="article-list-author-thyme" th:text="${article.author.getNicknameWithoutCode()}"></div>
         </div>
     </div>
 </div>
