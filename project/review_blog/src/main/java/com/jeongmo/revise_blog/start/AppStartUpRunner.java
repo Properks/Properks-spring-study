@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AppStartUpRunner implements CommandLineRunner {
+    // CommandLineRunner is interface for running some code when SpringBoot is executed.
+    // If i implement CommandLineRunner and add @Component annotation, run method is executed after Springboot scan component
 
     @Autowired
     UserService userService; // Assuming you have a UserService
