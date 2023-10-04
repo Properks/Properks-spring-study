@@ -12,6 +12,9 @@
         <div class="article-view-title-container">
             <h4 id="article-view-title" th:text="${viewArticle.title}"></h4>
         </div>
+        <div class="article-view-author-container">
+            <p id="article-view-author" th:text="|Writer: '${viewArticle.author.getNicknameWithoutCode()}'|"></p>
+        </div>
         <div class="article-view-content-container">
             <section class="article-view-section">
                 <p th:text="${viewArticle.content}"></p>

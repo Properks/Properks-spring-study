@@ -1,3 +1,6 @@
 .article-view-section {display: block;}
+.article-view-author-container {text-align: right;}
+
+#article-view-author {margin: 0;}
 #article-view-container {margin: 5px; padding:10px; border: 1px solid black; border-radius: 1rem}
 #article-view-delete-article-btn, #article-view-modify-article-btn {float: right}
