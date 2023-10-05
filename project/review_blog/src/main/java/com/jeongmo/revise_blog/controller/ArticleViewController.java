@@ -57,7 +57,7 @@ public class ArticleViewController {
     private void checkAndAddLoginInfo(Model model, Authentication authentication) {
         if (authentication!= null && getAuthentication().isAuthenticated()) {
             User user = (User) getAuthentication().getPrincipal();
-            model.addAttribute("loginIn", user.getNickname());
+            model.addAttribute("loginIn", user);
         }
     }
 }

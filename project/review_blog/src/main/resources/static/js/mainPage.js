@@ -62,3 +62,12 @@ if (createButton) {
             })
     })
 }
+
+const userInfo =  document.querySelector('.user-info-btn')
+const userOriginalNickname = userInfo.textContent;
+userInfo.addEventListener('mouseover', event => {
+    userInfo.textContent = 'Username: ' + userInfo.getAttribute('hover-text');
+})
+userInfo.addEventListener('mouseout', event => {
+    userInfo.textContent = userOriginalNickname;
+})
