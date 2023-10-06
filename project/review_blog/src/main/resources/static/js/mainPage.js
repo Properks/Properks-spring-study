@@ -1,6 +1,7 @@
 const userInfo =  document.querySelector('.user-info-btn');
 const userNickname = userInfo.textContent.replace("Username: ", "");
 
+// fetch delete request from article view page
 const deleteButton = document.getElementById('article-view-delete-article-btn');
 
 if (deleteButton) {
@@ -18,6 +19,7 @@ if (deleteButton) {
     })
 }
 
+// check you can go to modify page
 const modifyButtonInArticleView = document.getElementById('article-view-modify-article-btn');
 modifyButtonInArticleView.addEventListener('click', event => {
     if(isSameAuthor(userNickname)) {
@@ -26,6 +28,7 @@ modifyButtonInArticleView.addEventListener('click', event => {
     } else {alert("Cannot modify someone else's")}
 })
 
+// Fetch modify request from new article page
 const modifyButton = document.getElementById('new-article-modify-btn');
 
 if (modifyButton) {
@@ -53,6 +56,7 @@ if (modifyButton) {
 
 const createButton = document.getElementById('new-article-create-btn');
 
+// Create article function in new article page
 // TODO:Have to implement author on body after implementing user
 if (createButton) {
     createButton.addEventListener('click', event => {
@@ -76,7 +80,7 @@ if (createButton) {
     })
 }
 
-
+// function that represent nickname with code
 const userOriginalNickname = userInfo.textContent;
 userInfo.addEventListener('mouseover', event => {
     userInfo.textContent = 'Username: ' + userInfo.getAttribute('hover-text');
@@ -85,6 +89,7 @@ userInfo.addEventListener('mouseout', event => {
     userInfo.textContent = userOriginalNickname;
 })
 
+// check nickname is same as author. return boolean
 function isSameAuthor(nickname) {
     let author = document.getElementById('article-view-author').textContent.replace("Writer: ", "");
     return author === nickname;
