@@ -13,7 +13,7 @@
             <h4 id="article-view-title" th:text="${viewArticle.title}"></h4>
         </div>
         <div class="article-view-author-container">
-            <p id="article-view-author" th:text="|Writer: '${viewArticle.author.getNicknameWithoutCode()}'|"></p>
+            <p id="article-view-author" th:text="|Writer: ${viewArticle.author.getNicknameWithoutCode()}|"></p>
         </div>
         <div class="article-view-content-container">
             <section class="article-view-section">
@@ -24,8 +24,7 @@
 </div>
 <div id="article-view-button-container">
     <button type="button" id="article-view-delete-article-btn">delete</button>
-    <button type="button" id="article-view-modify-article-btn"
-            th:onclick="|location.href='@{/new-article?id={id}(id = ${viewArticle.id})}'|">modify</button>
+    <button type="button" id="article-view-modify-article-btn">modify</button>
 </div>
 
 </body>

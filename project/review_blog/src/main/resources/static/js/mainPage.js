@@ -1,17 +1,30 @@
+const userInfo =  document.querySelector('.user-info-btn');
+const userNickname = userInfo.textContent.replace("Username: ", "");
+
 const deleteButton = document.getElementById('article-view-delete-article-btn');
 
 if (deleteButton) {
     deleteButton.addEventListener('click', event => {
-        if (confirm('Delete this article?')) {
-            let articleId = document.getElementById('article-view-id').value;
-            fetch('/api/article/' + articleId, {method: 'DELETE'})
-                .then(() => {
-                    alert('Delete article successfully');
-                    location.replace('/home');
-                })
-        }
+        if (isSameAuthor(userNickname)) {
+            if (confirm('Delete this article?')) {
+                let articleId = document.getElementById('article-view-id').value;
+                fetch('/api/article/' + articleId, {method: 'DELETE'})
+                    .then(() => {
+                        alert('Delete article successfully');
+                        location.replace('/home');
+                    })
+            }
+        } else {alert("Cannot delete someone else's");}
     })
 }
+
+const modifyButtonInArticleView = document.getElementById('article-view-modify-article-btn');
+modifyButtonInArticleView.addEventListener('click', event => {
+    if(isSameAuthor(userNickname)) {
+        let articleId = document.getElementById('article-view-id').value;
+        location.replace('/new-article?id=' + articleId);
+    } else {alert("Cannot modify someone else's")}
+})
 
 const modifyButton = document.getElementById('new-article-modify-btn');
 
@@ -63,7 +76,7 @@ if (createButton) {
     })
 }
 
-const userInfo =  document.querySelector('.user-info-btn')
+
 const userOriginalNickname = userInfo.textContent;
 userInfo.addEventListener('mouseover', event => {
     userInfo.textContent = 'Username: ' + userInfo.getAttribute('hover-text');
@@ -71,3 +84,8 @@ userInfo.addEventListener('mouseover', event => {
 userInfo.addEventListener('mouseout', event => {
     userInfo.textContent = userOriginalNickname;
 })
+
+function isSameAuthor(nickname) {
+    let author = document.getElementById('article-view-author').textContent.replace("Writer: ", "");
+    return author === nickname;
+}
