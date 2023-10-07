@@ -1,5 +1,6 @@
 package com.jeongmo.revise_blog.controller;
 
+import com.jeongmo.revise_blog.domain.Article;
 import com.jeongmo.revise_blog.domain.User;
 import com.jeongmo.revise_blog.dto.article_view.ArticleViewResponse;
 import com.jeongmo.revise_blog.service.ArticleService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Controller
@@ -41,12 +43,18 @@ public class ArticleViewController {
 
     @GetMapping("/new-article")
     public String newArticle(@RequestParam(required = false) Long id, Model model, Authentication authentication) {
-        checkAndAddLoginInfo(model, authentication);
-        if (id != null) {
-            model.addAttribute("newArticle", new ArticleViewResponse(articleService.getArticle(id)));
-        } else {
+        if (id == null) {
             model.addAttribute("newArticle", new ArticleViewResponse());
+        } else {
+            Article foundArticle = articleService.getArticle(id);
+            if (foundArticle.getAuthor().getId().equals(((User)getAuthentication().getPrincipal()).getId())) {
+                model.addAttribute("newArticle", new ArticleViewResponse(articleService.getArticle(id)));
+            } else {
+                model.addAttribute("errorMessage", "401 ERROR, You're not writer.");
+                return viewArticle(model, id, authentication);
+            }
         }
+        checkAndAddLoginInfo(model, authentication);
         return MAIN;
     }
 
