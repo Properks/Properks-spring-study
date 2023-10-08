@@ -69,7 +69,7 @@ public class WebSecurityConfig {
             .formLogin(login ->
                     login.loginPage(LOGIN)
                             .defaultSuccessUrl(HOME)
-                            .failureHandler(failureHandler()))
+                            .failureHandler(failureHandler())) // Add failure handler when login is failed
             .logout(logout ->
                     logout.logoutUrl("/logout")
                             .logoutSuccessUrl(HOME)
@@ -86,7 +86,6 @@ public class WebSecurityConfig {
                 .passwordEncoder(passwordEncoder);
 
         return builder.build();
-
     }
 
     @Bean
@@ -112,10 +111,10 @@ public class WebSecurityConfig {
             public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
                 String username = request.getParameter("username");
                 String errorMsg;
-                if (exception instanceof UsernameNotFoundException) {
+                if (exception instanceof UsernameNotFoundException) { // when not found user
                     errorMsg = username + " doesn't exist";
                 }
-                else if (exception instanceof BadCredentialsException) {
+                else if (exception instanceof BadCredentialsException) { // Incorrect password
                     errorMsg = "Check your password";
                 }
                 else {
@@ -123,6 +122,7 @@ public class WebSecurityConfig {
                 }
 
                 response.sendRedirect("/login?error=" + errorMsg);
+                // redirect URL contains error message to use error message in html and js
             }
         };
     }

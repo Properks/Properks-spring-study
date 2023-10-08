@@ -94,3 +94,10 @@ function isSameAuthor(nickname) {
     let author = document.getElementById('article-view-author').textContent.replace("Writer: ", "");
     return author === nickname;
 }
+
+// Error message
+// const errorMessage = document.getElementById('error-message').value;
+//
+// if (errorMessage) {
+//     alert(errorMessage);
+// }
