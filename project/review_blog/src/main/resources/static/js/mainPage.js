@@ -21,12 +21,14 @@ if (deleteButton) {
 
 // check you can go to modify page
 const modifyButtonInArticleView = document.getElementById('article-view-modify-article-btn');
-modifyButtonInArticleView.addEventListener('click', event => {
-    if(isSameAuthor(userNickname)) {
-        let articleId = document.getElementById('article-view-id').value;
-        location.replace('/new-article?id=' + articleId);
-    } else {alert("Cannot modify someone else's")}
-})
+if (modifyButtonInArticleView) {
+    modifyButtonInArticleView.addEventListener('click', event => {
+        if(isSameAuthor(userNickname)) {
+            let articleId = document.getElementById('article-view-id').value;
+            location.replace('/new-article?id=' + articleId);
+        } else {alert("Cannot modify someone else's")}
+    })
+}
 
 // Fetch modify request from new article page
 const modifyButton = document.getElementById('new-article-modify-btn');
@@ -81,13 +83,15 @@ if (createButton) {
 }
 
 // function that represent nickname with code
-const userOriginalNickname = userInfo.textContent;
-userInfo.addEventListener('mouseover', event => {
-    userInfo.textContent = 'Username: ' + userInfo.getAttribute('hover-text');
-})
-userInfo.addEventListener('mouseout', event => {
-    userInfo.textContent = userOriginalNickname;
-})
+if (userInfo) {
+    const userOriginalNickname = userInfo.textContent;
+    userInfo.addEventListener('mouseover', event => {
+        userInfo.textContent = 'Username: ' + userInfo.getAttribute('hover-text');
+    })
+    userInfo.addEventListener('mouseout', event => {
+        userInfo.textContent = userOriginalNickname;
+    })
+}
 
 // check nickname is same as author. return boolean
 function isSameAuthor(nickname) {
