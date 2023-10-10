@@ -10,10 +10,12 @@
     <article>
         <input type="hidden" id="article-view-id" th:value="${viewArticle.id}">
         <div class="article-view-title-container">
-            <h4 id="article-view-title" th:text="${viewArticle.title}"></h4>
+            <h4 id="article-view-title" th:text="${viewArticle.title}"
+            th:onclick="|location.href='@{/article/{id} (id = ${viewArticle.id})}'|"></h4>
         </div>
         <div class="article-view-author-container">
             <p id="article-view-author" th:text="|Writer: ${viewArticle.author.getNicknameWithoutCode()}|"></p>
+            <p id="article-view-author-hover" th:text="${viewArticle.author.nickname}"></p>
         </div>
         <div class="article-view-content-container">
             <section class="article-view-section">
