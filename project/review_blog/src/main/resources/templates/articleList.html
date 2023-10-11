@@ -14,9 +14,9 @@
         <div class="article-list-author-wrap">author</div>
     </div>
     <div class="article-list-body-container">
-        <div class="no-article" th:if="${articles.size()} == 0">No article</div>
+        <div class="no-article" th:if="${articles.size()} == 0">No articles</div>
         <div class="articles-list-body" th:if="${articles.size()} != 0" th:each="article : ${articles}">
-            <div id="article-list-id-thyme" th:text="${articleStat.count}"></div>
+            <div id="article-list-id-thyme" th:text="${articleStat.size} - ${articleStat.index}"></div>
             <div id="article-list-title-thyme">
                 <a th:href="@{/article/{id}(id = ${article.id})}" th:text="${article.title}"></a>
             </div>

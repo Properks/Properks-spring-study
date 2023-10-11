@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,10 +26,11 @@ public class ArticleViewController {
 
     @GetMapping("/home")
     public String mainPage(Model model, Authentication authentication) {
-        List<ArticleViewResponse> articles = articleService.getArticles()
+        List<ArticleViewResponse> articles = new java.util.ArrayList<>(articleService.getArticles()
                 .stream().map(ArticleViewResponse::new)
-                .toList();
+                .toList());
         checkAndAddLoginInfo(model, authentication);
+        Collections.reverse(articles);
         model.addAttribute("articles", articles);
         return MAIN;
     }
