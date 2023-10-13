@@ -40,7 +40,7 @@ public class UserService {
     }
 
     /**
-     * Check email is already exist
+     * Check whether email already exists or not
      *
      * @param email The email to check redundancy
      * @return boolean, true: The email is already exist
@@ -66,12 +66,16 @@ public class UserService {
     }
 
     /**
-     * Check whether nickname which have code is already exist
+     * Check whether nickname which have code already exist
      *
      * @param nickname The nickname which have code to check
      * @return boolean, true: The nickname is already exist
      */
     private boolean isDuplicatedNickname(String nickname) {
         return userRepository.existsByNickname(nickname);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }
