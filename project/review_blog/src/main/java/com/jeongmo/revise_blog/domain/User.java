@@ -23,15 +23,31 @@ public class User implements UserDetails{
     @Column(name = "id", updatable = false)
     private Long id;
 
+    /**
+     * The email (unique)
+     */
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
+    /**
+     * The password (will be encoded)
+     */
     @Column(name = "password")
     private String password;
 
+    /**
+     * The nickname with code (unique)
+     */
     @Column(name = "nickname", unique = true)
     private String nickname;
 
+    /**
+     * The constructor of User
+     *
+     * @param email The email
+     * @param password The password
+     * @param nickname The nickname with code
+     */
     @Builder
     public User(String email, String password, String nickname) {
         this.email = email;
@@ -39,6 +55,11 @@ public class User implements UserDetails{
         this.nickname = nickname;
     }
 
+    /**
+     * Get your nickname without code
+     *
+     * @return Return nickname of nickname#0000 form
+     */
     public String getNicknameWithoutCode() {
         return new StringTokenizer(this.nickname, "#").nextToken();
     }
