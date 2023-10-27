@@ -42,6 +42,9 @@ public class User implements UserDetails{
     @Column(name = "nickname", unique = true)
     private String nickname;
 
+    /**
+     * The articles which user has written
+     */
     @OneToMany(mappedBy = "author")
     private List<Article> articles;
 
