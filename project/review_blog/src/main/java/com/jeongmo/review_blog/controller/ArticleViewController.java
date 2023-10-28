@@ -4,6 +4,7 @@ import com.jeongmo.review_blog.domain.Article;
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.article_view.ArticleViewResponse;
 import com.jeongmo.review_blog.service.ArticleService;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,14 +24,20 @@ public class ArticleViewController {
     private final ArticleService articleService;
     private static final String MAIN = "mainPage";
 
+    /**
+     * @// TODO: 2023/10/28 Give page number and article size to frontend, make size parameter
+     */
     @GetMapping("/home")
-    public String mainPage(Model model, Authentication authentication) {
+    public String mainPage(@RequestParam(required = false) Integer page, Model model, Authentication authentication) {
+        int size = 10;
         List<ArticleViewResponse> articles = new java.util.ArrayList<>(articleService.getArticles()
                 .stream().map(ArticleViewResponse::new)
                 .toList());
         checkAndAddLoginInfo(model, authentication);
         Collections.reverse(articles);
-        model.addAttribute("articles", articles);
+        if (page == null) {page = 1;}
+        model.addAttribute("articles", articles
+                .subList((page - 1) * 10, Math.min(page * 10, articles.size())));
         return MAIN;
     }
 
