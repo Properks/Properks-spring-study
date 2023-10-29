@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <title>Document</title>
 </head>
 <body>
@@ -24,6 +25,22 @@
                 <div id="article-list-author-thyme" th:text="${article.author.getNicknameWithoutCode()}"></div>
                 <p class="article-list-author-hover" th:text="${article.author.nickname}"></p>
             </div>
+        </div>
+    </div>
+    <div class="page-container" th:if="${articles.size()} != 0">
+        <div class="page-decrease">
+            <span class="material-symbols-outlined">
+                navigate_before
+            </span>
+        </div>
+        <div class="page-number" th:each="i : ${#numbers.sequence(1, totalPage)}">
+<!--            Repeat it from 1 to totalPage-->
+            <span th:attr="class=${i == currentPage} ? 'current-page' : 'other-page'" th:text="${i}"></span>
+        </div>
+        <div class="page-increase">
+            <span class="material-symbols-outlined">
+                navigate_next
+            </span>
         </div>
     </div>
 </div>

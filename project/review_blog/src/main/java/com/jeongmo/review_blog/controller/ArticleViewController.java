@@ -33,11 +33,16 @@ public class ArticleViewController {
         List<ArticleViewResponse> articles = new java.util.ArrayList<>(articleService.getArticles()
                 .stream().map(ArticleViewResponse::new)
                 .toList());
+
         checkAndAddLoginInfo(model, authentication);
+
         Collections.reverse(articles);
         if (page == null) {page = 1;}
         model.addAttribute("articles", articles
                 .subList((page - 1) * 10, Math.min(page * 10, articles.size())));
+
+        model.addAttribute("totalPage", (articles.size() - 1) / size + 1);
+        model.addAttribute("currentPage", page);
         return MAIN;
     }
 
