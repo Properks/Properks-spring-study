@@ -99,6 +99,32 @@ function isSameAuthor(nickname) {
     return author === nickname;
 }
 
+const beforePage = document.getElementById('page-decrease');
+const afterPage = document.getElementById('page-increase');
+const totalPage = document.getElementById('total-page');
+const currentPage = document.querySelector('.current-page');
+const otherPage = document.querySelectorAll('.other-page')
+
+if (beforePage && currentPage.textContent !== '1') {
+    beforePage.addEventListener('click', event => {
+        location.replace('/home?page=' + (parseInt(currentPage.textContent) - 1));
+    })
+}
+
+if (afterPage && currentPage.textContent !== totalPage.value) {
+    afterPage.addEventListener('click', event => {
+        location.replace('/home?page=' + (parseInt(currentPage.textContent) + 1));
+    })
+}
+
+if (otherPage) {
+    otherPage.forEach(element => {
+        element.addEventListener('click', event => {
+            location.replace('home?page=' + element.textContent);
+        })
+    })
+}
+
 // Error message
 // const errorMessage = document.getElementById('error-message').value;
 //

@@ -28,7 +28,8 @@
         </div>
     </div>
     <div class="page-container" th:if="${articles.size()} != 0">
-        <div class="page-decrease">
+        <input id="total-page" type="hidden" th:value="${totalPage}">
+        <div id="page-decrease">
             <span class="material-symbols-outlined">
                 navigate_before
             </span>
@@ -37,7 +38,7 @@
 <!--            Repeat it from 1 to totalPage-->
             <span th:attr="class=${i == currentPage} ? 'current-page' : 'other-page'" th:text="${i}"></span>
         </div>
-        <div class="page-increase">
+        <div id="page-increase">
             <span class="material-symbols-outlined">
                 navigate_next
             </span>

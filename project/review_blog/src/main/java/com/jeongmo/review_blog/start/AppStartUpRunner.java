@@ -27,6 +27,9 @@ public class AppStartUpRunner implements CommandLineRunner {
         saveUser("Author1@gmail.com", "author1pw", "Author1");
         saveUser("Author2@gmail.com", "author2pw", "Author2");
 
+        /**
+         * Source: https://theteachingcouple.com/the-top-20-descriptive-paragraph-examples/
+         */
         saveArticle("The sun-kissed beach",
                 "The sun-kissed beach was a veritable haven. Soft, white sand stretched " +
                         "lazily from one end of the coastline to the other, inviting visitors to take off their shoes and dip" +
