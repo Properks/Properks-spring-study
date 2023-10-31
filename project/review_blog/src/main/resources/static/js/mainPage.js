@@ -1,5 +1,5 @@
 const userInfo =  document.querySelector('.user-info-btn');
-const userNickname = userInfo.textContent.replace("Username: ", "");
+const userNickname = (userInfo) ? userInfo.textContent.replace("Username: ", "") : null;
 
 // fetch delete request from article view page
 const deleteButton = document.getElementById('article-view-delete-article-btn');

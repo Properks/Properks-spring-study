@@ -1,4 +1,5 @@
 -- Insert data for articles using user IDs as references
+ALTER TABLE article ALTER COLUMN content CLOB; -- Data type of content in article is changed from VARCHAR to text
 INSERT INTO article (title, content, author)
 SELECT
     'The sun-kissed beach',
