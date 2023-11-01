@@ -41,6 +41,7 @@ public class ArticleViewController {
         model.addAttribute("articles", articles
                 .subList((page - 1) * 10, Math.min(page * 10, articles.size())));
 
+        model.addAttribute("totalArticleSize", articles.size());
         model.addAttribute("totalPage", (articles.size() - 1) / size + 1);
         model.addAttribute("currentPage", page);
         return MAIN;

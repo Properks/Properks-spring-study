@@ -6,6 +6,7 @@
 .article-list-author-hover {margin:0; display: none; position: absolute; width: 100px; text-align: center; left: 100%; top: 0; border-radius: 8px; background: #333; color: #fff; font-size: 12px;}
 .article-list-body-container *{text-transform: initial;}
 .page-container {display: flex; justify-content: center; align-items: center;}
+.page-container span:hover{cursor: pointer}
 .page-decrease, .page-number, .page-increase {margin: 3px 10px;}
 
 #article-list-title-thyme a {color:inherit; text-decoration: none;}
