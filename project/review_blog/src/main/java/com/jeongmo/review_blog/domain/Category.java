@@ -21,6 +21,9 @@ public class Category implements Comparable<Category> {
     @Column(name = "id")
     private Long id;
 
+    /**
+     * @// TODO: 2023/11/02 Make To be able to duplicate
+     */
     @Column(name = "name", unique = true)
     private String name;
 

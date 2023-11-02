@@ -8,5 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+    /**
+     * Find Category with name
+     */
     Optional<Category> findByName(String name);
 }
