@@ -10,6 +10,7 @@
     <article>
         <input type="hidden" id="article-view-id" th:value="${viewArticle.id}">
         <div class="article-view-title-container">
+            <h6 class="article-view-category" th:text="${viewArticle.category.getName()}"></h6>
             <h4 id="article-view-title" th:text="${viewArticle.title}"
             th:onclick="|location.href='@{/article/{id} (id = ${viewArticle.id})}'|"></h4>
         </div>

@@ -35,18 +35,24 @@ public class Article {
     @JoinColumn(name = "author")
     private User author;
 
+    @ManyToOne
+    @JoinColumn(name = "category")
+    private Category category;
+
     /**
      * The constructor of Article
      *
      * @param title The title of your article
      * @param content The content of your article
      * @param author The author, which will be you
+     * @param category The category
      */
     @Builder
-    public Article(String title, String content, User author) {
+    public Article(String title, String content, User author, Category category) {
         this.title = title;
         this.content = content;
         this.author = author;
+        this.category = category;
     }
 
     /**

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,7 +21,7 @@ public class Category implements Comparable<Category> {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
@@ -29,6 +31,9 @@ public class Category implements Comparable<Category> {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
+    @OneToMany(mappedBy = "category")
+    private List<Article> articles;
+
     @Override
     public int compareTo(@NotNull Category o) {
         return this.name.compareTo(o.getName());
@@ -37,8 +42,9 @@ public class Category implements Comparable<Category> {
     @Builder
     public Category(String name, Category parent) {
         this.name = name;
-        children = new TreeSet<>();
+        this.children = new TreeSet<>();
         this.parent = parent;
+        this.articles = new ArrayList<>();
         if (parent != null) {
             parent.addChild(this);
         }
@@ -46,5 +52,9 @@ public class Category implements Comparable<Category> {
 
     public void addChild(Category child) {
         this.children.add(child);
+    }
+
+    public void addArticle(Article article) {
+        this.articles.add(article);
     }
 }

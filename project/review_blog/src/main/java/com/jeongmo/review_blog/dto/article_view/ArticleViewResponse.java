@@ -1,6 +1,7 @@
 package com.jeongmo.review_blog.dto.article_view;
 
 import com.jeongmo.review_blog.domain.Article;
+import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class ArticleViewResponse {
     private String title;
     private String content;
     private User author;
+    private Category category;
 
     /**
      * The constructor with Article
@@ -26,5 +28,6 @@ public class ArticleViewResponse {
         this.title = article.getTitle();
         this.content = article.getContent();
         this.author = article.getAuthor();
+        this.category = article.getCategory();
     }
 }

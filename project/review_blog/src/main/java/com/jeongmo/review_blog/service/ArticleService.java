@@ -1,10 +1,12 @@
 package com.jeongmo.review_blog.service;
 
 import com.jeongmo.review_blog.domain.Article;
+import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.article_api.CreateArticleRequest;
 import com.jeongmo.review_blog.dto.article_api.UpdateArticleRequest;
 import com.jeongmo.review_blog.repository.ArticleRepository;
+import com.jeongmo.review_blog.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +20,7 @@ import java.util.List;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final CategoryService categoryService;
 
     /**
      * Create article and save database
@@ -27,7 +30,8 @@ public class ArticleService {
      */
     public Article createArticle(@NotNull CreateArticleRequest request) {
         User author = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return articleRepository.save(request.toEntity(author));
+        Category foundCategory = categoryService.findCategory(request.getCategory());
+        return articleRepository.save(request.toEntity(author, foundCategory));
     }
 
     /**
