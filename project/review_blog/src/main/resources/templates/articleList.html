@@ -8,6 +8,14 @@
 </head>
 <body>
 
+<div class="article-list-page-size-container">
+    Articles per page:
+    <select name="Size" id="article-list-page-size" class="page-size">
+        <option value="10" selected>10</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+    </select>
+</div>
 <div class="article-list-container">
     <div class="article-list-body-wrap">
         <div class="article-list-id-wrap">No.</div>
@@ -28,18 +36,18 @@
             </div>
         </div>
     </div>
-    <div class="page-container" th:if="${articles.size()} != 0">
-        <input id="total-page" type="hidden" th:value="${totalPage}">
-        <div id="page-decrease">
+    <div class="article-list-page-container" th:if="${articles.size()} != 0">
+        <input id="article-list-total-page" type="hidden" th:value="${totalPage}">
+        <div id="article-list-page-decrease">
             <span class="material-symbols-outlined">
                 navigate_before
             </span>
         </div>
-        <div class="page-number" th:each="i : ${#numbers.sequence(1, totalPage)}">
+        <div class="article-list-page-number" th:each="i : ${#numbers.sequence(1, totalPage)}">
 <!--            Repeat it from 1 to totalPage-->
             <span th:attr="class=${i == currentPage} ? 'current-page' : 'other-page'" th:text="${i}"></span>
         </div>
-        <div id="page-increase">
+        <div id="article-list-page-increase">
             <span class="material-symbols-outlined">
                 navigate_next
             </span>
