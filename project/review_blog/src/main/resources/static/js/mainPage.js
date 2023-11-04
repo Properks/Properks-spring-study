@@ -99,6 +99,7 @@ function isSameAuthor(nickname) {
     return author === nickname;
 }
 
+// Change page
 const beforePage = document.getElementById('page-decrease');
 const afterPage = document.getElementById('page-increase');
 const totalPage = document.getElementById('total-page');
@@ -124,6 +125,20 @@ if (otherPage) {
         })
     })
 }
+
+//Change articles per page
+const articlesPerPage = document.getElementById('article-list-page-size');
+if (articlesPerPage) {
+    let sizeParameter = new URLSearchParams(location.search).get('size');
+    if (sizeParameter) {
+        articlesPerPage.value = sizeParameter;
+    } else {articlesPerPage.value = 10;}
+
+    articlesPerPage.addEventListener('change', event => {
+        location.replace("/home?page=" + currentPage.textContent + "&size=" + articlesPerPage.value);
+    })
+}
+
 
 // Error message
 // const errorMessage = document.getElementById('error-message').value;

@@ -25,22 +25,31 @@ public class ArticleViewController {
     private static final String MAIN = "mainPage";
 
     /**
-     * @// TODO: 2023/10/28 Give page number and article size to frontend, make size parameter
+     * Homepage request mapping
+     *
+     * @param page The page of home page
+     * @param size The size of articles is shown on page
+     * @param model The model for thymeleaf
+     * @param authentication The authentication is got from spring security
      */
     @GetMapping("/home")
-    public String mainPage(@RequestParam(required = false) Integer page, Model model, Authentication authentication) {
-        int size = 10;
+    public String mainPage(@RequestParam(required = false, defaultValue = "1") Integer page,
+                           @RequestParam(required = false, defaultValue = "10") Integer size,
+                           Model model,
+                           Authentication authentication) {
+        // Get articles
         List<ArticleViewResponse> articles = new java.util.ArrayList<>(articleService.getArticles()
                 .stream().map(ArticleViewResponse::new)
                 .toList());
 
         checkAndAddLoginInfo(model, authentication);
 
+        // Set article
         Collections.reverse(articles);
-        if (page == null) {page = 1;}
         model.addAttribute("articles", articles
-                .subList((page - 1) * 10, Math.min(page * 10, articles.size())));
+                .subList((page - 1) * size, Math.min(page * size, articles.size())));
 
+        // Set page
         model.addAttribute("totalArticleSize", articles.size());
         model.addAttribute("totalPage", (articles.size() - 1) / size + 1);
         model.addAttribute("currentPage", page);
