@@ -4,7 +4,6 @@ import com.jeongmo.review_blog.domain.Article;
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.article_view.ArticleViewResponse;
 import com.jeongmo.review_blog.service.ArticleService;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
