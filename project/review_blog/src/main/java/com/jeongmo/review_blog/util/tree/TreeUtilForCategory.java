@@ -31,8 +31,13 @@ public class TreeUtilForCategory {
      * @param path The path of category split with "_". Ex: category1_child1_child2_child3
      * @return The name of category. Ex: child3
      */
-    public static String getCategoryName(String path) {
+    public static String getLeafCategory(String path) {
         String[] paths = path.split("_");
         return paths[paths.length - 1];
+    }
+
+    public static String getParentOfLeaf(String path) {
+        String[] paths = path.split("_");
+        return (paths.length - 2 < 0) ? null : paths[paths.length - 2];
     }
 }
