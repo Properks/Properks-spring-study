@@ -7,6 +7,7 @@ import com.jeongmo.review_blog.dto.article_api.CreateArticleRequest;
 import com.jeongmo.review_blog.dto.article_api.UpdateArticleRequest;
 import com.jeongmo.review_blog.repository.ArticleRepository;
 import com.jeongmo.review_blog.repository.CategoryRepository;
+import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +31,14 @@ public class ArticleService {
      */
     public Article createArticle(@NotNull CreateArticleRequest request) {
         User author = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Category foundCategory = categoryService.findCategory(request.getCategory());
+
+        Category foundCategory;
+
+        if (categoryService.isValid(request.getCategory())) { // If it already exists, find it.
+             foundCategory = categoryService.findCategory(TreeUtilForCategory.getLeafCategory(request.getCategory()));
+        } else {
+            throw new IllegalArgumentException("Invalid category path");
+        }
         return articleRepository.save(request.toEntity(author, foundCategory));
     }
 

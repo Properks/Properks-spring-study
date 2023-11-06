@@ -3,6 +3,7 @@ package com.jeongmo.review_blog.dto.article_api;
 import com.jeongmo.review_blog.domain.Article;
 import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.domain.User;
+import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,7 +17,9 @@ public class CreateArticleRequest {
     private String title;
     private String content;
 
-
+    /**
+     * Category path ( root_child1_child2.... form )
+     */
     private String category;
 
     /**

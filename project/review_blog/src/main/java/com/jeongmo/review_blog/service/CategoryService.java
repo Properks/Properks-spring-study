@@ -14,12 +14,18 @@ public class CategoryService {
      * Create Category (Add new Category into Category tree)
      *
      * @// TODO: 2023/11/02 Add parent id of category.
-     * @param name The name of Category
-     * @return The Created category
+     * @param parent The parent category for it.
+     * @param name The name of Category.
+     * @return The Created category.
      */
-    public Category createCategory(String name) {
+    public Category createCategory(String parent, String name) {
+        Category parentCategory = null;
+        if (parent != null) {
+            parentCategory = findCategory(parent);
+        }
         return categoryRepository.save(Category.builder()
                 .name(name)
+                .parent(parentCategory)
                 .build());
     }
 
@@ -32,5 +38,39 @@ public class CategoryService {
     public Category findCategory(String name) {
         return categoryRepository.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid category"));
+    }
+
+    /**
+     * Check whether category exists or not
+     *
+     * @param name The name of category
+     * @return The boolean, If category exists, true
+     */
+    public boolean isExists(String name) {
+        return categoryRepository.existsByName(name);
+    }
+
+    /**
+     * Check whether path is valid or not. Split path to category names and check ith category has (i + 1)th category
+     * as child (for i = 0, 1, ....)
+     *
+     * @param path The path of category which you want to check
+     * @return The boolean, true: valid, false: category doesn't exist or have next category as child.
+     */
+    public boolean isValid(String path) {
+        String[] paths = path.split("_");
+        for (int i = 0; i < paths.length - 1; i++) {
+            if (categoryRepository.existsByName(paths[i]) && categoryRepository.existsByName(paths[i + 1])) {
+                Category baseCategory = findCategory(paths[i]);
+                Category childCategory = findCategory(paths[i + 1]);
+                if (!baseCategory.getChildren().contains(childCategory)) {
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        return true;
     }
 }

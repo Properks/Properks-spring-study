@@ -34,7 +34,7 @@ public class AppStartUpRunner implements CommandLineRunner {
         saveUser("Author3@gmail.com", "author3pw", "Author3");
 
         final String category = "article";
-        saveCategory(category);
+        saveCategory(null, category);
         Category testCategory1 = categoryService.findCategory(category);
 
         /**
@@ -121,7 +121,7 @@ public class AppStartUpRunner implements CommandLineRunner {
         }
     }
 
-    private void saveCategory(String name) {
-        categoryService.createCategory(name);
+    private void saveCategory(String parent, String name) {
+        categoryService.createCategory(parent, name);
     }
 }
