@@ -1,9 +1,12 @@
 package com.jeongmo.review_blog.service;
 
 import com.jeongmo.review_blog.domain.Category;
+import com.jeongmo.review_blog.dto.article_view.CategoryResponse;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -13,20 +16,27 @@ public class CategoryService {
     /**
      * Create Category (Add new Category into Category tree)
      *
+     * @// FIXME: 2023/11/07 Error on adding child. Maybe database problem.
      * @// TODO: 2023/11/02 Add parent id of category.
      * @param parent The parent category for it.
      * @param name The name of Category.
      * @return The Created category.
      */
     public Category createCategory(String parent, String name) {
-        Category parentCategory = null;
+        Category savedCategory = null;
         if (parent != null) {
-            parentCategory = findCategory(parent);
+            Category parentCategory = findCategory(parent);
+            savedCategory = categoryRepository.save(Category.builder()
+                    .name(name)
+                    .parent(parentCategory)
+                    .build());
         }
-        return categoryRepository.save(Category.builder()
-                .name(name)
-                .parent(parentCategory)
-                .build());
+        else {
+            savedCategory = categoryRepository.save(Category.builder()
+                    .name(name)
+                    .build());
+        }
+        return savedCategory;
     }
 
     /**
@@ -38,6 +48,11 @@ public class CategoryService {
     public Category findCategory(String name) {
         return categoryRepository.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid category"));
+    }
+
+    public List<CategoryResponse> findAllCategory() {
+        return categoryRepository.findAll().
+                stream().map(CategoryResponse::new).toList();
     }
 
     /**

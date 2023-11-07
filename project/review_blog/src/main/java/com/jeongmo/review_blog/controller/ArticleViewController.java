@@ -4,6 +4,7 @@ import com.jeongmo.review_blog.domain.Article;
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.article_view.ArticleViewResponse;
 import com.jeongmo.review_blog.service.ArticleService;
+import com.jeongmo.review_blog.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ import java.util.List;
 public class ArticleViewController {
 
     private final ArticleService articleService;
+    private final CategoryService categoryService;
     private static final String MAIN = "mainPage";
 
     /**
@@ -36,6 +38,9 @@ public class ArticleViewController {
                            @RequestParam(required = false, defaultValue = "10") Integer size,
                            Model model,
                            Authentication authentication) {
+        // Set categories
+        addAllCategory(model);
+
         // Get articles
         List<ArticleViewResponse> articles = new java.util.ArrayList<>(articleService.getArticles()
                 .stream().map(ArticleViewResponse::new)
@@ -89,5 +94,9 @@ public class ArticleViewController {
             User user = (User) getAuthentication().getPrincipal();
             model.addAttribute("loginIn", user);
         }
+    }
+
+    private void addAllCategory(Model model) {
+        model.addAttribute("categories", categoryService.findAllCategory());
     }
 }

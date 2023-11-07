@@ -18,7 +18,6 @@
                 <div class="btn-container" th:if="${loginIn}">
                     <div class="user-info-btn" th:text="|Username: ${loginIn.getNicknameWithoutCode()}|"
                     th:attr="hover-text=${loginIn.nickname}"></div>
-<!--                    FIXME: Doesn't work in main page and article view-->
                     <div class="logout-btn" th:onclick="|location.href='@{/logout}'|">logout</div>
                 </div>
                 <div class="btn-container" th:unless="${loginIn}">
@@ -38,8 +37,20 @@
                     <div class="sidebar-title">
                         <h3>side bar</h3>
                     </div>
-                    <div class="sidebar-content">
-
+                    <div class="sidebar-content" th:if="${categories}">
+                        <div class="sidebar" th:each="category: ${categories}">
+                            <input type="hidden" class="category-id" th:value="${category.id}">
+                            <script th:inline="javascript">
+                                {
+                                    let prefix = '';
+                                    for (var i = 0; i < [[${category.height}]]; i++) {
+                                        prefix += '&nbsp;&nbsp;\|&nbsp;&nbsp;';
+                                    }
+                                    let word = prefix + [[${category.name}]];
+                                    document.write(word);
+                                }
+                            </script>
+                        </div>
                     </div>
                 </div>
 
