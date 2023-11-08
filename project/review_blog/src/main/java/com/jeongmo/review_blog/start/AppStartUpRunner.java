@@ -2,13 +2,18 @@ package com.jeongmo.review_blog.start;
 
 import com.jeongmo.review_blog.domain.Article;
 import com.jeongmo.review_blog.domain.Category;
+import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.dto.user.AddUserRequest;
 import com.jeongmo.review_blog.repository.ArticleRepository;
+import com.jeongmo.review_blog.repository.CategoryRepository;
 import com.jeongmo.review_blog.service.CategoryService;
 import com.jeongmo.review_blog.service.UserService;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.awt.*;
 
 @Component
 public class AppStartUpRunner implements CommandLineRunner {
@@ -24,6 +29,8 @@ public class AppStartUpRunner implements CommandLineRunner {
     @Autowired
     CategoryService categoryService;
 
+    @Autowired
+    CategoryRepository categoryRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -34,9 +41,11 @@ public class AppStartUpRunner implements CommandLineRunner {
         saveUser("Author3@gmail.com", "author3pw", "Author3");
 
         final String category = "article";
-        saveCategory(null, category);
-        Category testCategory1 = categoryService.findCategory(category);
+        Category testCategory1 = saveCategory(null, category);
+        Category testCategory2 = saveCategory(category, "article2");
 
+
+        System.out.println(categoryService.findCategory(category).getChildren());
         /**
          * Add articles
          * Source: https://theteachingcouple.com/the-top-20-descriptive-paragraph-examples/
@@ -121,7 +130,7 @@ public class AppStartUpRunner implements CommandLineRunner {
         }
     }
 
-    private void saveCategory(String parent, String name) {
-        categoryService.createCategory(parent, name);
+    private Category saveCategory(String parent, String name) {
+        return categoryService.createCategory(new CreateCategoryRequest(name, parent));
     }
 }

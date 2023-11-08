@@ -2,6 +2,7 @@ package com.jeongmo.review_blog.service;
 
 import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.dto.article_view.CategoryResponse;
+import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,27 +17,19 @@ public class CategoryService {
     /**
      * Create Category (Add new Category into Category tree)
      *
-     * @// FIXME: 2023/11/07 Error on adding child. Maybe database problem.
-     * @// TODO: 2023/11/02 Add parent id of category.
-     * @param parent The parent category for it.
-     * @param name The name of Category.
+     * @param request The name of Category.
      * @return The Created category.
      */
-    public Category createCategory(String parent, String name) {
-        Category savedCategory = null;
+    public Category createCategory(CreateCategoryRequest request) {
+        Category parent = categoryRepository.findByName(request.getParent()).orElse(null);
+        Category child = categoryRepository.save(Category.builder()
+                .name(request.getName())
+                .parent(parent)
+                .build());
         if (parent != null) {
-            Category parentCategory = findCategory(parent);
-            savedCategory = categoryRepository.save(Category.builder()
-                    .name(name)
-                    .parent(parentCategory)
-                    .build());
+            parent.addChild(child);
         }
-        else {
-            savedCategory = categoryRepository.save(Category.builder()
-                    .name(name)
-                    .build());
-        }
-        return savedCategory;
+        return child;
     }
 
     /**

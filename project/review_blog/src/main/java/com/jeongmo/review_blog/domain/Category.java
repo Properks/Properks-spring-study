@@ -9,8 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 @Entity
 @Getter
@@ -27,15 +25,15 @@ public class Category implements Comparable<Category> {
     @Column(name = "name", unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    private Set<Category> children;
+    @OneToMany(mappedBy = "parent")
+    private List<Category> children = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Category parent;
 
     @OneToMany(mappedBy = "category")
-    private List<Article> articles;
+    private List<Article> articles = new ArrayList<>();
 
     @Override
     public int compareTo(@NotNull Category o) {
@@ -45,12 +43,7 @@ public class Category implements Comparable<Category> {
     @Builder
     public Category(String name, Category parent) {
         this.name = name;
-        this.children = new TreeSet<>();
         this.parent = parent;
-        this.articles = new ArrayList<>();
-        if (parent != null) {
-            parent.addChild(this);
-        }
     }
 
     public void addChild(Category child) {
