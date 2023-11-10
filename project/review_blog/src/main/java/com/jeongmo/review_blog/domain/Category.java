@@ -40,6 +40,10 @@ public class Category implements Comparable<Category> {
         return this.name.compareTo(o.getName());
     }
 
+    public List<Category> getChildren() {
+        return this.children.stream().sorted().toList();
+    }
+
     @Builder
     public Category(String name, Category parent) {
         this.name = name;

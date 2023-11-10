@@ -21,7 +21,9 @@ public class CategoryService {
      * @return The Created category.
      */
     public Category createCategory(CreateCategoryRequest request) {
-        Category parent = categoryRepository.findByName(request.getParent()).orElse(null);
+        Category parent = request.getParent() != null ? categoryRepository.findByName(request.getParent()).
+                orElseThrow(() -> new IllegalArgumentException("Invalid parent category in request")) : null;
+        // When Cannot find, Throw Exception except that parent is null.
         Category child = categoryRepository.save(Category.builder()
                 .name(request.getName())
                 .parent(parent)
