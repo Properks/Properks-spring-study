@@ -1,6 +1,7 @@
 package com.jeongmo.review_blog.service;
 
 import com.jeongmo.review_blog.domain.Category;
+import com.jeongmo.review_blog.dto.article_view.CategoryResponse;
 import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,7 +80,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("createCategoryInvalidParent(): success to create category with invalid parent name")
+    @DisplayName("createCategoryInvalidParent(): Fail to create category with invalid parent name")
     void createCategoryInvalidParent() {
         //given
         final String categoryName = "category";
@@ -95,6 +96,82 @@ class CategoryServiceTest {
         Category foundCategory = categoryRepository.findByName(categoryName).orElse(null);
         assertThat(exception.getMessage()).isEqualTo(exceptionMessage);
         assertThat(foundCategory).isNull();
+
+    }
+
+    @Test
+    @DisplayName("findOneValidCategory(): Success to find category")
+    void findOneValidCategory() {
+        //given
+        final String categoryName = "Category";
+        Category savedCategory = categoryRepository.save(Category.builder()
+                        .name(categoryName)
+                .build());
+
+        //when
+        Category foundCategory = categoryService.findCategory(categoryName);
+
+        //then
+        assertThat(foundCategory.getId()).isEqualTo(savedCategory.getId());
+        assertThat(foundCategory.getName()).isEqualTo(savedCategory.getName());
+        assertThat(foundCategory.getParent()).isEqualTo(savedCategory.getParent());
+        assertThat(foundCategory.getChildren()).isEqualTo(savedCategory.getChildren());
+    }
+
+    @Test
+    @DisplayName("findOneInvalidCategory(): Fail to find category")
+    void findOneInvalidCategory() {
+        //given
+        final String categoryName = "categoryName";
+        final String nameParameter = "Category";
+        final String exceptionMessage = "Invalid category";
+        categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+
+        //when
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> categoryService.findCategory(nameParameter));
+
+        //then
+        assertThat(exception.getMessage()).isEqualTo(exceptionMessage);
+
+    }
+
+    @Test
+    @DisplayName("findAllCategory(): Success to find all category")
+    void findAllCategory() {
+        //given
+        final String categoryName = "Category";
+        final String siblingCategory = "siblingCategory";
+        final String childCategory = "childCategory";
+        Category category = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+        Category sibling= categoryRepository.save(Category.builder()
+                .name(siblingCategory)
+                .build());
+        Category child = categoryRepository.save(Category.builder()
+                .name(childCategory)
+                .parent(category)
+                .build());
+
+        //when
+        List<CategoryResponse> list = categoryService.findAllCategory();
+
+        //then
+        category = categoryRepository.findByName(categoryName).get();
+        assertThat(list).hasSize(3);
+        assertThat(list.get(0).getId()).isEqualTo(category.getId());
+        assertThat(list.get(0).getName()).isEqualTo(category.getName());
+        assertThat(list.get(0).getHeight()).isZero();
+
+        assertThat(list.get(1).getId()).isEqualTo(sibling.getId());
+        assertThat(list.get(1).getName()).isEqualTo(sibling.getName());
+        assertThat(list.get(1).getHeight()).isZero();
+
+        assertThat(list.get(2).getId()).isEqualTo(child.getId());
+        assertThat(list.get(2).getName()).isEqualTo(child.getName());
+        assertThat(list.get(2).getHeight()).isEqualTo(1);
 
     }
 }
