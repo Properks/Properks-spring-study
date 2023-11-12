@@ -56,7 +56,7 @@ public class CategoryService {
      * @param name The name of category
      * @return The boolean, If category exists, true
      */
-    public boolean isExists(String name) {
+    public boolean isExist(String name) {
         return categoryRepository.existsByName(name);
     }
 
@@ -69,11 +69,16 @@ public class CategoryService {
      */
     public boolean isValid(String path) {
         String[] paths = path.split("_");
-        for (int i = 0; i < paths.length - 1; i++) {
-            if (categoryRepository.existsByName(paths[i]) && categoryRepository.existsByName(paths[i + 1])) {
+        if (paths.length == 1) { // when root node
+            Category category = findCategory(paths[0]);
+            return category.getParent() == null;
+        }
+        for (int i = 0; i < paths.length - 1; i++) { // when child node
+            if (isExist(paths[i]) && isExist(paths[i + 1])) {
                 Category baseCategory = findCategory(paths[i]);
                 Category childCategory = findCategory(paths[i + 1]);
-                if (!baseCategory.getChildren().contains(childCategory)) {
+                if (!(baseCategory.getChildren().stream().map(Category::getId).toList().contains(childCategory.getId())
+                        && childCategory.getParent().getId().equals(baseCategory.getId()))) {
                     return false;
                 }
             }

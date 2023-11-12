@@ -4,6 +4,7 @@ import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.dto.article_view.CategoryResponse;
 import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.repository.CategoryRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -173,5 +175,60 @@ class CategoryServiceTest {
         assertThat(list.get(2).getName()).isEqualTo(child.getName());
         assertThat(list.get(2).getHeight()).isEqualTo(1);
 
+    }
+
+    @Test
+    @DisplayName("isExist(): Check whether name of category is valid or not")
+    void isExist() {
+        //given
+        final String categoryName = "Category";
+        Category category = Category.builder()
+                .name(categoryName)
+                .build();
+        categoryRepository.save(category);
+
+        //when
+        boolean isValid = categoryService.isExist(categoryName);
+
+        //then
+        assertThat(isValid).isTrue();
+
+        //given
+        categoryRepository.deleteById(category.getId());
+        categoryRepository.flush();
+
+        //when
+        boolean isInvalid = categoryService.isExist(categoryName);
+
+        //then
+        assertThat(isInvalid).isFalse();
+    }
+
+    @Test
+    @DisplayName("isValid(): Check Whether path is valid or not")
+    void isValid() {
+        //given
+        /* structure
+        *  parent - Category
+        *         - sibling
+        */
+        final String categoryName = "Category";
+        final String parentName = "parent";
+        final String siblingName = "sibling";
+        final String path = "parent_Category";
+        final String invalidPath = "sibling_Category";
+        Category parent = categoryRepository.save(Category.builder().name(parentName).build());
+        Category category = categoryRepository.save(Category.builder().name(categoryName).parent(parent).build());
+        Category sibling = categoryRepository.save(Category.builder().name(siblingName).parent(parent).build());
+
+        //when
+        boolean isValid = categoryService.isValid(path);
+        boolean isInvalid = categoryService.isValid(invalidPath);
+        boolean noParentInPath = categoryService.isValid(siblingName);
+
+        //then
+        assertThat(isValid).isTrue();
+        assertThat(isInvalid).isFalse();
+        assertThat(noParentInPath).isFalse();
     }
 }
