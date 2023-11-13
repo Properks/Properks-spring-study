@@ -4,6 +4,7 @@ import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.dto.article_view.CategoryResponse;
 import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.repository.CategoryRepository;
+import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ public class CategoryService {
      * @return The Created category.
      */
     public Category createCategory(CreateCategoryRequest request) {
+        if (!isValid(TreeUtilForCategory.getPathWithoutLeaf(request.getPath()))) {return null;}
+
         Category parent = request.getParent() != null ? categoryRepository.findByName(request.getParent()).
                 orElseThrow(() -> new IllegalArgumentException("Invalid parent category in request")) : null;
         // When Cannot find, Throw Exception except that parent is null.
@@ -68,11 +71,16 @@ public class CategoryService {
      * @return The boolean, true: valid, false: category doesn't exist or have next category as child.
      */
     public boolean isValid(String path) {
+        if (path == null) {return true;}
+
         String[] paths = path.split("_");
+
         if (paths.length == 1) { // when root node
-            Category category = findCategory(paths[0]);
+            Category category = categoryRepository.findByName(path).
+                    orElseThrow(() -> new IllegalArgumentException("Invalid parent category in request"));
             return category.getParent() == null;
         }
+
         for (int i = 0; i < paths.length - 1; i++) { // when child node
             if (isExist(paths[i]) && isExist(paths[i + 1])) {
                 Category baseCategory = findCategory(paths[i]);

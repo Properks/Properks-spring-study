@@ -38,7 +38,7 @@ class CategoryServiceTest {
         //given
         final String categoryName = "CategoryName";
         final String parentName = null;
-        final CreateCategoryRequest request = new CreateCategoryRequest(categoryName, parentName);
+        final CreateCategoryRequest request = new CreateCategoryRequest(categoryName);
 
         //when
         Category savedCategory = categoryService.createCategory(request);
@@ -62,8 +62,8 @@ class CategoryServiceTest {
                 .build());
 
         //when
-        Category savedCategory = categoryService.createCategory(new CreateCategoryRequest(categoryName, parentName));
-        Category secondCategory = categoryService.createCategory(new CreateCategoryRequest(secondName, parentName));
+        Category savedCategory = categoryService.createCategory(new CreateCategoryRequest(parentName + "_" + categoryName));
+        Category secondCategory = categoryService.createCategory(new CreateCategoryRequest(parentName + "_" + secondName));
 
         //then
         Category parentCategory = categoryRepository.findByName(parentName).get();
@@ -88,7 +88,7 @@ class CategoryServiceTest {
         final String categoryName = "category";
         final String invalidParentName = "invalid";
         final String exceptionMessage = "Invalid parent category in request";
-        final CreateCategoryRequest request = new CreateCategoryRequest(categoryName, invalidParentName);
+        final CreateCategoryRequest request = new CreateCategoryRequest(invalidParentName + "_" + categoryName);
 
         //when
         Exception exception

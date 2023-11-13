@@ -40,4 +40,19 @@ public class TreeUtilForCategory {
         String[] paths = path.split("_");
         return (paths.length - 2 < 0) ? null : paths[paths.length - 2];
     }
+
+    public static String getPathWithoutLeaf(String path) {
+        if (path == null) {return null;}
+
+        String[] paths = path.split("_");
+        if (paths.length == 1) {return null;}
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(paths[0]);
+        for (int i = 1; i < paths.length - 1; i++) {
+            builder.append("_");
+            builder.append(paths[i]);
+        }
+        return builder.toString();
+    }
 }
