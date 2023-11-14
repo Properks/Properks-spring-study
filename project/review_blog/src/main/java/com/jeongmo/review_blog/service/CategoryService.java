@@ -6,6 +6,7 @@ import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,16 +22,13 @@ public class CategoryService {
      * @param request The name of Category.
      * @return The Created category.
      */
-    public Category createCategory(CreateCategoryRequest request) {
-        if (!isValid(TreeUtilForCategory.getPathWithoutLeaf(request.getPath()))) {return null;}
+    public Category createCategory(@NotNull CreateCategoryRequest request) {
+        if (!isValid(TreeUtilForCategory.getPathWithoutLeaf(request.getPathOfCategory()))) {return null;}
 
-        Category parent = request.getParent() != null ? categoryRepository.findByName(request.getParent()).
+        Category parent = (request.parent() != null) ? categoryRepository.findByName(request.parent()).
                 orElseThrow(() -> new IllegalArgumentException("Invalid parent category in request")) : null;
         // When Cannot find, Throw Exception except that parent is null.
-        Category child = categoryRepository.save(Category.builder()
-                .name(request.getName())
-                .parent(parent)
-                .build());
+        Category child = categoryRepository.save(request.toEntity(parent));
         if (parent != null) {
             parent.addChild(child);
         }

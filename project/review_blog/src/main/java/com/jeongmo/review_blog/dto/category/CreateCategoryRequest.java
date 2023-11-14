@@ -1,19 +1,27 @@
 package com.jeongmo.review_blog.dto.category;
 
+import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
+@Getter
 public class CreateCategoryRequest {
-    private String path;
+    private String pathOfCategory;
 
-    public String getParent() {
-        return TreeUtilForCategory.getParentOfLeaf(this.path);
+    public String parent() {
+        return TreeUtilForCategory.getParentOfLeaf(this.pathOfCategory);
     }
 
-    public String getName() {
-        return TreeUtilForCategory.getLeafCategory(this.path);
+    public String name() {
+        return TreeUtilForCategory.getLeafCategory(this.pathOfCategory);
+    }
+
+    public Category toEntity(Category parent) {
+        return Category.builder()
+                .name(name())
+                .parent(parent)
+                .build();
     }
 }

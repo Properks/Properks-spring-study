@@ -72,7 +72,8 @@ if (createButton) {
             },
             body: JSON.stringify({
                 title: title,
-                content: content
+                content: content,
+                category: "article" //FIXME: fix it to select category
             })
         })
             .then(() => {
@@ -139,6 +140,29 @@ if (articlesPerPage) {
     })
 }
 
+// Add Category with btn
+const categoryButton = document.getElementById("create-sidebar-btn");
+if (categoryButton) {
+    categoryButton.addEventListener('click', event => {
+        let inputPath = prompt("Enter a category ex)article/article1/article2");
+        let path = inputPath.replace(/\//g, '_');
+        // fetch('/api/category', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         pathOfCategory: path
+        //     })
+        // })
+        fetch('/api/category/' + path, {method: 'POST'})
+            .then(response => {
+                alert("Success to create category");
+                location.replace('/home');
+            })
+
+    })
+}
 
 // Error message
 // const errorMessage = document.getElementById('error-message').value;

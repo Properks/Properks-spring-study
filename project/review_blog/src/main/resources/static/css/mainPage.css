@@ -12,4 +12,5 @@
 .article-title, .article-list-container {margin:5px; width: 90%;}
 .article-container {padding:5px; width:80%; border: 1px solid black; background: linear-gradient(to right bottom, white, rgb(190, 190, 190));}
 
-#create-article-btn {float:right;}
+.sidebar-container, .article-container {position:relative;}
+#create-article-btn, #create-sidebar-btn {margin:5px; position:absolute; bottom:0; right:0;}

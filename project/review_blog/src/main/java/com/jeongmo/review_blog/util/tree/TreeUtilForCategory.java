@@ -32,11 +32,13 @@ public class TreeUtilForCategory {
      * @return The name of category. Ex: child3
      */
     public static String getLeafCategory(String path) {
+        if (path == null) {return null;}
         String[] paths = path.split("_");
         return paths[paths.length - 1];
     }
 
     public static String getParentOfLeaf(String path) {
+        if (path == null) {return null;}
         String[] paths = path.split("_");
         return (paths.length - 2 < 0) ? null : paths[paths.length - 2];
     }
