@@ -61,7 +61,7 @@ class CategoryApiControllerTest {
 
         //then
         result
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isCreated());
 
         List<Category> list = categoryRepository.findAll();
         assertThat(list).hasSize(1);

@@ -1,7 +1,6 @@
 package com.jeongmo.review_blog.dto.category;
 
 import com.jeongmo.review_blog.domain.Category;
-import com.jeongmo.review_blog.dto.article_api.CreateArticleRequest;
 import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
