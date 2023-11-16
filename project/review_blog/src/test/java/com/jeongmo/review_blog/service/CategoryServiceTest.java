@@ -1,21 +1,18 @@
 package com.jeongmo.review_blog.service;
 
 import com.jeongmo.review_blog.domain.Category;
-import com.jeongmo.review_blog.dto.article_view.CategoryResponse;
+import com.jeongmo.review_blog.dto.category.CategoryResponse;
 import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.repository.CategoryRepository;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -158,7 +155,7 @@ class CategoryServiceTest {
                 .build());
 
         //when
-        List<CategoryResponse> list = categoryService.findAllCategory();
+        List<CategoryResponse> list = categoryService.findAllCategory().stream().map(CategoryResponse::new).toList();
 
         //then
         category = categoryRepository.findByName(categoryName).get();

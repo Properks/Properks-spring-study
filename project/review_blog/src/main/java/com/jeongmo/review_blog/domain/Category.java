@@ -25,7 +25,7 @@ public class Category implements Comparable<Category> {
     @Column(name = "name", unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Category> children = new ArrayList<>();
 
     @ManyToOne
@@ -50,11 +50,20 @@ public class Category implements Comparable<Category> {
         this.parent = parent;
     }
 
+    public Category update(String name) {
+        this.name = name;
+        return this;
+    }
+
     public void addChild(Category child) {
         this.children.add(child);
     }
 
     public void addArticle(Article article) {
         this.articles.add(article);
+    }
+
+    public void setParent(Category parent) {
+        this.parent = parent;
     }
 }

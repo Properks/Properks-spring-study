@@ -1,4 +1,4 @@
-package com.jeongmo.review_blog.dto.article_view;
+package com.jeongmo.review_blog.dto.category;
 
 import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;

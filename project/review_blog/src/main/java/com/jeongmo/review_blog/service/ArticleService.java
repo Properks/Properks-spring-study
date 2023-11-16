@@ -34,7 +34,9 @@ public class ArticleService {
 
         Category foundCategory;
 
-        if (categoryService.isValid(request.getCategory())) { // If it already exists, find it.
+        if (categoryService.isValid(request.getCategory())
+                && categoryService.isExist(TreeUtilForCategory.getLeafCategory(request.getCategory()))) {
+            // If it already exists, find it.
              foundCategory = categoryService.findCategory(TreeUtilForCategory.getLeafCategory(request.getCategory()));
         } else {
             throw new IllegalArgumentException("Invalid category path");
