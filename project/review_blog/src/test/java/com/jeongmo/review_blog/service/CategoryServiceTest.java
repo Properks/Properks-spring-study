@@ -3,6 +3,7 @@ package com.jeongmo.review_blog.service;
 import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.dto.category.CategoryResponse;
 import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
+import com.jeongmo.review_blog.dto.category.UpdateCategoryRequest;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -227,5 +228,86 @@ class CategoryServiceTest {
         assertThat(isValid).isTrue();
         assertThat(isInvalid).isFalse();
         assertThat(noParentInPath).isFalse();
+    }
+
+    @Test
+    @DisplayName("deleteCategory(): Success to delete category")
+    void deleteCategory() {
+        //given
+        final String categoryName = "Category";
+        Category savedCategory = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+
+        //when
+        categoryService.deleteCategory(categoryName);
+
+        //then
+        assertThat(categoryRepository.findAll()).isEmpty();
+
+    }
+
+    @Test
+    @DisplayName("deleteCategoryWithChildren(): Fail to delete Category because of children")
+    void deleteCategoryWithChildren() {
+        //given
+        final String categoryName = "Category";
+        final String childName = "Child Category";
+        final String exceptionMessage = "Fail to delete because " + categoryName +" has children";
+        Category category = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+        Category child = categoryRepository.save(Category.builder()
+                .name(childName)
+                .parent(category)
+                .build());
+
+        //when
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> categoryService.deleteCategory(categoryName));
+
+        //then
+        assertThat(exception.getMessage()).isEqualTo(exceptionMessage);
+    }
+
+    @Test
+    @DisplayName("updateCategoryOnlyName(): Update only name of category")
+    void updateCategoryOnlyName() {
+        //given
+        final String categoryName = "Category";
+        final String updatedNameOfCategory = "Category1";
+        final String categoryPath = "Category";
+        final String newCategoryPath = "Category1";
+
+        final String childName = "Child";
+        final String updatedNameOfChild= "Child1";
+        final String childPath = "Category1_Child"; // After updated category
+        final String newChildPath = "Category1_Child1";
+
+        final UpdateCategoryRequest categoryRequest = new UpdateCategoryRequest(categoryPath, newCategoryPath);
+        final UpdateCategoryRequest childRequest = new UpdateCategoryRequest(childPath, newChildPath);
+
+        Category parent = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+        Category child = categoryRepository.save(Category.builder()
+                .name(childName)
+                .parent(parent)
+                .build());
+
+        //when
+        categoryService.updateCategory(categoryRequest);
+        categoryService.updateCategory(childRequest);
+
+        //then
+        Category newCategory = categoryRepository.findByName(updatedNameOfCategory).get();
+        Category newChild = categoryRepository.findByName(updatedNameOfChild).get();
+
+        assertThat(newCategory.getId()).isEqualTo(parent.getId());
+        assertThat(newChild.getId()).isEqualTo(child.getId());
+
+        assertThat(newCategory.getChildren().get(0).getId()).isEqualTo(newChild.getId());
+        assertThat(newCategory.getChildren().get(0).getName()).isEqualTo(newChild.getName());
+
     }
 }

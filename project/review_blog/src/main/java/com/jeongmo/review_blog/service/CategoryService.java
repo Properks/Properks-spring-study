@@ -6,6 +6,7 @@ import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.dto.category.UpdateCategoryRequest;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class CategoryService {
      * @return The Created category.
      */
     public Category createCategory(@NotNull CreateCategoryRequest request) {
-        if (!isValid(request.getPathOfCategory())) {return null;}
+        if (!isValid(TreeUtilForCategory.getPathWithoutLeaf(request.getPathOfCategory()))) {return null;}
 
         Category parent = (request.parent() != null) ? categoryRepository.findByName(request.parent()).
                 orElseThrow(() -> new IllegalArgumentException("Invalid parent category in request")) : null;
@@ -52,9 +53,15 @@ public class CategoryService {
     }
 
     public void deleteCategory(String name) {
-        if (name == null || !isExist(name)) {return;} // when name is invalid
+        if (name == null || !isExist(name)) {throw new IllegalArgumentException("Invalid category");}
+        // when name is invalid
+
         Category foundCategory = findCategory(name);
+        if (!foundCategory.getChildren().isEmpty()) { // When Category has one or more child category
+            throw new IllegalArgumentException("Fail to delete because " + name +" has children");
+        }
         categoryRepository.deleteById(foundCategory.getId());
+
         // When i didn't use CascadeType
 //        if (foundCategory.getParent() == null) {
 //            categoryRepository.deleteById(foundCategory.getId());
@@ -65,25 +72,26 @@ public class CategoryService {
 //        }
     }
 
+    @Transactional
     public Category updateCategory(UpdateCategoryRequest request) {
         String originCategoryName = TreeUtilForCategory.getLeafCategory(request.getOriginPath());
         String newCategoryName = TreeUtilForCategory.getLeafCategory(request.getNewPath());
         if (!(isValid(request.getOriginPath())
-                && isValid(request.getNewPath())
+                && isValid(TreeUtilForCategory.getPathWithoutLeaf(request.getNewPath()))
                 && isExist(originCategoryName))) { // When Category path is invalid or Category doesn't exist
             return null;
         }
 
         Category foundCategory = findCategory(originCategoryName);
-        if (!foundCategory.getChildren().isEmpty()) { // When Category has one or more child category
-            return null;
-        }
+//        if (!foundCategory.getChildren().isEmpty()) { // When Category has one or more child category
+//            return null;
+//        }
 
         if (request.getOriginPath().equals(request.getNewPath())) {return foundCategory;} // Doesn't need to update
 
         // Do update
-        if (TreeUtilForCategory.getPathWithoutLeaf(request.getOriginPath())
-                .equals(TreeUtilForCategory.getPathWithoutLeaf(request.getNewPath()))) { // update only name
+        if (((TreeUtilForCategory.getPathWithoutLeaf(request.getOriginPath()) == null) && (TreeUtilForCategory.getPathWithoutLeaf(request.getNewPath()) == null))
+                || TreeUtilForCategory.getPathWithoutLeaf(request.getOriginPath()).equals(TreeUtilForCategory.getPathWithoutLeaf(request.getNewPath()))) { // update only name
             foundCategory.update(newCategoryName);
         }
         else if (originCategoryName.equals(newCategoryName)) { // update only path
@@ -115,13 +123,12 @@ public class CategoryService {
      * @return The boolean, true: valid, false: category doesn't exist or have next category as child.
      */
     public boolean isValid(String path) {
-        String pathWithoutLeaf = TreeUtilForCategory.getPathWithoutLeaf(path);
-        if (pathWithoutLeaf == null) {return true;}
+        if (path == null) {return true;}
 
-        String[] paths = pathWithoutLeaf.split("_");
+        String[] paths = path.split("_");
 
         if (paths.length == 1) { // when root node
-            Category category = categoryRepository.findByName(pathWithoutLeaf).
+            Category category = categoryRepository.findByName(path).
                     orElseThrow(() -> new IllegalArgumentException("Invalid parent category in request"));
             return category.getParent() == null;
         }
