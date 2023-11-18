@@ -310,4 +310,112 @@ class CategoryServiceTest {
         assertThat(newCategory.getChildren().get(0).getName()).isEqualTo(newChild.getName());
 
     }
+
+    @Test
+    @DisplayName("updateCategoryOnlyPath(): update only path")
+    void updateCategoryOnlyPath() {
+        //given
+        final String categoryName = "Category";
+
+        final String secondCategoryName = "Category2";
+
+        final String childName = "Child";
+        final String childPath = "Category_Child"; // After updated category
+        final String newChildPath = "Category2_Child";
+
+        Category parent = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+        categoryRepository.save(Category.builder()
+                .name(childName)
+                .parent(parent)
+                .build());
+        categoryRepository.save(Category.builder()
+                .name(secondCategoryName)
+                .build());
+
+        //when
+        categoryService.updateCategory(new UpdateCategoryRequest(childPath, newChildPath));
+
+        //then
+        Category updatedCategory = categoryRepository.findByName(childName).get();
+        Category newParentCategory = categoryRepository.findByName(secondCategoryName).get();
+        Category oldParentCategory = categoryRepository.findByName(categoryName).get();
+
+        assertThat(updatedCategory.getParent().getId()).isEqualTo(newParentCategory.getId());
+        assertThat(newParentCategory.getChildren().stream().map(Category::getId)).contains(updatedCategory.getId());
+        assertThat(oldParentCategory.getChildren()).isEmpty();
+
+    }
+
+    @Test
+    @DisplayName("updateCategoryBoth(): update name and path")
+    void updateCategoryBoth() {
+        //given
+        final String categoryName = "Category";
+
+        final String secondCategoryName = "Category2";
+
+        final String childName = "Child";
+        final String newChildName = "New Child";
+        final String originPath = "Category_Child";
+        final String newPath = "Category2_New Child";
+
+        Category parent = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+        categoryRepository.save(Category.builder()
+                .name(childName)
+                .parent(parent)
+                .build());
+        categoryRepository.save(Category.builder()
+                .name(secondCategoryName)
+                .build());
+
+        //when
+        categoryService.updateCategory(new UpdateCategoryRequest(originPath, newPath));
+
+        //then
+        Category updatedCategory = categoryRepository.findByName(newChildName).get();
+        Category newParentCategory = categoryRepository.findByName(secondCategoryName).get();
+        Category oldParentCategory = categoryRepository.findByName(categoryName).get();
+
+        assertThat(updatedCategory.getName()).isEqualTo(newChildName);
+        assertThat(newParentCategory.getChildren().get(0).getName()).isEqualTo(updatedCategory.getName());
+
+        assertThat(updatedCategory.getParent().getId()).isEqualTo(newParentCategory.getId()); // check path
+        assertThat(newParentCategory.getChildren().stream().map(Category::getId)).contains(updatedCategory.getId());
+        assertThat(oldParentCategory.getChildren()).isEmpty();
+
+    }
+
+    @Test
+    @DisplayName("updateInvalidPath(): Fail to update with invalid path")
+    void updateInvalidPath() {
+        //given
+        // Try to change child name
+        final String categoryName = "Category";
+        final String childName = "Child";
+        final String newPath = "Category_Child1";
+
+//      originPath = "Category_Child";
+        final String invalidOriginPath = "category_child";
+        final String notExistName = "Category_child"; // lowercase category name
+        Category parent = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+        categoryRepository.save(Category.builder()
+                .name(childName)
+                .parent(parent)
+                .build());
+
+        //when
+        Category result1 = categoryService.updateCategory(new UpdateCategoryRequest(invalidOriginPath, newPath));
+        Category result3 = categoryService.updateCategory(new UpdateCategoryRequest(notExistName, newPath));
+
+        //then
+        assertNull(result1);
+        assertNull(result3);
+
+    }
 }

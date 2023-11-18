@@ -30,11 +30,10 @@ public class CategoryService {
         Category parent = (request.parent() != null) ? categoryRepository.findByName(request.parent()).
                 orElseThrow(() -> new IllegalArgumentException("Invalid parent category in request")) : null;
         // When Cannot find, Throw Exception except that parent is null.
-        Category child = categoryRepository.save(request.toEntity(parent));
-        if (parent != null) {
-            parent.addChild(child);
-        }
-        return child;
+        return categoryRepository.save(request.toEntity(parent));
+//        if (parent != null) { // Doesn't need it because of CascadeType.ALL
+//            parent.addChild(child);
+//        }
     }
 
     /**
@@ -83,23 +82,24 @@ public class CategoryService {
         }
 
         Category foundCategory = findCategory(originCategoryName);
-//        if (!foundCategory.getChildren().isEmpty()) { // When Category has one or more child category
-//            return null;
-//        }
-
         if (request.getOriginPath().equals(request.getNewPath())) {return foundCategory;} // Doesn't need to update
 
         // Do update
         if (((TreeUtilForCategory.getPathWithoutLeaf(request.getOriginPath()) == null) && (TreeUtilForCategory.getPathWithoutLeaf(request.getNewPath()) == null))
                 || TreeUtilForCategory.getPathWithoutLeaf(request.getOriginPath()).equals(TreeUtilForCategory.getPathWithoutLeaf(request.getNewPath()))) { // update only name
             foundCategory.update(newCategoryName);
+            return foundCategory;
+        }
+
+        if (!foundCategory.getChildren().isEmpty()) { // When Category has one or more child category for updating path
+            return null;
         }
         else if (originCategoryName.equals(newCategoryName)) { // update only path
             foundCategory.setParent(findCategory(TreeUtilForCategory.getParentOfLeaf(request.getNewPath())));
         }
         else { // update all of them
-            categoryRepository.deleteById(foundCategory.getId());
-            createCategory(new CreateCategoryRequest(request.getNewPath()));
+            foundCategory.setParent(findCategory(TreeUtilForCategory.getParentOfLeaf(request.getNewPath())));
+            foundCategory.update(newCategoryName);
         }
         return foundCategory;
     }
