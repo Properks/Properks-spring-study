@@ -51,6 +51,11 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+    /**
+     * Delete category by name. If the category value is null or does not exist or has children, it cannot be deleted.
+     *
+     * @param  name The name of category which will be deleted.
+     */
     public void deleteCategory(String name) {
         if (name == null || !isExist(name)) {throw new IllegalArgumentException("Invalid category");}
         // when name is invalid
@@ -71,6 +76,12 @@ public class CategoryService {
 //        }
     }
 
+    /**
+     * Update category. The path must be valid for update and the category of originPath must exist. You should also not have children if you are rerouting.
+     *
+     * @param request The request which has originPath and newPath to update
+     * @return The updated category
+     */
     @Transactional
     public Category updateCategory(UpdateCategoryRequest request) {
         String originCategoryName = TreeUtilForCategory.getLeafCategory(request.getOriginPath());
