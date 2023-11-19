@@ -68,4 +68,22 @@ class CategoryApiControllerTest {
         assertThat(list.get(0).getName()).isEqualTo(requestPath);
 
     }
+
+    @Test
+    @DisplayName("getCategories(): Get all categories")
+    void getCategories() {
+
+    }
+
+    void getCategory() {
+
+    }
+
+    void deleteCategory() {
+
+    }
+
+    void updateCategory() {
+
+    }
 }

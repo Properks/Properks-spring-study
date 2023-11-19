@@ -140,8 +140,8 @@ public class CategoryService {
 
         if (paths.length == 1) { // when root node
             Category category = categoryRepository.findByName(path).
-                    orElseThrow(() -> new IllegalArgumentException("Invalid parent category in request"));
-            return category.getParent() == null;
+                    orElse(null);
+            return category != null && category.getParent() == null;
         }
 
         for (int i = 0; i < paths.length - 1; i++) { // when child node

@@ -89,12 +89,10 @@ class CategoryServiceTest {
         final CreateCategoryRequest request = new CreateCategoryRequest(invalidParentName + "_" + categoryName);
 
         //when
-        Exception exception
-        = assertThrows(IllegalArgumentException.class, () -> categoryService.createCategory(request));
+        categoryService.createCategory(request);
 
         //then
         Category foundCategory = categoryRepository.findByName(categoryName).orElse(null);
-        assertThat(exception.getMessage()).isEqualTo(exceptionMessage);
         assertThat(foundCategory).isNull();
 
     }
@@ -396,11 +394,13 @@ class CategoryServiceTest {
         // Try to change child name
         final String categoryName = "Category";
         final String childName = "Child";
+        final String originPath = "Category_Child";
         final String newPath = "Category_Child1";
 
 //      originPath = "Category_Child";
         final String invalidOriginPath = "category_child";
         final String notExistName = "Category_child"; // lowercase category name
+        final String invalidNewPath = "category_child";
         Category parent = categoryRepository.save(Category.builder()
                 .name(categoryName)
                 .build());
@@ -411,11 +411,24 @@ class CategoryServiceTest {
 
         //when
         Category result1 = categoryService.updateCategory(new UpdateCategoryRequest(invalidOriginPath, newPath));
-        Category result3 = categoryService.updateCategory(new UpdateCategoryRequest(notExistName, newPath));
+        Category result2 = categoryService.updateCategory(new UpdateCategoryRequest(notExistName, newPath));
+        Category result3 = categoryService.updateCategory(new UpdateCategoryRequest(originPath, invalidNewPath));
 
         //then
+        Category parentCategory = categoryRepository.findByName(categoryName).get();
+        Category childCategory = categoryRepository.findByName(childName).get();
+
+        List<Category> children = parentCategory.getChildren();
+
         assertNull(result1);
+        assertNull(result2);
         assertNull(result3);
+
+        assertThat(parentCategory.getName()).isEqualTo(categoryName);
+        assertThat(children).hasSize(1);
+        assertThat(children.stream().map(Category::getId)).contains(childCategory.getId());
+        assertThat(childCategory.getName()).isEqualTo(childName);
+        assertThat(childCategory.getParent().getId()).isEqualTo(parentCategory.getId());
 
     }
 }

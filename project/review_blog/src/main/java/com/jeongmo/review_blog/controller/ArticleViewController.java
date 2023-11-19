@@ -3,6 +3,7 @@ package com.jeongmo.review_blog.controller;
 import com.jeongmo.review_blog.domain.Article;
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.article_view.ArticleViewResponse;
+import com.jeongmo.review_blog.dto.category.CategoryResponse;
 import com.jeongmo.review_blog.service.ArticleService;
 import com.jeongmo.review_blog.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -97,6 +98,10 @@ public class ArticleViewController {
     }
 
     private void addAllCategory(Model model) {
-        model.addAttribute("categories", categoryService.findAllCategory());
+        model.addAttribute("categories",
+                categoryService.findAllCategory()
+                        .stream()
+                        .map(CategoryResponse::new)
+                        .toList());
     }
 }
