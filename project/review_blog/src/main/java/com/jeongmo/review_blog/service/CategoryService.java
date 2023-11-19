@@ -1,7 +1,6 @@
 package com.jeongmo.review_blog.service;
 
 import com.jeongmo.review_blog.domain.Category;
-import com.jeongmo.review_blog.dto.category.CategoryResponse;
 import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.dto.category.UpdateCategoryRequest;
 import com.jeongmo.review_blog.repository.CategoryRepository;
@@ -11,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -48,7 +48,10 @@ public class CategoryService {
     }
 
     public List<Category> findAllCategory() {
-        return categoryRepository.findAll();
+        List<Category> roots = categoryRepository.findRootCategories();
+        roots.sort(Category::compareTo);
+        List<Category> sortedCategories = new ArrayList<>();
+        return addChildrenRecursive(sortedCategories, roots);
     }
 
     /**
@@ -158,5 +161,15 @@ public class CategoryService {
             }
         }
         return true;
+    }
+
+    private List<Category> addChildrenRecursive(List<Category> list, List<Category> children) {
+        // Recursively sort the children's children
+        for (Category child : children) {
+            list.add(child);
+            addChildrenRecursive(list, child.getChildren());
+        }
+
+        return list; // Return the sorted list
     }
 }
