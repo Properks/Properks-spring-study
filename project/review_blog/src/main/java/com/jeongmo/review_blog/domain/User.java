@@ -1,5 +1,6 @@
 package com.jeongmo.review_blog.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -46,6 +46,7 @@ public class User implements UserDetails{
      * The articles which user has written
      */
     @OneToMany(mappedBy = "author")
+    @JsonIgnore
     private List<Article> articles;
 
     /**
@@ -79,6 +80,11 @@ public class User implements UserDetails{
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
     }
 
     @Override

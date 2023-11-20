@@ -6,12 +6,14 @@ import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * DTO To create Article
  *
  */
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class CreateArticleRequest {
     private String title;
