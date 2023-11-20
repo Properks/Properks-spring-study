@@ -94,11 +94,10 @@ class ArticleApiControllerTest {
 
 
         //when
-        MvcResult result = mockMvc.perform(post(url)
+        mockMvc.perform(post(url)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(requestBody))
-                .andExpect(status().isCreated())
-                .andReturn();
+                .andExpect(status().isCreated()).andReturn();
 
         //then
 
@@ -107,11 +106,6 @@ class ArticleApiControllerTest {
         assertThat(articleList).hasSize(1);
         assertThat(articleList.get(0).getTitle()).isEqualTo(request.getTitle());
         assertThat(articleList.get(0).getContent()).isEqualTo(request.getContent());
-
-        // Log request and response details
-        MockHttpServletResponse response = result.getResponse();
-        System.out.println("Response status: " + response.getStatus());
-        System.out.println("Response content: " + response.getContentAsString());
     }
 
     @DisplayName("getArticle() : Success to get an article")

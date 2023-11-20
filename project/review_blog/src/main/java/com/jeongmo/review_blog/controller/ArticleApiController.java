@@ -20,8 +20,8 @@ public class ArticleApiController {
 
     // POST
     @PostMapping("/api/article")
-    public ResponseEntity<Article> postArticle(@RequestBody CreateArticleRequest request) {
-        Article savedArticle = articleService.createArticle(request);
+    public ResponseEntity<FindArticleResponse> postArticle(@RequestBody CreateArticleRequest request) {
+        FindArticleResponse savedArticle = new FindArticleResponse(articleService.createArticle(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(savedArticle);
     }
 
