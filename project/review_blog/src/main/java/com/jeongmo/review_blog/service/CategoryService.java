@@ -5,7 +5,7 @@ import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.dto.category.UpdateCategoryRequest;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -47,6 +47,17 @@ public class CategoryService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid category"));
     }
 
+    /**
+     * Find All categories with recursive order
+     *
+     * @return
+     * if there are two parent nodes (parent1, parent2). parent1 has two child node (child1, child2) and parent2 has
+     * a child node (child3), Return is
+     * list = {parent1, child1, child2, parent2, child3}
+     *
+     */
+    @Transactional(readOnly = true)
+    // when I use readOnly = true, JPA recognizes that the entity is for inquiry purposes
     public List<Category> findAllCategory() {
         List<Category> roots = categoryRepository.findRootCategories();
         roots.sort(Category::compareTo);
@@ -163,6 +174,13 @@ public class CategoryService {
         return true;
     }
 
+    /**
+     * Make a list which is sorted with parent, child order
+     *
+     * @param list The empty list which you want to save
+     * @param children The list which contains all root node
+     * @return The sorted list
+     */
     private List<Category> addChildrenRecursive(List<Category> list, List<Category> children) {
         // Recursively sort the children's children
         for (Category child : children) {

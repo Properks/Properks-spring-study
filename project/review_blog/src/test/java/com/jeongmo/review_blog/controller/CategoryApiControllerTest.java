@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
+import com.jeongmo.review_blog.dto.category.UpdateCategoryRequest;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import com.jeongmo.review_blog.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,10 +25,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -180,11 +179,74 @@ class CategoryApiControllerTest {
 
     }
 
-    void deleteCategory() {
+    @Test
+    @DisplayName("deleteCategory(): Success to delete category")
+    void deleteCategory() throws Exception{
+        //given
+        final String url = "/api/category/{name}";
+        final String categoryName = "Category";
+        categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+
+        //when
+        ResultActions result = mockMvc.perform(delete(url, categoryName));
+
+        //then
+        List<Category> list = categoryRepository.findAll();
+
+        assertThat(list).isEmpty();
 
     }
 
-    void updateCategory() {
+    @Test
+    @DisplayName("updateCategory(): success to update Category")
+    void updateCategory() throws Exception{
+        //given
+        final String url = "/api/category";
+        final String categoryName = "category";
+        final String categoryName2 = "category2";
+
+        final String childName = "child";
+        final String newChildName = "new Child";
+
+        final String originalPath = "category_child";
+        final String newPath = "category2_new Child";
+
+        Category parent = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+        categoryRepository.save(Category.builder()
+                .name(childName)
+                .parent(parent)
+                .build());
+        categoryRepository.save(Category.builder()
+                .name(categoryName2)
+                .build());
+
+        String request = objectMapper.writeValueAsString(new UpdateCategoryRequest(originalPath, newPath));
+
+        //when
+        ResultActions result = mockMvc.perform(put(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(request));
+
+        //then
+        Category newParent = categoryRepository.findByName(categoryName2).get();
+        Category oldParent = categoryRepository.findByName(categoryName).get();
+        Category updatedCategory = categoryRepository.findByName(newChildName).get();
+        result
+                .andExpect(status().isOk());
+
+        // check updated Category
+        assertThat(updatedCategory.getName()).isEqualTo(newChildName);
+        assertThat(updatedCategory.getParent().getId()).isEqualTo(newParent.getId());
+
+        // check children of oldParent is empty
+        assertThat(oldParent.getChildren()).isEmpty();
+
+        // check updatedCategory is added in children of newParent
+        assertThat(newParent.getChildren().stream().map(Category::getId).toList()).contains(updatedCategory.getId());
 
     }
 }

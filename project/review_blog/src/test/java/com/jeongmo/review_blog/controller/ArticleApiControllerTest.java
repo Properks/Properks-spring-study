@@ -75,9 +75,6 @@ class ArticleApiControllerTest {
                 user.getPassword(), user.getAuthorities()));
     }
 
-    /**
-     * @// TODO: 2023/11/09 fix it 
-     */
     @Test
     @DisplayName("postArticle() : Success to create article")
     void postArticle() throws Exception{
