@@ -1,6 +1,5 @@
 package com.jeongmo.review_blog.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,7 +33,6 @@ public class Article {
      */
     @ManyToOne
     @JoinColumn(name = "author")
-    @JsonIgnore
     private User author;
 
     @ManyToOne

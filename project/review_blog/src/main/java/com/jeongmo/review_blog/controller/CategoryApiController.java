@@ -19,8 +19,8 @@ public class CategoryApiController {
     private final CategoryService categoryService;
 
     @PostMapping("/api/category")
-    public ResponseEntity<Category> createCategory(@RequestBody CreateCategoryRequest request) {
-        Category savedCategory = categoryService.createCategory(request);
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CreateCategoryRequest request) {
+        CategoryResponse savedCategory = new CategoryResponse(categoryService.createCategory(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
     }
 

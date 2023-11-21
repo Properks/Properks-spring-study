@@ -1,6 +1,5 @@
 package com.jeongmo.review_blog.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,7 +45,6 @@ public class User implements UserDetails{
      * The articles which user has written
      */
     @OneToMany(mappedBy = "author")
-    @JsonIgnore
     private List<Article> articles;
 
     /**
