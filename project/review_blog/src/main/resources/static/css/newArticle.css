@@ -1,7 +1,7 @@
 #new-article-container {margin: 5px; padding:10px; border: 1px solid black; border-radius: 1rem}
-#new-article-container label {float:left; width:80px;}
+#new-article-container label {float:left; width:80px; text-transform: capitalize;}
 #new-article-button-container button {float:right;}
-#new-article-content, #new-article-title {margin:5px; padding:5px; border-radius: 1rem; text-transform: initial;}
+#new-article-content, #new-article-title {margin:5px; padding:5px; border-radius: 1rem;}
 
 #new-article-title {width:200px;}
 #new-article-content {width:500px;}

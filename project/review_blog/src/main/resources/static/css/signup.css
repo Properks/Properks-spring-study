@@ -2,9 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,0,200");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,0,200");
 
-input {text-transform: initial;}
 body {min-height: 100vh; background: linear-gradient(to right, #54BCF5, #1142D7); display: flex; justify-content: center; align-items: center;}
-input {text-transform: initial;}
 
 .main-page-container {width:400px; padding:1rem; width:40%; height:100%;}
 .body-container {padding:10px; border: 1px solid black;  border-radius: 1rem; background-color: white;}
@@ -15,6 +13,6 @@ input {text-transform: initial;}
 #sign-up-form label {width:100px; float:left; text-transform: uppercase;}
 #sign-up-form input {margin:3px;}
 #sign-up-form button {width:100px;}
-#sign-up-form [id $= error-msg] {margin-left: 110px; display: none; font-size:12px; text-transform: initial;}
+#sign-up-form [id $= error-msg] {margin-left: 110px; display: none; font-size:12px;}
 
 #sign-up-invalid-img, #sign-up-valid-img {display:none;}
