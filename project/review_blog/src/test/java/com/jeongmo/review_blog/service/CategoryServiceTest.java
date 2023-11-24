@@ -431,4 +431,39 @@ class CategoryServiceTest {
         assertThat(childCategory.getParent().getId()).isEqualTo(parentCategory.getId());
 
     }
+
+    @Test
+    @DisplayName("getPath(): Success to get path")
+    void getPath() {
+        //given
+        final String parentName= "parent";
+        final String categoryName = "category";
+        final String childName= "child";
+
+        final String parentPath = "parent";
+        final String categoryPath = "parent_category";
+        final String childPath = "parent_category_child";
+
+        Category parent = categoryRepository.save(Category.builder().name(parentName).build());
+        Category category = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .parent(parent)
+                .build());
+        categoryRepository.save(Category.builder()
+                .name(childName)
+                .parent(category)
+                .build());
+
+        //when
+
+        String resultOfParent = categoryService.getPath(parentName);
+        String resultOfCategory= categoryService.getPath(categoryName);
+        String resultOfChild = categoryService.getPath(childName);
+
+        //then
+        assertThat(resultOfParent).isEqualTo(parentPath);
+        assertThat(resultOfCategory).isEqualTo(categoryPath);
+        assertThat(resultOfChild).isEqualTo(childPath);
+
+    }
 }

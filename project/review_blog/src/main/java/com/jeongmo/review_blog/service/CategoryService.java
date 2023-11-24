@@ -174,6 +174,18 @@ public class CategoryService {
         return true;
     }
 
+    @Transactional(readOnly = true)
+    public String getPath(String categoryName) {
+        if (!categoryRepository.existsByName(categoryName)) {return null;}
+        Category category = findCategory(categoryName);
+        StringBuilder path = new StringBuilder(category.getName());
+        while (category.getParent() != null) { // Root node is 0
+            path.insert(0, category.getParent().getName() + "_");
+            category = category.getParent();
+        }
+        return path.toString();
+    }
+
     /**
      * Make a list which is sorted with parent, child order
      *

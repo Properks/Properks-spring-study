@@ -8,9 +8,18 @@
 <body>
     <div id="new-article-container">
         <input type="hidden" id="new-article-id" th:value="${newArticle.id}">
-        <div class="new-article-text-container">
-            <label for="new-article-id">title: </label>
+        <div class="new-article-title-container">
+            <label for="new-article-title">title: </label>
             <input type="text" id="new-article-title" placeholder="title" th:value="${newArticle.title}" autofocus>
+        </div>
+        <div class="new-article-category-container">
+            <label for="new-article-category">category: </label>
+            <select name="category" id="new-article-category">
+                <option class="new-article-categories" th:if="${categories.size()} == 0">---</option>
+                <option class="new-article-categories"
+                        th:if="${categories}" th:each="category : ${categories}"
+                        th:value="${categoryStat.count}" th:text="${category.name}"></option>
+            </select>
         </div>
         <div class="new-article-text-container">
             <label for="new-article-content"> content: </label>

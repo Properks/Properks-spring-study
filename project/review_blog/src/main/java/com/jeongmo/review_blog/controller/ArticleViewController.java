@@ -71,6 +71,9 @@ public class ArticleViewController {
 
     @GetMapping("/new-article")
     public String newArticle(@RequestParam(required = false) Long id, Model model, Authentication authentication) {
+        // Set categories
+        addAllCategory(model);
+
         if (id == null) {
             model.addAttribute("newArticle", new ArticleViewResponse());
         } else {
