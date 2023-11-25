@@ -66,4 +66,14 @@ public class Category implements Comparable<Category> {
     public void setParent(Category parent) {
         this.parent = parent;
     }
+
+    public String getPath() {
+        Category category = this;
+        StringBuilder path = new StringBuilder(category.getName());
+        while (category.getParent() != null) {
+            path.insert(0, category.getParent().getName() + "_");
+            category = category.getParent();
+        }
+        return path.toString();
+    }
 }
