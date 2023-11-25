@@ -18,7 +18,7 @@
                 <option class="new-article-categories" th:if="${categories.size()} == 0">---</option>
                 <option class="new-article-categories"
                         th:if="${categories}" th:each="category : ${categories}"
-                        th:value="${categoryStat.count}" th:text="${category.name}"></option>
+                        th:value="${category.path}" th:text="${category.name}"></option>
             </select>
         </div>
         <div class="new-article-text-container">

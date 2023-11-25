@@ -64,6 +64,7 @@ if (createButton) {
     createButton.addEventListener('click', event => {
         let title = document.getElementById('new-article-title').value;
         let content = document.getElementById('new-article-content').value;
+        let category = document.getElementById('new-article-category').value;
 
         fetch('/api/article', {
             method: 'POST',
@@ -73,7 +74,7 @@ if (createButton) {
             body: JSON.stringify({
                 title: title,
                 content: content,
-                category: "article" //FIXME: fix it to select category
+                category: category
             })
         })
             .then(() => {
