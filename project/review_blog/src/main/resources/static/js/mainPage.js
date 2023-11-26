@@ -59,7 +59,6 @@ if (modifyButton) {
 const createButton = document.getElementById('new-article-create-btn');
 
 // Create article function in new article page
-// TODO:Have to implement author on body after implementing user
 if (createButton) {
     createButton.addEventListener('click', event => {
         let title = document.getElementById('new-article-title').value;
@@ -102,9 +101,9 @@ function isSameAuthor(nickname) {
 }
 
 // Change page
-const beforePage = document.getElementById('page-decrease');
-const afterPage = document.getElementById('page-increase');
-const totalPage = document.getElementById('total-page');
+const beforePage = document.getElementById('article-list-page-decrease');
+const afterPage = document.getElementById('article-list-page-increase');
+const totalPage = document.getElementById('article-list-total-page');
 const currentPage = document.querySelector('.current-page');
 const otherPage = document.querySelectorAll('.other-page')
 

@@ -63,6 +63,9 @@ public class ArticleViewController {
 
     @GetMapping("/article/{id}")
     public String viewArticle(Model model, @PathVariable Long id, Authentication authentication) {
+        // Set categories
+        addAllCategory(model);
+
         ArticleViewResponse response = new ArticleViewResponse(articleService.getArticle(id));
         checkAndAddLoginInfo(model, authentication);
         model.addAttribute("viewArticle", response);
