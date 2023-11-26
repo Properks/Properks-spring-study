@@ -174,6 +174,12 @@ public class CategoryService {
         return true;
     }
 
+    /**
+     * Get the path of category.
+     *
+     * @param categoryName The name of Category.
+     * @return The path of category
+     */
     @Transactional(readOnly = true)
     public String getPath(String categoryName) {
         return findCategory(categoryName).getPath();

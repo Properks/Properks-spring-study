@@ -92,10 +92,19 @@ public class ArticleViewController {
         return MAIN;
     }
 
+    /**
+     * Get Authentication.
+     *
+     * @return The Authentication (SecurityContextHolder.getContext().getAuthentication();)
+     */
     private Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+    /**
+     * Check and add authentication information to model
+     *
+     */
     private void checkAndAddLoginInfo(Model model, Authentication authentication) {
         if (authentication!= null && getAuthentication().isAuthenticated()) {
             User user = (User) getAuthentication().getPrincipal();
@@ -103,6 +112,9 @@ public class ArticleViewController {
         }
     }
 
+    /**
+     * Add all category to model.
+     */
     private void addAllCategory(Model model) {
         model.addAttribute("categories",
                 categoryService.findAllCategory()

@@ -1,6 +1,5 @@
 package com.jeongmo.review_blog.controller;
 
-import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.dto.category.CategoryResponse;
 import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.dto.category.UpdateCategoryRequest;

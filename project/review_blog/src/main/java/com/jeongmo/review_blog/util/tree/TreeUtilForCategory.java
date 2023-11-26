@@ -37,12 +37,24 @@ public class TreeUtilForCategory {
         return paths[paths.length - 1];
     }
 
+    /**
+     * Get the parent node of last node in path
+     *
+     * @param path The path of child node
+     * @return The parent node of last node in path
+     */
     public static String getParentOfLeaf(String path) {
         if (path == null) {return null;}
         String[] paths = path.split("_");
         return (paths.length - 2 < 0) ? null : paths[paths.length - 2];
     }
 
+    /**
+     * Remove last node in the path
+     *
+     * @param path The path that you want to remove last node
+     * @return The path removed last node
+     */
     public static String getPathWithoutLeaf(String path) {
         if (path == null) {return null;}
 

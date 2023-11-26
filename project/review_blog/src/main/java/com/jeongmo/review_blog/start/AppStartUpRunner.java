@@ -8,12 +8,10 @@ import com.jeongmo.review_blog.repository.ArticleRepository;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import com.jeongmo.review_blog.service.CategoryService;
 import com.jeongmo.review_blog.service.UserService;
-import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.awt.*;
 
 @Component
 public class AppStartUpRunner implements CommandLineRunner {

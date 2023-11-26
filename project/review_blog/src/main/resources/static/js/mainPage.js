@@ -5,7 +5,7 @@ const userNickname = (userInfo) ? userInfo.textContent.replace("Username: ", "")
 const deleteButton = document.getElementById('article-view-delete-article-btn');
 
 if (deleteButton) {
-    deleteButton.addEventListener('click', event => {
+    deleteButton.addEventListener('click', ()=> {
         if (isSameAuthor(userNickname)) {
             if (confirm('Delete this article?')) {
                 let articleId = document.getElementById('article-view-id').value;
@@ -22,7 +22,7 @@ if (deleteButton) {
 // check you can go to modify page
 const modifyButtonInArticleView = document.getElementById('article-view-modify-article-btn');
 if (modifyButtonInArticleView) {
-    modifyButtonInArticleView.addEventListener('click', event => {
+    modifyButtonInArticleView.addEventListener('click', ()=> {
         if(isSameAuthor(userNickname)) {
             let articleId = document.getElementById('article-view-id').value;
             location.replace('/new-article?id=' + articleId);
@@ -34,7 +34,7 @@ if (modifyButtonInArticleView) {
 const modifyButton = document.getElementById('new-article-modify-btn');
 
 if (modifyButton) {
-    modifyButton.addEventListener('click', event => {
+    modifyButton.addEventListener('click', ()=> {
         let articleId = document.getElementById('new-article-id').value;
         let articleTitle = document.getElementById('new-article-title').value;
         let articleContent = document.getElementById('new-article-content').value;
@@ -60,7 +60,7 @@ const createButton = document.getElementById('new-article-create-btn');
 
 // Create article function in new article page
 if (createButton) {
-    createButton.addEventListener('click', event => {
+    createButton.addEventListener('click', ()=> {
         let title = document.getElementById('new-article-title').value;
         let content = document.getElementById('new-article-content').value;
         let category = document.getElementById('new-article-category').value;
@@ -86,10 +86,10 @@ if (createButton) {
 // function that represent nickname with code
 if (userInfo) {
     const userOriginalNickname = userInfo.textContent;
-    userInfo.addEventListener('mouseover', event => {
+    userInfo.addEventListener('mouseover', ()=> {
         userInfo.textContent = 'Username: ' + userInfo.getAttribute('hover-text');
     })
-    userInfo.addEventListener('mouseout', event => {
+    userInfo.addEventListener('mouseout', ()=> {
         userInfo.textContent = userOriginalNickname;
     })
 }
@@ -108,20 +108,20 @@ const currentPage = document.querySelector('.current-page');
 const otherPage = document.querySelectorAll('.other-page')
 
 if (beforePage && currentPage.textContent !== '1') {
-    beforePage.addEventListener('click', event => {
+    beforePage.addEventListener('click', () => {
         location.replace('/home?page=' + (parseInt(currentPage.textContent) - 1));
     })
 }
 
 if (afterPage && currentPage.textContent !== totalPage.value) {
-    afterPage.addEventListener('click', event => {
+    afterPage.addEventListener('click', () => {
         location.replace('/home?page=' + (parseInt(currentPage.textContent) + 1));
     })
 }
 
 if (otherPage) {
     otherPage.forEach(element => {
-        element.addEventListener('click', event => {
+        element.addEventListener('click', () => {
             location.replace('home?page=' + element.textContent);
         })
     })
@@ -135,7 +135,7 @@ if (articlesPerPage) {
         articlesPerPage.value = sizeParameter;
     } else {articlesPerPage.value = 10;}
 
-    articlesPerPage.addEventListener('change', event => {
+    articlesPerPage.addEventListener('change', () => {
         location.replace("/home?page=" + currentPage.textContent + "&size=" + articlesPerPage.value);
     })
 }
@@ -143,7 +143,7 @@ if (articlesPerPage) {
 // Add Category with btn
 const categoryButton = document.getElementById("create-sidebar-btn");
 if (categoryButton) {
-    categoryButton.addEventListener('click', event => {
+    categoryButton.addEventListener('click', () => {
         let inputPath = prompt("Enter a category ex)article/article1/article2");
         let path = inputPath.replace(/\//g, '_');
         fetch('/api/category', {

@@ -1,4 +1,3 @@
-const submitButton = document.getElementById('sign-up-submit-btn');
 const allSignUpErrorMessage = document.querySelectorAll("[id $= error-msg]");
 function checkSignUpCondition(){
     let email = document.getElementById('sign-up-email').value;
@@ -36,7 +35,7 @@ function checkSignUpCondition(){
 
 const duplicateCheckButton = document.getElementById('duplicate-check-btn');
 
-duplicateCheckButton.addEventListener('click', event => {
+duplicateCheckButton.addEventListener('click', () => {
     let email = document.getElementById('sign-up-email').value;
 
     if (isValidEmail(email)) {

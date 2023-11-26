@@ -1,9 +1,6 @@
 package com.jeongmo.review_blog.config;
 
 import com.jeongmo.review_blog.service.CustomUserDetailService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +12,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,8 +20,6 @@ import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-
-import java.io.IOException;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
@@ -47,7 +41,7 @@ public class WebSecurityConfig {
         );
     }
 
-    // If i input @EnableWebMvc and didn't input WebMvcConfigurer(addResourceHandler), i can't get static resource
+    // If I input @EnableWebMvc and didn't input WebMvcConfigurer(addResourceHandler), I can't get static resource
 
     @Bean
     MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector intro) {
@@ -96,7 +90,7 @@ public class WebSecurityConfig {
         provider.setHideUserNotFoundExceptions(false);
         return provider;
     }
-    // Need setHidUserNotFoundException(false) to get UsernameNotFoundException. If i implement failureHandler
+    // Need setHidUserNotFoundException(false) to get UsernameNotFoundException. If I implement failureHandler
     // without it, UsernameNotFoundException throw new BadCredentialException.
 
     @Bean
@@ -106,24 +100,21 @@ public class WebSecurityConfig {
 
     @Bean
     AuthenticationFailureHandler failureHandler() {
-        return new AuthenticationFailureHandler() {
-            @Override
-            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-                String username = request.getParameter("username");
-                String errorMsg;
-                if (exception instanceof UsernameNotFoundException) { // when not found user
-                    errorMsg = username + " doesn't exist";
-                }
-                else if (exception instanceof BadCredentialsException) { // Incorrect password
-                    errorMsg = "Check your password";
-                }
-                else {
-                    errorMsg = "Unknown Error";
-                }
-
-                response.sendRedirect("/login?error=" + errorMsg);
-                // redirect URL contains error message to use error message in html and js
+        return (request, response, exception) -> { // onAuthenticationFailure
+            String username = request.getParameter("username");
+            String errorMsg;
+            if (exception instanceof UsernameNotFoundException) { // when not found user
+                errorMsg = username + " doesn't exist";
             }
+            else if (exception instanceof BadCredentialsException) { // Incorrect password
+                errorMsg = "Check your password";
+            }
+            else {
+                errorMsg = "Unknown Error";
+            }
+
+            response.sendRedirect("/login?error=" + errorMsg);
+            // redirect URL contains error message to use error message in html and js
         };
     }
 }
