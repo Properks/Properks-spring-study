@@ -38,9 +38,9 @@ public class AppStartUpRunner implements CommandLineRunner {
         saveUser("Author2@gmail.com", "author2pw", "Author2");
         saveUser("Author3@gmail.com", "author3pw", "Author3");
 
-        final String category = "article";
+        final String category = "Category";
         Category testCategory1 = saveCategory(null, category);
-        Category testCategory2 = saveCategory(category, "article2");
+        Category testCategory2 = saveCategory(category, "Category2");
 
 
         System.out.println(categoryService.findCategory(category).getChildren());

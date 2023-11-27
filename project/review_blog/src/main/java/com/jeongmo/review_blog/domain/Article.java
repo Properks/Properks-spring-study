@@ -32,11 +32,11 @@ public class Article {
      * The author will be User form with @ManyToOne
      */
     @ManyToOne
-    @JoinColumn(name = "author")
+    @JoinColumn(name = "author_id")
     private User author;
 
     @ManyToOne
-    @JoinColumn(name = "category")
+    @JoinColumn(name = "category_id")
     private Category category;
 
     /**
