@@ -40,6 +40,15 @@ public class ArticleApiController {
         return ResponseEntity.ok().body(foundArticles);
     }
 
+    @GetMapping("/api/articles/{categoryId}")
+    public ResponseEntity<List<FindArticleResponse>> getArticlesWithCategory(@PathVariable Long categoryId) {
+        List<FindArticleResponse> foundArticles = articleService.getArticlesByCategory(categoryId)
+                .stream()
+                .map(FindArticleResponse::new)
+                .toList();
+        return ResponseEntity.ok().body(foundArticles);
+    }
+
     //PUT
     @PutMapping("/api/article/{id}")
     public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody UpdateArticleRequest request) {

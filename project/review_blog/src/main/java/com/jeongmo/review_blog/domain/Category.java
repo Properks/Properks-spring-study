@@ -32,9 +32,6 @@ public class Category implements Comparable<Category> {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @OneToMany(mappedBy = "category")
-    private List<Article> articles = new ArrayList<>();
-
     @Override
     public int compareTo(@NotNull Category o) {
         return this.name.compareTo(o.getName());
@@ -53,14 +50,6 @@ public class Category implements Comparable<Category> {
     public Category update(String name) {
         this.name = name;
         return this;
-    }
-
-    public void addChild(Category child) {
-        this.children.add(child);
-    }
-
-    public void addArticle(Article article) {
-        this.articles.add(article);
     }
 
     public void setParent(Category parent) {

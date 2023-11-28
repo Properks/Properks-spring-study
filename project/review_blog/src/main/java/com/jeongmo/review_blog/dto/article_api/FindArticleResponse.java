@@ -1,7 +1,10 @@
 package com.jeongmo.review_blog.dto.article_api;
 
 import com.jeongmo.review_blog.domain.Article;
+import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.domain.User;
+import com.jeongmo.review_blog.dto.category.CategoryResponse;
+import com.jeongmo.review_blog.dto.user.UserResponse;
 import lombok.Getter;
 
 /**
@@ -11,7 +14,8 @@ import lombok.Getter;
 public class FindArticleResponse {
     private final String title;
     private final String content;
-    private final User author;
+    private final UserResponse author;
+    private final CategoryResponse category;
 
     /**
      * Constructor
@@ -21,6 +25,7 @@ public class FindArticleResponse {
     public FindArticleResponse(Article article) {
         this.title = article.getTitle();
         this.content = article.getContent();
-        this.author = article.getAuthor();
+        this.author = new UserResponse(article.getAuthor());
+        this.category = new CategoryResponse(article.getCategory());
     }
 }

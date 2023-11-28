@@ -6,7 +6,6 @@ import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.article_api.CreateArticleRequest;
 import com.jeongmo.review_blog.dto.article_api.UpdateArticleRequest;
 import com.jeongmo.review_blog.repository.ArticleRepository;
-import com.jeongmo.review_blog.repository.CategoryRepository;
 import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +62,10 @@ public class ArticleService {
      */
     public List<Article> getArticles() {
         return articleRepository.findAll();
+    }
+
+    public List<Article> getArticlesByCategory(Long id) {
+        return articleRepository.getArticleByCategory_Id(id);
     }
 
     /**
