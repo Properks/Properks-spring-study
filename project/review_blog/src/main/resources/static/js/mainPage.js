@@ -164,6 +164,18 @@ if (categoryButton) {
     })
 }
 
+//category select
+const sidebarElements = document.querySelectorAll(".sidebar");
+if (sidebarElements) {
+    for (const sidebarElement of sidebarElements) {
+        sidebarElement.addEventListener('click', () => {
+            let categoryId = sidebarElement.querySelector(".category-id").value;
+            location.replace("/home?size=" + articlesPerPage.value + "&categoryId=" +
+                categoryId)
+        })
+    }
+}
+
 // Error message
 // const errorMessage = document.getElementById('error-message').value;
 //

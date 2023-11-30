@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -37,15 +36,26 @@ public class ArticleViewController {
     @GetMapping("/home")
     public String mainPage(@RequestParam(required = false, defaultValue = "1") Integer page,
                            @RequestParam(required = false, defaultValue = "10") Integer size,
+                           @RequestParam(required = false) Long categoryId,
                            Model model,
                            Authentication authentication) {
         // Set categories
         addAllCategory(model);
 
         // Get articles
-        List<ArticleViewResponse> articles = new java.util.ArrayList<>(articleService.getArticles()
-                .stream().map(ArticleViewResponse::new)
-                .toList());
+        List<ArticleViewResponse> articles;
+        if (categoryId != null) {
+            articles = new ArrayList<>(articleService.getArticlesByCategory(categoryId)
+                    .stream()
+                    .map(ArticleViewResponse::new)
+                    .toList());
+        }
+        else {
+            articles = new ArrayList<>(articleService.getArticles()
+                    .stream()
+                    .map(ArticleViewResponse::new)
+                    .toList());
+        }
 
         checkAndAddLoginInfo(model, authentication);
 
