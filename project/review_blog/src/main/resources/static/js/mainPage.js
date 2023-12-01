@@ -176,6 +176,18 @@ if (sidebarElements) {
     }
 }
 
+//Show category in article list
+const categoryInUrl = new URLSearchParams(location.search).get('categoryId');
+const showCategoryInList = document.getElementById('show-selected-category');
+if (categoryInUrl) {
+    let categoryId =
+        Array.from(sidebarElements).map(item => item.querySelector('.category-id'))
+            .find(item => item.value === categoryInUrl)
+    showCategoryInList.textContent = 'Category: ' + categoryId.getAttribute('category-name');
+} else {
+    showCategoryInList.textContent = 'Category: All';
+}
+
 // Error message
 // const errorMessage = document.getElementById('error-message').value;
 //
