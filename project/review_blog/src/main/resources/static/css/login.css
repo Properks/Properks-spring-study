@@ -6,7 +6,7 @@ input {text-transform: initial;}
 .main-page-container {padding:1rem; width:40%; height:100%;}
 .body-container {padding:10px; border: 1px solid black;  border-radius: 1rem; background-color: white;}
 
-#login-form h4 {width: 100%; text-align: center;}
+#login-form h4 {width: 100%; text-align: center; text-transform: capitalize;}
 #login-form {position:relative;}
 #login-form label {width:100px; float:left; text-transform: uppercase;}
 #login-form input {margin:3px;}

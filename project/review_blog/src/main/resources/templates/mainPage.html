@@ -16,6 +16,7 @@
             <div class="top-header-wrap">
                 <div class="home-page-button"><a th:href="@{/home}">blog</a></div>
                 <div class="btn-container" th:if="${loginIn}">
+                    <div class="my-article-btn">my articles</div>
                     <div class="user-info-btn" th:text="|Username: ${loginIn.getNicknameWithoutCode()}|"
                     th:attr="hover-text=${loginIn.nickname}"></div>
                     <div class="logout-btn" th:onclick="|location.href='@{/logout}'|">logout</div>
