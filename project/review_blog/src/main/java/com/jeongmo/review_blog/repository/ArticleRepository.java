@@ -11,4 +11,6 @@ import java.util.List;
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     List<Article> getArticleByCategory_Id(Long id);
+
+    List<Article> getArticleByAuthor_Id(Long id);
 }

@@ -68,6 +68,16 @@ public class ArticleService {
         return articleRepository.getArticleByCategory_Id(id);
     }
 
+    public List<Article> getArticleByUser(String nickname) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (nickname.equals(user.getNickname())) {
+            return articleRepository.getArticleByAuthor_Id(user.getId());
+        }
+        else {
+            throw new IllegalArgumentException("Information of Nickname and Authentication is different");
+        }
+    }
+
     /**
      * Update article as new title and content
      *

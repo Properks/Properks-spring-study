@@ -26,7 +26,7 @@ public class ArticleViewController {
     private static final String MAIN = "mainPage";
 
     /**
-     * Homepage request mapping
+     * Homepage request mapping. (Article list page)
      *
      * @param page The page of home page
      * @param size The size of articles is shown on page
@@ -37,6 +37,7 @@ public class ArticleViewController {
     public String mainPage(@RequestParam(required = false, defaultValue = "1") Integer page,
                            @RequestParam(required = false, defaultValue = "10") Integer size,
                            @RequestParam(required = false) Long categoryId,
+                           @RequestParam(required = false) String user,
                            Model model,
                            Authentication authentication) {
         // Set categories
@@ -44,7 +45,19 @@ public class ArticleViewController {
 
         // Get articles
         List<ArticleViewResponse> articles;
-        if (categoryId != null) {
+        if (user != null){
+            articles = new ArrayList<>(articleService.getArticleByUser(user)
+                    .stream()
+                    .map(ArticleViewResponse::new)
+                    .toList());
+            if (categoryId != null) {
+                articles = new ArrayList<>(articles
+                        .stream()
+                        .filter(article -> article.getCategory().getId().equals(categoryId))
+                        .toList());
+            }
+        }
+        else if (categoryId != null) {
             articles = new ArrayList<>(articleService.getArticlesByCategory(categoryId)
                     .stream()
                     .map(ArticleViewResponse::new)
