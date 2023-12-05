@@ -102,10 +102,29 @@ class ArticleServiceTest {
     @Test
     void getArticle() {
         //given
+        final String categoryName = "Category";
+        final String title = "title";
+        final String content = "content";
+        Category category = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+        CreateArticleRequest create = new CreateArticleRequest(title, content, categoryName);
+        Long articleId = articleRepository.save(Article.builder()
+                .title(title)
+                .content(content)
+                .author(user)
+                .category(category)
+                .build()).getId();
 
         //when
+        Article foundArticle = articleService.getArticle(articleId);
 
         //then
+        assertThat(foundArticle.getTitle()).isEqualTo(title);
+        assertThat(foundArticle.getContent()).isEqualTo(content);
+        assertThat(foundArticle.getAuthor().getId()).isEqualTo(user.getId());
+        assertThat(foundArticle.getCategory().getId()).isEqualTo(category.getId());
+
     }
 
     @Test
