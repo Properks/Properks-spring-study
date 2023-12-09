@@ -215,10 +215,42 @@ class ArticleServiceTest {
     @Test
     void getArticleByUser() {
         //given
+        final String title1 = "title1";
+        final String content1 = "content1";
+        final String title2 = "title2";
+        final String content2 = "content2";
+        final String categoryName = "Category";
+        Category category = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+        articleRepository.save(Article.builder()
+                .title(title1)
+                .content(content1)
+                .author(user)
+                .category(category)
+                .build());
+        articleRepository.save(Article.builder()
+                .title(title2)
+                .content(content2)
+                .author(user)
+                .category(category)
+                .build());
 
         //when
+        List<Article> result = articleService.getArticleByUser(user.getNickname());
 
         //then
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getTitle()).isEqualTo(title1);
+        assertThat(result.get(0).getContent()).isEqualTo(content1);
+        assertThat(result.get(0).getAuthor().getId()).isEqualTo(user.getId());
+        assertThat(result.get(0).getCategory().getId()).isEqualTo(category.getId());
+
+
+        assertThat(result.get(1).getTitle()).isEqualTo(title2);
+        assertThat(result.get(1).getContent()).isEqualTo(content2);
+        assertThat(result.get(1).getAuthor().getId()).isEqualTo(user.getId());
+        assertThat(result.get(1).getCategory().getId()).isEqualTo(category.getId());
     }
 
     @Test
