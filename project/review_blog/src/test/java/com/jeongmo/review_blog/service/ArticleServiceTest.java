@@ -4,6 +4,7 @@ import com.jeongmo.review_blog.domain.Article;
 import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.article_api.CreateArticleRequest;
+import com.jeongmo.review_blog.dto.article_api.UpdateArticleRequest;
 import com.jeongmo.review_blog.repository.ArticleRepository;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import com.jeongmo.review_blog.repository.UserRepository;
@@ -256,10 +257,30 @@ class ArticleServiceTest {
     @Test
     void updateArticle() {
         //given
+        final String title1 = "title1";
+        final String content1 = "content1";
+        final String title2 = "title2";
+        final String content2 = "content2";
+        final String categoryName = "Category";
+        Category category = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+        Long articleId = articleRepository.save(Article.builder()
+                .title(title1)
+                .content(content1)
+                .author(user)
+                .category(category)
+                .build()).getId();
+        UpdateArticleRequest request = new UpdateArticleRequest(title2, content2);
 
         //when
+        Article result = articleService.updateArticle(articleId, request);
 
         //then
+        assertThat(result.getTitle()).isEqualTo(title2);
+        assertThat(result.getContent()).isEqualTo(content2);
+        assertThat(result.getAuthor().getId()).isEqualTo(user.getId());
+        assertThat(result.getCategory().getId()).isEqualTo(category.getId());
     }
 
     @Test
