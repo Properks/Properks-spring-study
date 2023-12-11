@@ -286,9 +286,26 @@ class ArticleServiceTest {
     @Test
     void deleteArticle() {
         //given
+        final String title1 = "title1";
+        final String content1 = "content1";
+        final String categoryName = "Category";
+        Category category = categoryRepository.save(Category.builder()
+                .name(categoryName)
+                .build());
+        Long articleId = articleRepository.save(Article.builder()
+                .title(title1)
+                .content(content1)
+                .author(user)
+                .category(category)
+                .build()).getId();
 
         //when
+        articleService.deleteArticle(articleId);
 
         //then
+        List<Article> list = articleRepository.findAll();
+
+        assertThat(list).isEmpty();
+
     }
 }
