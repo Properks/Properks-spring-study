@@ -19,4 +19,9 @@ public class UpdateArticleRequest {
      * The new content
      */
     private String content;
+
+    /**
+     * The new id of Category
+     */
+    private Long categoryId;
 }

@@ -48,6 +48,16 @@ public class CategoryService {
     }
 
     /**
+     * Find category with id
+     *
+     *
+     */
+    public Category findCategory(Long id) {
+        return categoryRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Not found category has " + id));
+    }
+
+    /**
      * Find All categories with recursive order
      *
      * @return

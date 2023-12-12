@@ -65,4 +65,17 @@ public class Article {
         this.title = title;
         this.content = content;
     }
+
+    /**
+     * The method to update article ( + category)
+     *
+     * @param title The title which you will update
+     * @param content The content which you will update
+     * @param category The category which you will update
+     */
+    public void update(String title, String content, Category category) {
+        this.title = title;
+        this.content = content;
+        this.category = category;
+    }
 }

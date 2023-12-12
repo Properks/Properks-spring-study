@@ -93,7 +93,13 @@ public class ArticleService {
     public Article updateArticle(Long id, UpdateArticleRequest request) {
         Article updatedArticle = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot found Article for updating"));
-        updatedArticle.update(request.getTitle(), request.getContent());
+        if (updatedArticle.getCategory().getId().equals(request.getCategoryId())) {
+            updatedArticle.update(request.getTitle(), request.getContent());
+        }
+        else {
+            Category newCategory = categoryService.findCategory(request.getCategoryId());
+            updatedArticle.update(request.getTitle(), request.getContent(), newCategory);
+        }
         return updatedArticle;
     }
 
