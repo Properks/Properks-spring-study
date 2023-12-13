@@ -261,17 +261,21 @@ class ArticleServiceTest {
         final String content1 = "content1";
         final String title2 = "title2";
         final String content2 = "content2";
-        final String categoryName = "Category";
-        Category category = categoryRepository.save(Category.builder()
-                .name(categoryName)
+        final String categoryName1 = "Category";
+        final String categoryName2 = "Category2";
+        Category category1 = categoryRepository.save(Category.builder()
+                .name(categoryName1)
+                .build());
+        Category category2 = categoryRepository.save(Category.builder()
+                .name(categoryName2)
                 .build());
         Long articleId = articleRepository.save(Article.builder()
                 .title(title1)
                 .content(content1)
                 .author(user)
-                .category(category)
+                .category(category1)
                 .build()).getId();
-        UpdateArticleRequest request = new UpdateArticleRequest(title2, content2);
+        UpdateArticleRequest request = new UpdateArticleRequest(title2, content2, category2.getId());
 
         //when
         Article result = articleService.updateArticle(articleId, request);
@@ -280,7 +284,8 @@ class ArticleServiceTest {
         assertThat(result.getTitle()).isEqualTo(title2);
         assertThat(result.getContent()).isEqualTo(content2);
         assertThat(result.getAuthor().getId()).isEqualTo(user.getId());
-        assertThat(result.getCategory().getId()).isEqualTo(category.getId());
+        assertThat(result.getCategory().getId()).isEqualTo(category2.getId());
+        assertThat(result.getCategory().getName()).isEqualTo(categoryName2);
     }
 
     @Test
