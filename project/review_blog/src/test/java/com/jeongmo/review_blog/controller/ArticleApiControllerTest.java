@@ -236,9 +236,18 @@ class ArticleApiControllerTest {
     void putArticle() throws Exception{
        //given
        final String url = "/api/article/{id}";
-       final Article savedArticle =
-               articleRepository.save(Article.builder().title("title").content("content").build());
-       final UpdateArticleRequest request = new UpdateArticleRequest("updatedTitle", "updatedContent");
+       final String categoryName = "Category1";
+       final Category category1  = categoryRepository.save(Category.builder()
+               .name(categoryName)
+               .build());
+       final String category2Name = "Category2";
+       final Category category2 = categoryRepository.save(Category.builder()
+               .name(category2Name)
+               .build());
+        final Article savedArticle =
+                articleRepository.save(Article.builder().title("title").content("content").category(category1).build());
+       final UpdateArticleRequest request =
+               new UpdateArticleRequest("updatedTitle", "updatedContent", category2.getId());
        final String requestBody = objectMapper.writeValueAsString(request);
 
        //when
@@ -253,6 +262,8 @@ class ArticleApiControllerTest {
 
         assertThat(updatedArticle.getTitle()).isEqualTo(request.getTitle());
         assertThat(updatedArticle.getContent()).isEqualTo(request.getContent());
+        assertThat(updatedArticle.getCategory().getId()).isEqualTo(category2.getId());
+        assertThat(updatedArticle.getCategory().getName()).isEqualTo(category2Name);
 
     }
 }
