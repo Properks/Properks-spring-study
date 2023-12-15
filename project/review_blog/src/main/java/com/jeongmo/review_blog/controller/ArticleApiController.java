@@ -49,6 +49,15 @@ public class ArticleApiController {
         return ResponseEntity.ok().body(foundArticles);
     }
 
+    @GetMapping("/api/articles/{nickname}")
+    public ResponseEntity<List<FindArticleResponse>> getArticlesByUser(@PathVariable String nickname) {
+        List<FindArticleResponse> foundArticle = articleService.getArticleByUser(nickname)
+                .stream()
+                .map(FindArticleResponse::new)
+                .toList();
+        return ResponseEntity.ok().body(foundArticle);
+    }
+
     //PUT
     @PutMapping("/api/article/{id}")
     public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody UpdateArticleRequest request) {
