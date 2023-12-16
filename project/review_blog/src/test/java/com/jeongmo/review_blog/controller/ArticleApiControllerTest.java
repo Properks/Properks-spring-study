@@ -167,7 +167,7 @@ class ArticleApiControllerTest {
     @DisplayName("getArticlesWithCategory(): Success to get articles which have specific category")
     void getArticlesWithCategory() throws Exception{
         //given
-        final String url = "/api/articles/{categoryId}";
+        final String url = "/api/articles/category?categoryId=";
         final String categoryName1 = "Category1";
         final String categoryName2 = "Category2";
         Category category1 = categoryRepository.save(Category.builder()
@@ -196,8 +196,8 @@ class ArticleApiControllerTest {
                 .build());
 
         //when
-        ResultActions result1 = mockMvc.perform(get(url, category1.getId()));
-        ResultActions result2 = mockMvc.perform(get(url, category2.getId()));
+        ResultActions result1 = mockMvc.perform(get(url + category1.getId()));
+        ResultActions result2 = mockMvc.perform(get(url + category2.getId()));
 
         //then
         result1
@@ -211,6 +211,50 @@ class ArticleApiControllerTest {
                 .andExpect(jsonPath("$.size()").value(1))
                 .andExpect(jsonPath("$[0].title").value(articleTitle2))
                 .andExpect(jsonPath("$[0].content").value(articleContent2));
+    }
+
+    @DisplayName("getArticlesByAuthor(): Success to get article by author")
+    @Test
+    void getArticlesByAuthor() throws Exception{
+        //given
+        final String url = "/api/articles/user?nickname=";
+        final String categoryName1 = "Category1";
+        final String categoryName2 = "Category2";
+        Category category1 = categoryRepository.save(Category.builder()
+                .name(categoryName1)
+                .build());
+        Category category2 = categoryRepository.save(Category.builder()
+                .name(categoryName2)
+                .build());
+
+        final String articleTitle1 = "Title1";
+        final String articleTitle2 = "Title2";
+        final String articleContent1 = "Content1";
+        final String articleContent2 = "Content2";
+
+        articleRepository.save(Article.builder()
+                .title(articleTitle1)
+                .content(articleContent1)
+                .author(user)
+                .category(category1)
+                .build());
+        articleRepository.save(Article.builder()
+                .title(articleTitle2)
+                .content(articleContent2)
+                .author(user)
+                .category(category2)
+                .build());
+
+        //when
+        ResultActions result1 = mockMvc.perform(get(url + user.getNicknameWithoutCode()));
+
+        //then
+        result1
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(2))
+                .andExpect(jsonPath("$[0].title").value(articleTitle1))
+                .andExpect(jsonPath("$[0].content").value(articleContent1));
+
     }
 
     @DisplayName("deleteArticle() : Success to delete article")

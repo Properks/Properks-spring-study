@@ -40,8 +40,8 @@ public class ArticleApiController {
         return ResponseEntity.ok().body(foundArticles);
     }
 
-    @GetMapping("/api/articles/{categoryId}")
-    public ResponseEntity<List<FindArticleResponse>> getArticlesWithCategory(@PathVariable Long categoryId) {
+    @GetMapping("/api/articles/category")
+    public ResponseEntity<List<FindArticleResponse>> getArticlesWithCategory(@RequestParam Long categoryId) {
         List<FindArticleResponse> foundArticles = articleService.getArticlesByCategory(categoryId)
                 .stream()
                 .map(FindArticleResponse::new)
@@ -49,8 +49,8 @@ public class ArticleApiController {
         return ResponseEntity.ok().body(foundArticles);
     }
 
-    @GetMapping("/api/articles/{nickname}")
-    public ResponseEntity<List<FindArticleResponse>> getArticlesByUser(@PathVariable String nickname) {
+    @GetMapping("/api/articles/user")
+    public ResponseEntity<List<FindArticleResponse>> getArticlesByUser(@RequestParam String nickname) {
         List<FindArticleResponse> foundArticle = articleService.getArticleByUser(nickname)
                 .stream()
                 .map(FindArticleResponse::new)
