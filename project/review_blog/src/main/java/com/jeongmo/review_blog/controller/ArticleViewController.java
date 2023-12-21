@@ -37,7 +37,7 @@ public class ArticleViewController {
     public String mainPage(@RequestParam(required = false, defaultValue = "1") Integer page,
                            @RequestParam(required = false, defaultValue = "10") Integer size,
                            @RequestParam(required = false) Long categoryId,
-                           @RequestParam(required = false) String user,
+                           @RequestParam(required = false) String nickname,
                            Model model,
                            Authentication authentication) {
         // Set categories
@@ -45,8 +45,8 @@ public class ArticleViewController {
 
         // Get articles
         List<ArticleViewResponse> articles;
-        if (user != null){
-            articles = new ArrayList<>(articleService.getArticleByUser(user)
+        if (nickname != null){
+            articles = new ArrayList<>(articleService.getArticleByUser(nickname)
                     .stream()
                     .map(ArticleViewResponse::new)
                     .toList());

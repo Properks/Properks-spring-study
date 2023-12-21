@@ -92,7 +92,12 @@ if (userInfo) {
     userInfo.addEventListener('mouseout', ()=> {
         userInfo.textContent = userOriginalNickname;
     })
+    //Get My article
+    userInfo.addEventListener('click', () => {
+        location.replace('/home?nickname=' + userInfo.getAttribute('hover-text').replace("#", "%23"));
+    })
 }
+
 
 // check nickname is same as author. return boolean
 function isSameAuthor(nickname) {

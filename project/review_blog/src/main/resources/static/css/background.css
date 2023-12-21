@@ -8,7 +8,6 @@ body {width:100%; margin: 0; padding: 0;}
 .btn-container {padding:5px; position:absolute; right:0; top: 0;}
 .btn-container [class $= btn]{margin-right:5px; padding:5px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; border:1px solid black;}
 .btn-container a {color: inherit; text-decoration: none;}
-.my-article-btn {float: left; text-transform: capitalize;}
 .login-btn {float:left; text-transform: capitalize;}
 .logout-btn, .sign-up-btn {text-transform: capitalize;}
 .user-info-btn {float: left; border:none;}
