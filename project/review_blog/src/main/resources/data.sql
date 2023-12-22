@@ -1,3 +1,28 @@
+CREATE TABLE IF NOT EXISTS users (
+                                     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                     email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255),
+    nickname VARCHAR(255) UNIQUE,
+    -- Other columns may be added based on the actual requirements
+    );
+CREATE TABLE IF NOT EXISTS category (
+                                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                        name VARCHAR(255) UNIQUE,
+    parent_id BIGINT,
+    FOREIGN KEY (parent_id) REFERENCES category (id)
+    );
+CREATE TABLE IF NOT EXISTS article (
+                                       id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                       title VARCHAR(255),
+    content TEXT,
+    author_id BIGINT,
+    category_id BIGINT,
+    FOREIGN KEY (author_id) REFERENCES user (id),
+    FOREIGN KEY (category_id) REFERENCES category (id)
+    );
+
+
+
 ALTER TABLE article ALTER COLUMN content CLOB; -- Data type of content in article is changed from VARCHAR to text
 --
 -- CREATE PROCEDURE INSERT_USER(IN userEmail VARCHAR(255), IN userPassword VARCHAR(255), IN userNickname VARCHAR(255))

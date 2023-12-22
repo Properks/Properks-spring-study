@@ -139,10 +139,12 @@ public class ArticleViewController {
      * Add all category to model.
      */
     private void addAllCategory(Model model) {
-        model.addAttribute("categories",
-                categoryService.findAllCategory()
-                        .stream()
-                        .map(CategoryResponse::new)
-                        .toList());
+        if (!categoryService.isEmpty()) {
+            model.addAttribute("categories",
+                    categoryService.findAllCategory()
+                            .stream()
+                            .map(CategoryResponse::new)
+                            .toList());
+        }
     }
 }

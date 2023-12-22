@@ -149,6 +149,10 @@ public class CategoryService {
         return categoryRepository.existsByName(name);
     }
 
+    public boolean isEmpty() {
+        return categoryRepository.count() == 0;
+    }
+
     /**
      * Check whether path is valid or not except child. Split path to category names and check ith category has (i +
      * 1)th category
