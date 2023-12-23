@@ -30,7 +30,8 @@ dependencies {
     implementation 'org.jetbrains:annotations:24.0.0'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
+//	runtimeOnly 'com.h2database:h2'
+	implementation 'mysql:mysql-connector-java:8.0.23' // 사용 중인 MySQL 버전에 따라 버전을 조정
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'

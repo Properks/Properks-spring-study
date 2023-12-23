@@ -34,7 +34,7 @@ public class WebSecurityConfig {
     @Bean
     WebSecurityCustomizer configure() {
         return (web -> web.ignoring()
-                .requestMatchers(toH2Console())
+//                .requestMatchers(toH2Console()) Change to my sql
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/css/**")) // No "/static/**",
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/img/**"))
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/js/**"))
