@@ -27,6 +27,16 @@ public class UserService {
                 .build());
     }
 
+
+    /**
+     * Delete user with id
+     *
+     * @param id The id of user who will be deleted.
+     */
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
+
     /**
      * Find user with Email
      *
@@ -61,7 +71,6 @@ public class UserService {
         while(isDuplicatedNickname(newNickname)) {
             newNickname = nickname + "#" + String.format("%04d", ++code % 10000);
         }
-        // FIXME: When 10000 same nickname. doesn't have code
         return newNickname;
     }
 

@@ -1,5 +1,6 @@
 package com.jeongmo.review_blog.controller;
 
+import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.user.AddUserRequest;
 import com.jeongmo.review_blog.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +32,21 @@ public class UserApiController {
         SecurityContextLogoutHandler handler = new SecurityContextLogoutHandler();
         handler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
         return "redirect:/login";
+    }
+
+    @DeleteMapping("/user/{userId}")
+    public ResponseEntity<Void> deleteAccount(HttpServletRequest request,
+    HttpServletResponse response, @PathVariable Long userId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId().equals(userId)) {
+            //logout
+            SecurityContextLogoutHandler handler = new SecurityContextLogoutHandler();
+            handler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+            //delete account
+            userService.delete(userId);
+        }
+        // redirect in frontend.
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/api/email/{email}")

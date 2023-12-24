@@ -4,6 +4,7 @@ import com.jeongmo.review_blog.domain.Article;
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.article_view.ArticleViewResponse;
 import com.jeongmo.review_blog.dto.category.CategoryResponse;
+import com.jeongmo.review_blog.dto.user.UserResponse;
 import com.jeongmo.review_blog.service.ArticleService;
 import com.jeongmo.review_blog.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -131,7 +132,7 @@ public class ArticleViewController {
     private void checkAndAddLoginInfo(Model model, Authentication authentication) {
         if (authentication!= null && getAuthentication().isAuthenticated()) {
             User user = (User) getAuthentication().getPrincipal();
-            model.addAttribute("loginIn", user);
+            model.addAttribute("loginIn", new UserResponse(user));
         }
     }
 
