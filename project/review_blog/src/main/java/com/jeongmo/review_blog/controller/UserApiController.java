@@ -2,6 +2,7 @@ package com.jeongmo.review_blog.controller;
 
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.user.AddUserRequest;
+import com.jeongmo.review_blog.service.ArticleService;
 import com.jeongmo.review_blog.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserApiController {
 
     private final UserService userService;
+    private final ArticleService articleService;
 
     @PostMapping("/user")
     public String signup(@RequestParam("email") String email, @RequestParam("password") String password,
@@ -39,6 +41,7 @@ public class UserApiController {
     HttpServletResponse response, @PathVariable Long userId) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId().equals(userId)) {
+            articleService.deleteArticlesByAuthorId(user.getId());
             //logout
             SecurityContextLogoutHandler handler = new SecurityContextLogoutHandler();
             handler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());

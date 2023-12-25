@@ -62,17 +62,18 @@ class UserApiControllerTest {
         //given
         final String url = "/user/{userId}";
         Category category = categoryRepository.save(Category.builder().name("Category").build());
-//        articleRepository.save(Article.builder()
-//                .title("title")
-//                .content("content")
-//                .author(user)
-//                .category(category)
-//                .build());
+        articleRepository.save(Article.builder()
+                .title("title")
+                .content("content")
+                .author(user)
+                .category(category)
+                .build());
 
         //when
         mvc.perform(delete(url, user.getId()));
 
         //then
+        assertThat(articleRepository.findAll()).isEmpty();
         assertThat(userRepository.findAll()).isEmpty();
     }
 }

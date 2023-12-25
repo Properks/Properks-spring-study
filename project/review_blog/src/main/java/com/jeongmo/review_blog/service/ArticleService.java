@@ -116,4 +116,13 @@ public class ArticleService {
             throw new IllegalArgumentException("Cannot Found");
         }
     }
+
+    /**
+     * Delete Article by Id
+     *
+     * @param id The id of Author
+     */
+    public void deleteArticlesByAuthorId(Long id) {
+        articleRepository.deleteById(id);
+    }
 }
