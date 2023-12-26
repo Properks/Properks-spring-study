@@ -7,6 +7,7 @@ import com.jeongmo.review_blog.dto.category.CategoryResponse;
 import com.jeongmo.review_blog.dto.user.UserResponse;
 import com.jeongmo.review_blog.service.ArticleService;
 import com.jeongmo.review_blog.service.CategoryService;
+import com.jeongmo.review_blog.util.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,8 @@ public class ArticleViewController {
 
     private final ArticleService articleService;
     private final CategoryService categoryService;
+    private final SecurityUtils securityUtils;
+
     private static final String MAIN = "mainPage";
 
     /**
@@ -71,7 +74,7 @@ public class ArticleViewController {
                     .toList());
         }
 
-        checkAndAddLoginInfo(model, authentication);
+        securityUtils.checkAndAddLoginInfo(model, authentication);
 
         // Set article
         Collections.reverse(articles);
@@ -91,7 +94,7 @@ public class ArticleViewController {
         addAllCategory(model);
 
         ArticleViewResponse response = new ArticleViewResponse(articleService.getArticle(id));
-        checkAndAddLoginInfo(model, authentication);
+        securityUtils.checkAndAddLoginInfo(model, authentication);
         model.addAttribute("viewArticle", response);
         return MAIN;
     }
@@ -105,35 +108,15 @@ public class ArticleViewController {
             model.addAttribute("newArticle", new ArticleViewResponse());
         } else {
             Article foundArticle = articleService.getArticle(id);
-            if (foundArticle.getAuthor().getId().equals(((User)getAuthentication().getPrincipal()).getId())) {
+            if (foundArticle.getAuthor().getId().equals(((User)securityUtils.getAuthentication().getPrincipal()).getId())) {
                 model.addAttribute("newArticle", new ArticleViewResponse(articleService.getArticle(id)));
             } else {
                 model.addAttribute("errorMessage", "401 ERROR, You're not writer.");
                 return viewArticle(model, id, authentication);
             }
         }
-        checkAndAddLoginInfo(model, authentication);
+        securityUtils.checkAndAddLoginInfo(model, authentication);
         return MAIN;
-    }
-
-    /**
-     * Get Authentication.
-     *
-     * @return The Authentication (SecurityContextHolder.getContext().getAuthentication();)
-     */
-    private Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
-
-    /**
-     * Check and add authentication information to model
-     *
-     */
-    private void checkAndAddLoginInfo(Model model, Authentication authentication) {
-        if (authentication!= null && getAuthentication().isAuthenticated()) {
-            User user = (User) getAuthentication().getPrincipal();
-            model.addAttribute("loginIn", new UserResponse(user));
-        }
     }
 
     /**
