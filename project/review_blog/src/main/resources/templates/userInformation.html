@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Main Page</title>
+    <link rel="stylesheet" th:href="@{/css/information.css}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <!--    Navigate before and after-->
+</head>
+<body>
+<div class="main-page-container">
+    <div class="top-header-container">
+        <div class="top-header-wrap">
+            <div class="home-page-button"><a th:href="@{/home}">blog</a></div>
+            <div class="btn-container" th:if="${loginIn}">
+                <input type="hidden" id="user-id" th:value="${loginIn.id}">
+                <div class="user-info-btn" th:text="|Username: ${loginIn.getNicknameWithoutCode()}|"
+                     th:attr="hover-text=${loginIn.nickname}"></div>
+                <div class="logout-btn" th:onclick="|location.href='@{/logout}'|">logout</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-container">
+        <div class="main-page-img">
+            <img th:src="@{/img/backgroud-img.jpg}" alt="background-image">
+        </div>
+
+        <div class="information-container">
+            <div class="information-centered-container">
+                <div class="information-sidebar-container">
+                    <div class="information-sidebar" id="information-view">my info</div>
+                    <div class="information-sidebar" id="information-change-password">change password</div>
+                </div>
+                <div class="information-contents-container">
+                    <div class="information-myInfo">
+                        <div class="information-email-container">
+                            <label for="information-my-email">email: </label>
+                            <input type="text" id="information-my-email" th:value="${loginIn.email}">
+                        </div>
+
+                        <div class="information-nickname-container">
+                            <label for="information-my-email">nickname: </label>
+                            <input type="text" id="information-my-nickname" th:value="${loginIn.nickname}">
+                        </div>
+                    </div>
+                    <div class="information-change-password">
+                        <div class="information-current-password-container">
+                            <label for="information-current-password">current password: </label>
+                            <input type="password" id="information-current-password">
+                        </div>
+
+                        <div class="information-new-password-container">
+                            <label for="information-new-password">new password: </label>
+                            <input type="password" id="information-new-password">
+                        </div>
+
+                        <div class="information-check-new-password-container">
+                            <label for="information-check-new-password">check new password: </label>
+                            <input type="password" id="information-check-new-password">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="foot-box">
+
+    </div>
+</div>
+<input type="hidden" id="error-message" th:if="${errorMessage}" th:value="${errorMessage}">
+<script th:src="@{/js/mainPage.js}"></script>
+<script th:if="${errorMessage}">
+    alert(document.getElementById('error-message').value);
+</script>
+</body>
+</html>

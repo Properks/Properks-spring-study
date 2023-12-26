@@ -1,0 +1,12 @@
+@import "background.css";
+
+label {width:100px; float:left; text-transform: capitalize;}
+
+.information-container {margin: 3px; padding:5px;}
+.information-centered-container {width: 70%; margin:0 auto; padding: 5px; border: 1px solid black; display: flex; box-sizing: border-box;}
+.information-sidebar-container {padding-left:10px; width: 30%;}
+.information-sidebar {margin:5px; text-transform: capitalize;}
+.information-contents-container {width: 70%; border-left:1px solid gray;}
+.information-myInfo, .information-change-password {margin:5px;}
+.information-myInfo div, .information-change-password div {margin:5px;}
+.information-change-password label {width:150px;}
