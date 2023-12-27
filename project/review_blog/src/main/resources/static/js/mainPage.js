@@ -85,16 +85,16 @@ if (createButton) {
 
 // function that represent nickname with code
 if (userInfo) {
+    const userInfoContainer = document.querySelector(".user-info-container"); // For addEventListener
     const userOriginalNickname = userInfo.textContent;
-    userInfo.addEventListener('mouseover', ()=> {
+    const hoverMenu = document.getElementById("home-page-user-hover-menu"); // Show menu
+    userInfoContainer.addEventListener('mouseover', ()=> {
         userInfo.textContent = 'Username: ' + userInfo.getAttribute('hover-text');
+        hoverMenu.style.display = "block";
     })
-    userInfo.addEventListener('mouseout', ()=> {
+    userInfoContainer.addEventListener('mouseout', ()=> {
         userInfo.textContent = userOriginalNickname;
-    })
-    //Get My article
-    userInfo.addEventListener('click', () => {
-        location.replace('/home?nickname=' + userInfo.getAttribute('hover-text').replace("#", "%23"));
+        hoverMenu.style.display = "none";
     })
 }
 

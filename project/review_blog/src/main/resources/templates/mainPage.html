@@ -17,8 +17,15 @@
                 <div class="home-page-button"><a th:href="@{/home}">blog</a></div>
                 <div class="btn-container" th:if="${loginIn}">
                     <input type="hidden" id="user-id" th:value="${loginIn.id}">
-                    <div class="user-info-btn" th:text="|Username: ${loginIn.getNicknameWithoutCode()}|"
-                    th:attr="hover-text=${loginIn.nickname}"></div>
+                    <div class="user-info-container">
+                        <div class="user-info-btn" th:text="|Username: ${loginIn.getNicknameWithoutCode()}|"
+                        th:attr="hover-text=${loginIn.nickname}">
+                        </div>
+                        <div id="home-page-user-hover-menu">
+                            <div th:onclick="|location.href='@{/home(nickname=${loginIn.nickname})}'|">my article</div>
+                            <div th:onclick="|location.href='@{/user/info}'|">my information</div>
+                        </div>
+                    </div>
                     <div class="logout-btn" th:onclick="|location.href='@{/logout}'|">logout</div>
                 </div>
                 <div class="btn-container" th:unless="${loginIn}">

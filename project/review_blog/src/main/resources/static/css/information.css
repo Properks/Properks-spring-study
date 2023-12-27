@@ -10,3 +10,4 @@ label {width:100px; float:left; text-transform: capitalize;}
 .information-myInfo, .information-change-password {margin:5px;}
 .information-myInfo div, .information-change-password div {margin:5px;}
 .information-change-password label {width:150px;}
+#information-change-password-btn {text-transform: capitalize;}
