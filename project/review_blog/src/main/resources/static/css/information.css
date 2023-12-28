@@ -3,11 +3,25 @@
 label {width:100px; float:left; text-transform: capitalize;}
 
 .information-container {margin: 3px; padding:5px;}
-.information-centered-container {width: 70%; margin:0 auto; padding: 5px; border: 1px solid black; display: flex; box-sizing: border-box;}
+.information-centered-container {width: 70%; margin:0 auto; padding: 5px; border: 1px double black; display: flex; box-sizing: border-box;}
+
 .information-sidebar-container {padding-left:10px; width: 30%;}
-.information-sidebar {margin:5px; text-transform: capitalize;}
+.information-sidebar {margin:5px;}
+.information-sidebar a {text-transform: capitalize; color:inherit; text-decoration: none;}
+#information-delete-account a {color:crimson !important;}
+
 .information-contents-container {width: 70%; border-left:1px solid gray;}
-.information-myInfo, .information-change-password {margin:5px;}
-.information-myInfo div, .information-change-password div {margin:5px;}
+.information-myInfo, .information-change-password, .information-delete-account-container {margin:5px;}
+.information-myInfo div, .information-change-password div, .information-delete-account-container div {margin:5px;}
 .information-change-password label {width:150px;}
-#information-change-password-btn {text-transform: capitalize;}
+
+.information-delete-account-notice {text-align: center;}
+
+.information-change-nickname-btn-container {padding-left:100px;}
+.information-delete-account-btn-container {display:flex; justify-content: center; align-items: center;}
+.information-delete-account-btn-container button {text-transform: capitalize; margin:5px; padding:5px;}
+#information-change-nickname-btn {text-transform: capitalize;}
+#information-change-password-btn {text-transform: capitalize; float: right;}
+#information-delete-account-submit-btn {color:crimson;}
+#information-delete-account-cancel-btn:hover {background-color: lightslategray;}
+#information-delete-account-submit-btn:hover {background-color: crimson; color:black;}

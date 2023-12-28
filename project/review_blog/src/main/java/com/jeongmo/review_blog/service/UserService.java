@@ -66,10 +66,10 @@ public class UserService {
      * @return nickname which have code (nickname#0000 form)
      */
     private String setNicknameWithCode(String nickname) {
-        int code = nickname.hashCode() % 10000;
-        String newNickname = nickname + "#" + String.format("%04d", code);
+        int code = nickname.hashCode() % 100000;
+        String newNickname = nickname + "#" + String.format("%05d", code);
         while(isDuplicatedNickname(newNickname)) {
-            newNickname = nickname + "#" + String.format("%04d", ++code % 10000);
+            newNickname = nickname + "#" + String.format("%05d", ++code % 100000);
         }
         return newNickname;
     }

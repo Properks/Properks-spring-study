@@ -35,7 +35,7 @@ public class UserViewController {
     public String userInformation(Model model, Authentication authentication,
                                   @RequestParam(required = false, defaultValue = "my_info") String tab) {
         securityUtils.checkAndAddLoginInfo(model, authentication);
-        if (!tab.equals("my_info") && !tab.equals("change_password")) {
+        if (!tab.equals("my_info") && !tab.equals("change_password") && !tab.equals("delete_account")) {
             throw new IllegalArgumentException("Invalid tab name");
         } else {
             model.addAttribute("tab", tab);

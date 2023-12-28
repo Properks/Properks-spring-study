@@ -70,6 +70,15 @@ public class User implements UserDetails{
         return new StringTokenizer(this.nickname, "#").nextToken();
     }
 
+    /**
+     * Get your code in nickname
+     *
+     * @return The code of nickname
+     */
+    public String getNicknameCode() {
+        return this.nickname.split("#")[1];
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("user"));

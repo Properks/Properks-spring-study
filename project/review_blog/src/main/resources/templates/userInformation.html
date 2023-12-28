@@ -22,8 +22,12 @@
                          th:attr="hover-text=${loginIn.nickname}">
                     </div>
                     <div id="home-page-user-hover-menu">
-                        <div th:onclick="|location.href='@{/home(nickname=${loginIn.nickname})}'|">my article</div>
-                        <div th:onclick="|location.href='@{/user/info}'|">my information</div>
+                        <div>
+                            <a th:href="@{/home(nickname=${loginIn.nickname})}">my article</a>
+                        </div>
+                        <div>
+                            <a th:href="@{/user/info}">my information</a>
+                        </div>
                     </div>
                 </div>
                 <div class="logout-btn" th:onclick="|location.href='@{/logout}'|">logout</div>
@@ -39,23 +43,35 @@
         <div class="information-container">
             <div class="information-centered-container">
                 <div class="information-sidebar-container">
-                    <div class="information-sidebar" id="information-view"
-                        th:onclick="|location.href='@{/user/info/my_info}'|">my info</div>
-                    <div class="information-sidebar" id="information-change-password"
-                        th:onclick="|location.href='@{/user/info/change_password'|">change password</div>
+                    <div class="information-sidebar" id="information-view">
+                        <a th:href="@{/user/info(tab='my_info')}">my info</a>
+                    </div>
+                    <div class="information-sidebar" id="information-change-password">
+                        <a th:href="@{/user/info(tab='change_password')}">change password </a>
+                    </div>
+                    <div class="information-sidebar" id="information-delete-account">
+                        <a th:href="@{/user/info(tab='delete_account')}">delete account</a>
+                    </div>
                 </div>
                 <div class="information-contents-container">
                     <div class="information-myInfo" th:if="${tab} == 'my_info'">
                         <div class="information-email-container">
                             <label for="information-my-email">email: </label>
-                            <input type="text" id="information-my-email" th:value="${loginIn.email}">
+                            <input type="text" id="information-my-email" th:value="${loginIn.email}" readonly>
                         </div>
 
                         <div class="information-nickname-container">
                             <label for="information-my-email">nickname: </label>
-                            <input type="text" id="information-my-nickname" th:value="${loginIn.nickname}">
+                            <input type="text" id="information-my-nickname" th:value="${loginIn.nicknameWithoutCode}">
+                            #
+                            <input type="text" id="information-my-nickname-code" th:value="${loginIn.nicknameCode}"
+                                   maxlength="5">
+                        </div>
+                        <div class="information-change-nickname-btn-container">
+                            <button type="button" id="information-change-nickname-btn"> change nickname</button>
                         </div>
                     </div>
+
                     <div class="information-change-password" th:if="${tab} == 'change_password'">
                         <div class="information-current-password-container">
                             <label for="information-current-password">current password: </label>
@@ -73,6 +89,17 @@
                         </div>
 
                         <button id="information-change-password-btn">change password</button>
+                    </div>
+
+                    <div class="information-delete-account-container" th:if="${tab} == 'delete_account'">
+                        <div class="information-delete-account-notice">
+                            <p>If you delete your account now, all articles you've written so far will be deleted.<br>
+                                Are you sure you want to delete it?</p>
+                            <div class="information-delete-account-btn-container">
+                                <button type="button" id="information-delete-account-cancel-btn">cancel</button>
+                                <button type="button" id="information-delete-account-submit-btn">submit</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

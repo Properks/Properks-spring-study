@@ -15,6 +15,7 @@ public class UserResponse {
     private String password;
     private String nickname;
     private String nicknameWithoutCode;
+    private String nicknameCode;
 
     public UserResponse(User user) {
         this.id = user.getId();
@@ -22,5 +23,6 @@ public class UserResponse {
         this.password = user.getPassword();
         this.nickname = user.getNickname();
         this.nicknameWithoutCode = user.getNicknameWithoutCode();
+        this.nicknameCode = user.getNicknameCode();
     }
 }

@@ -193,9 +193,8 @@ if (categoryInUrl) {
     showCategoryInList.textContent = 'Category: All';
 }
 
-// Error message
-// const errorMessage = document.getElementById('error-message').value;
-//
-// if (errorMessage) {
-//     alert(errorMessage);
-// }
+// Check Special characters
+function containsSpecialCharacters(str) {
+    let regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    return regex.test(str);
+}
