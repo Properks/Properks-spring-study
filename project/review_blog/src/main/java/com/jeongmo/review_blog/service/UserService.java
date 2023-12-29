@@ -2,16 +2,20 @@ package com.jeongmo.review_blog.service;
 
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.user.AddUserRequest;
+import com.jeongmo.review_blog.dto.user.UpdateAccountNickname;
+import com.jeongmo.review_blog.dto.user.UpdateAccountPassword;
 import com.jeongmo.review_blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
     /**
      * Save user with password encoding
@@ -50,6 +54,16 @@ public class UserService {
     }
 
     /**
+     * Find user by id
+     *
+     * @param id The id of user which you find
+     * @return The found user (Else -> null)
+     */
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    /**
      * Check whether email already exists or not
      *
      * @param email The email to check redundancy
@@ -72,6 +86,32 @@ public class UserService {
             newNickname = nickname + "#" + String.format("%05d", ++code % 100000);
         }
         return newNickname;
+    }
+
+    /**
+     * Update user nickname
+     *
+     * @param dto The password dto
+     * @return The updated user
+     */
+    @Transactional
+    public User updateNickname(UpdateAccountNickname dto) {
+        User updatedUser = getUserById(dto.getId());
+        if (updatedUser == null || isDuplicatedNickname(dto.getNickname())) {
+            return null;
+        }
+        updatedUser.setNickname(dto.getNickname());
+        return updatedUser;
+    }
+
+    @Transactional
+    public User updatePassword(UpdateAccountPassword dto) {
+        User updatedUser = getUserById(dto.getId());
+        if (updatedUser == null || !encoder.matches(dto.getOldPassword(), updatedUser.getPassword())) {
+            return null;
+        }
+        updatedUser.setPassword(encoder.encode(dto.getNewPassword()));
+        return updatedUser;
     }
 
     /**

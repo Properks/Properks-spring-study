@@ -66,7 +66,7 @@
                                 minlength="3" maxlength="20">
                             #
                             <input type="text" id="information-my-nickname-code" th:value="${loginIn.nicknameCode}"
-                                   maxlength="5">
+                                   minlength="1" maxlength="5">
                         </div>
                         <div class="information-change-nickname-btn-container">
                             <button type="button" id="information-change-nickname-btn"> change nickname</button>

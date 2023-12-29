@@ -2,6 +2,9 @@ package com.jeongmo.review_blog.controller;
 
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.user.AddUserRequest;
+import com.jeongmo.review_blog.dto.user.UpdateAccountNickname;
+import com.jeongmo.review_blog.dto.user.UpdateAccountPassword;
+import com.jeongmo.review_blog.dto.user.UserResponse;
 import com.jeongmo.review_blog.service.ArticleService;
 import com.jeongmo.review_blog.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,6 +53,25 @@ public class UserApiController {
         }
         // redirect in frontend.
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/user/nickname")
+    public ResponseEntity<UserResponse> updateAccountNickname(@RequestBody UpdateAccountNickname nicknameDto) {
+        User user = userService.updateNickname(nicknameDto);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            // Cannot update because nickname already exists. (409 error)
+        }
+        return ResponseEntity.ok().body(new UserResponse(user));
+    }
+
+    @PutMapping("/user/password")
+    public ResponseEntity<UserResponse> updateAccountPassword(@RequestBody UpdateAccountPassword passwordDto) {
+        User user = userService.updatePassword(passwordDto);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        return ResponseEntity.ok().body(new UserResponse(user));
     }
 
     @GetMapping("/api/email/{email}")
