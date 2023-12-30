@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class UserResponse {
     private Long id;
     private String email;
-    private String password;
     private String nickname;
     private String nicknameWithoutCode;
     private String nicknameCode;
@@ -20,7 +19,6 @@ public class UserResponse {
     public UserResponse(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
-        this.password = user.getPassword();
         this.nickname = user.getNickname();
         this.nicknameWithoutCode = user.getNicknameWithoutCode();
         this.nicknameCode = user.getNicknameCode();

@@ -122,7 +122,8 @@ public class ArticleService {
      *
      * @param id The id of Author
      */
+    @Transactional
     public void deleteArticlesByAuthorId(Long id) {
-        articleRepository.deleteById(id);
+        articleRepository.deleteByAuthorId(id);
     }
 }
