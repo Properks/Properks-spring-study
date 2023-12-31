@@ -61,12 +61,18 @@
                         </div>
 
                         <div class="information-nickname-container">
+                            <input type="hidden" id="information-original-nickname" th:value="${loginIn.nickname}">
                             <label for="information-my-email">nickname: </label>
-                            <input type="text" id="information-my-nickname" th:value="${loginIn.nicknameWithoutCode}"
+                            <input type="text" id="information-my-nickname" name="nickname"
+                                   th:value="${loginIn.nicknameWithoutCode}"
                                 minlength="3" maxlength="20">
                             #
-                            <input type="text" id="information-my-nickname-code" th:value="${loginIn.nicknameCode}"
+                            <input type="text" id="information-my-nickname-code" name="code"
+                                    th:value="${loginIn.nicknameCode}"
                                    minlength="1" maxlength="5">
+                        </div>
+                        <div id="information-change-nickname-error-message">
+
                         </div>
                         <div class="information-change-nickname-btn-container">
                             <button type="button" id="information-change-nickname-btn"> change nickname</button>
@@ -112,7 +118,7 @@
     </div>
 </div>
 <input type="hidden" id="error-message" th:if="${errorMessage}" th:value="${errorMessage}">
-<script th:src="@{/js/mainPage.js}"></script>
+<script th:src="@{/js/information.js}"></script>
 <script th:if="${errorMessage}">
     alert(document.getElementById('error-message').value);
 </script>

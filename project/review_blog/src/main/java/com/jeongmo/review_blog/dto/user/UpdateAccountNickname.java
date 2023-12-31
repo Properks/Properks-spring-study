@@ -10,4 +10,9 @@ import lombok.NoArgsConstructor;
 public class UpdateAccountNickname {
     private Long id;
     private String nickname;
+    private String code;
+
+    public String getFullNickname() {
+        return nickname + "#" + code;
+    }
 }

@@ -99,9 +99,10 @@ class UserApiControllerTest {
     void updateNickname() throws Exception{
         //given
         final String url = "/user/nickname";
-        final String newNickname = "test1#TEST";
+        final String newNickname = "test1";
+        final String code = "TEST";
         final Long id = user.getId();
-        final String request = mapper.writeValueAsString(new UpdateAccountNickname(id, newNickname));
+        final String request = mapper.writeValueAsString(new UpdateAccountNickname(id, newNickname, code));
 
         //when
         ResultActions result = mvc.perform(put(url).contentType(MediaType.APPLICATION_JSON)
@@ -111,8 +112,8 @@ class UserApiControllerTest {
         User updatedUser = userRepository.findById(id).get();
         result
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nickname").value(newNickname));
-        assertThat(updatedUser.getNickname()).isEqualTo(newNickname);
+                .andExpect(jsonPath("$.nickname").value(newNickname + "#" + code));
+        assertThat(updatedUser.getNickname()).isEqualTo(newNickname + "#" + code);
 
     }
 

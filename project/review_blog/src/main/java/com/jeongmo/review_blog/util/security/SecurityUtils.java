@@ -24,7 +24,7 @@ public class SecurityUtils {
      */
     public void checkAndAddLoginInfo(Model model, Authentication authentication) {
         if (authentication!= null && getAuthentication().isAuthenticated()) {
-            User user = (User) getAuthentication().getPrincipal();
+            User user = (User) authentication.getPrincipal();
             model.addAttribute("loginIn", new UserResponse(user));
         }
     }

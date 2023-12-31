@@ -97,10 +97,10 @@ public class UserService {
     @Transactional
     public User updateNickname(UpdateAccountNickname dto) {
         User updatedUser = getUserById(dto.getId());
-        if (updatedUser == null || isDuplicatedNickname(dto.getNickname())) {
+        if (updatedUser == null || (!updatedUser.getNickname().equals(dto.getFullNickname()) && isDuplicatedNickname(dto.getFullNickname()))) {
             return null;
         }
-        updatedUser.setNickname(dto.getNickname());
+        updatedUser.setNickname(dto.getFullNickname());
         return updatedUser;
     }
 
