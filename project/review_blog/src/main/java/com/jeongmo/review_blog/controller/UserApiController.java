@@ -7,6 +7,7 @@ import com.jeongmo.review_blog.dto.user.UpdateAccountPassword;
 import com.jeongmo.review_blog.dto.user.UserResponse;
 import com.jeongmo.review_blog.service.ArticleService;
 import com.jeongmo.review_blog.service.UserService;
+import com.jeongmo.review_blog.util.security.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class UserApiController {
 
     private final UserService userService;
     private final ArticleService articleService;
+    private final SecurityUtils securityUtils;
 
     @PostMapping("/user")
     public String signup(@RequestParam("email") String email, @RequestParam("password") String password,
@@ -62,6 +64,7 @@ public class UserApiController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
             // Cannot update because nickname already exists. (409 error)
         }
+        securityUtils.updateUserInfo(user);
         return ResponseEntity.ok().body(new UserResponse(user));
     }
 
@@ -71,6 +74,7 @@ public class UserApiController {
         if (user == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+        securityUtils.updateUserInfo(user);
         return ResponseEntity.ok().body(new UserResponse(user));
     }
 

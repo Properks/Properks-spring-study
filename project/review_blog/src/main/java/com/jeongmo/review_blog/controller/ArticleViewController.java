@@ -4,13 +4,11 @@ import com.jeongmo.review_blog.domain.Article;
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.article_view.ArticleViewResponse;
 import com.jeongmo.review_blog.dto.category.CategoryResponse;
-import com.jeongmo.review_blog.dto.user.UserResponse;
 import com.jeongmo.review_blog.service.ArticleService;
 import com.jeongmo.review_blog.service.CategoryService;
 import com.jeongmo.review_blog.util.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -108,7 +106,7 @@ public class ArticleViewController {
             model.addAttribute("newArticle", new ArticleViewResponse());
         } else {
             Article foundArticle = articleService.getArticle(id);
-            if (foundArticle.getAuthor().getId().equals(((User)securityUtils.getAuthentication().getPrincipal()).getId())) {
+            if (foundArticle.getAuthor().getId().equals(((User)authentication.getPrincipal()).getId())) {
                 model.addAttribute("newArticle", new ArticleViewResponse(articleService.getArticle(id)));
             } else {
                 model.addAttribute("errorMessage", "401 ERROR, You're not writer.");
