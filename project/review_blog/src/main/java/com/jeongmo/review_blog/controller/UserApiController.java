@@ -17,6 +17,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
+
+import java.net.URI;
 
 
 @RequiredArgsConstructor
@@ -69,12 +72,15 @@ public class UserApiController {
     }
 
     @PutMapping("/user/password")
-    public ResponseEntity<UserResponse> updateAccountPassword(@RequestBody UpdateAccountPassword passwordDto) {
+    public ResponseEntity<UserResponse> updateAccountPassword(HttpServletRequest request,
+                                                              HttpServletResponse response,
+                                                              @RequestBody UpdateAccountPassword passwordDto) throws Exception{
         User user = userService.updatePassword(passwordDto);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        securityUtils.updateUserInfo(user);
+        logout(request, response);
+        // Redirect login page in frontend
         return ResponseEntity.ok().body(new UserResponse(user));
     }
 

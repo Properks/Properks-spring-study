@@ -69,8 +69,8 @@ if (changePassword) {
                 }
                 else if (response.status === 200) {
                     errorMessage.textContent = "";
-                    alert("Change Password Successfully");
-
+                    alert("Change Password Successfully\nYour account will be logged out.");
+                    location.replace('/login');
                 }
                 else {
                     alert("Unknown error (" + response.status + ")");
