@@ -1,3 +1,5 @@
+document.write('<script src="/js/background.js"></script>') // import background.js with write method
+
 //Change nickname
 const changeNickname = document.getElementById("information-change-nickname-btn");
 
