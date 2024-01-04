@@ -4,9 +4,7 @@ import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.user.UserResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 

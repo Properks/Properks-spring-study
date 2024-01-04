@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -74,10 +75,11 @@ public class UserApiController {
     @PutMapping("/user/password")
     public ResponseEntity<UserResponse> updateAccountPassword(HttpServletRequest request,
                                                               HttpServletResponse response,
-                                                              @RequestBody UpdateAccountPassword passwordDto) throws Exception{
+                                                              @RequestBody UpdateAccountPassword passwordDto) {
         User user = userService.updatePassword(passwordDto);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            // Incorrect old password (401 error)
         }
         logout(request, response);
         // Redirect login page in frontend
@@ -90,5 +92,15 @@ public class UserApiController {
             return ResponseEntity.status(HttpStatus.FOUND).build();
         }
         return ResponseEntity.ok().build();
+    }
+
+
+    @PostMapping("/api/password/{password}")
+    public ResponseEntity<Void> validPassword(@PathVariable String password, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        if (userService.isValidPassword(user.getId(), password)) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Invalid password (401 error)
     }
 }

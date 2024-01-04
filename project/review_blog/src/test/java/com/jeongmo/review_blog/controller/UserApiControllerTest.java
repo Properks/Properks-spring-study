@@ -25,8 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -136,5 +135,22 @@ class UserApiControllerTest {
                 .andExpect(status().isOk());
         User updatedUser = userRepository.findById(id).get();
         assertThat(encoder.matches(newPassword, updatedUser.getPassword())).isTrue();
+    }
+
+    @Test
+    void validPassword() throws Exception {
+        //given
+        final String url = "/api/password/{password}";
+        final Long id = user.getId();
+        final String validPassword = "test1234";
+        final String invalidPassword = "TEST12345";
+
+        //when
+        ResultActions successResult = mvc.perform(post(url, validPassword));
+        ResultActions failResult = mvc.perform(post(url, invalidPassword));
+
+        //then
+        successResult.andExpect(status().isOk());
+        failResult.andExpect(status().isUnauthorized());
     }
 }

@@ -66,7 +66,7 @@ if (changePassword) {
             })
         })
             .then(response => {
-                if (response.status === 409) {
+                if (response.status === 401) {
                     errorMessage.textContent = "Current Password is not correct";
                 }
                 else if (response.status === 200) {
@@ -78,5 +78,14 @@ if (changePassword) {
                     alert("Unknown error (" + response.status + ")");
                 }
             })
+    })
+}
+
+//Delete account
+const deleteAccount = document.getElementById('information-delete-account-submit-btn');
+
+if (deleteAccount) {
+    deleteAccount.addEventListener('click', () => {
+
     })
 }

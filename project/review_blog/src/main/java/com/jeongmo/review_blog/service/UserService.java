@@ -23,7 +23,6 @@ public class UserService {
      * @param dto The information of user will add
      */
     public void save(AddUserRequest dto) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         userRepository.save(User.builder()
                 .email(dto.getEmail())
                 .password(encoder.encode(dto.getPassword()))
@@ -107,7 +106,7 @@ public class UserService {
     @Transactional
     public User updatePassword(UpdateAccountPassword dto) {
         User updatedUser = getUserById(dto.getId());
-        if (updatedUser == null || !encoder.matches(dto.getOldPassword(), updatedUser.getPassword())) {
+        if (updatedUser == null || !isValidPassword(updatedUser.getId(), dto.getOldPassword())) {
             return null;
         }
         updatedUser.setPassword(encoder.encode(dto.getNewPassword()));
@@ -124,7 +123,8 @@ public class UserService {
         return userRepository.existsByNickname(nickname);
     }
 
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+    public boolean isValidPassword(Long id, String password) {
+        User user = getUserById(id);
+        return encoder.matches(password, user.getPassword());
     }
 }
