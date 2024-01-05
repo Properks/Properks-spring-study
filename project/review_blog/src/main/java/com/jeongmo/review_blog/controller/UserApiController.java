@@ -1,10 +1,7 @@
 package com.jeongmo.review_blog.controller;
 
 import com.jeongmo.review_blog.domain.User;
-import com.jeongmo.review_blog.dto.user.AddUserRequest;
-import com.jeongmo.review_blog.dto.user.UpdateAccountNickname;
-import com.jeongmo.review_blog.dto.user.UpdateAccountPassword;
-import com.jeongmo.review_blog.dto.user.UserResponse;
+import com.jeongmo.review_blog.dto.user.*;
 import com.jeongmo.review_blog.service.ArticleService;
 import com.jeongmo.review_blog.service.UserService;
 import com.jeongmo.review_blog.util.security.SecurityUtils;
@@ -95,10 +92,10 @@ public class UserApiController {
     }
 
 
-    @PostMapping("/api/password/{password}")
-    public ResponseEntity<Void> validPassword(@PathVariable String password, Authentication authentication) {
+    @PostMapping("/api/password")
+    public ResponseEntity<Void> validPassword(@RequestBody PasswordRequest request, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        if (userService.isValidPassword(user.getId(), password)) {
+        if (userService.isValidPassword(user.getId(), request.getPassword())) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Invalid password (401 error)

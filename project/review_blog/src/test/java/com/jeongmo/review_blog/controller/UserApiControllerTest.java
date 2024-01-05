@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jeongmo.review_blog.domain.Article;
 import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.domain.User;
+import com.jeongmo.review_blog.dto.user.PasswordRequest;
 import com.jeongmo.review_blog.dto.user.UpdateAccountNickname;
 import com.jeongmo.review_blog.dto.user.UpdateAccountPassword;
 import com.jeongmo.review_blog.repository.ArticleRepository;
@@ -140,14 +141,16 @@ class UserApiControllerTest {
     @Test
     void validPassword() throws Exception {
         //given
-        final String url = "/api/password/{password}";
+        final String url = "/api/password";
         final Long id = user.getId();
         final String validPassword = "test1234";
+        final String validRequest = mapper.writeValueAsString(new PasswordRequest(validPassword));
         final String invalidPassword = "TEST12345";
+        final String invalidRequest = mapper.writeValueAsString(new PasswordRequest(invalidPassword));
 
         //when
-        ResultActions successResult = mvc.perform(post(url, validPassword));
-        ResultActions failResult = mvc.perform(post(url, invalidPassword));
+        ResultActions successResult = mvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(validRequest));
+        ResultActions failResult = mvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(invalidRequest));
 
         //then
         successResult.andExpect(status().isOk());
