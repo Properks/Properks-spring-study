@@ -103,12 +103,24 @@
 
                     <div class="information-delete-account-container" th:if="${tab} == 'delete_account'">
                         <div class="information-delete-account-notice">
-                            <p>If you delete your account now, all articles you've written so far will be deleted.<br>
+                            <p id="information-delete-account-comment">If you delete your account now, all articles
+                                you've written so far will be deleted.<br>
                                 Are you sure you want to delete it?</p>
+
                             <div class="information-delete-account-btn-container">
                                 <button type="button" id="information-delete-account-cancel-btn">cancel</button>
                                 <button type="button" id="information-delete-account-submit-btn">submit</button>
                             </div>
+                        </div>
+                        <div class="information-delete-account-check-password-container">
+                            <div id="information-delete-account-check-password-comment">
+                                <label for="information-delete-account-check-password">Enter Password: </label>
+                                <input type="password" name="password" id="information-delete-account-check-password"
+                                       placeholder="password" autofocus>
+                                <button type="button" id="information-delete-account-check-password-btn">delete
+                                    account</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>

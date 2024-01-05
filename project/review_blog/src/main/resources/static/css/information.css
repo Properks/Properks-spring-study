@@ -16,12 +16,15 @@ label {width:100px; float:left; text-transform: capitalize;}
 .information-change-password label {width:150px;}
 
 .information-delete-account-notice {text-align: center;}
+.information-delete-account-check-password-container {margin:0 auto !important; width:fit-content;}
+#information-delete-account-check-password-comment label {width:120px;}
 
 .information-change-nickname-btn-container {padding-left:100px;}
 .information-delete-account-btn-container {display:flex; justify-content: center; align-items: center;}
 .information-delete-account-btn-container button {text-transform: capitalize; margin:5px; padding:5px;}
 #information-change-nickname-btn {text-transform: capitalize;}
 #information-change-password-btn {text-transform: capitalize; float: right;}
+#information-delete-account-check-password-btn {text-transform: capitalize;}
 #information-delete-account-submit-btn {color:crimson;}
 #information-delete-account-cancel-btn:hover {background-color: lightslategray;}
 #information-delete-account-submit-btn:hover {background-color: crimson; color:black;}
