@@ -82,10 +82,56 @@ if (changePassword) {
 }
 
 //Delete account
-const deleteAccount = document.getElementById('information-delete-account-submit-btn');
+const deleteAccountBtnContainer= document.querySelector('.information-delete-account-btn-container');
+const deleteAccountBtn = document.getElementById('information-delete-account-submit-btn');
+const checkPasswordContainer = document.querySelector('.information-delete-account-check-password-container');
+const checkPasswordBtn = document.getElementById('information-delete-account-check-password-btn');
 
-if (deleteAccount) {
-    deleteAccount.addEventListener('click', () => {
+if (deleteAccountBtn) {
+    deleteAccountBtn.addEventListener('click', () => {
+        deleteAccountBtnContainer.style.display = 'none';
+        checkPasswordContainer.style.display = 'block';
+    })
+}
 
+
+if (checkPasswordBtn) {
+    checkPasswordBtn.addEventListener('click', () => {
+        let password = document.getElementById('information-delete-account-check-password').value;
+        if (confirm('Are you sure you want to delete the account?')) {
+            fetch('/api/password', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    password: password
+                })
+            })
+                .then(response => {
+                    if (response.status === 401) {
+                        alert("Password is incorrect!");
+                    }
+                    else if (response.status !== 200) {
+                        alert("Unknown error! (" + response.status+ ")");
+                    }
+                    else {
+                        let userId = document.getElementById('user-id').value;
+                        fetch('/user/' + userId, {method: 'DELETE'})
+                            .then(response => {
+                                if (response.status === 400) {
+                                    alert("Fail to delete account (" + response.status + ")");
+                                }
+                                else if (response.status === 200) {
+                                    alert("Delete account successfully");
+                                    location.replace("login");
+                                }
+                                else {
+                                    alert("Unknown error! (" + response.status+ ")");
+                                }
+                            })
+                    }
+                })
+        }
     })
 }

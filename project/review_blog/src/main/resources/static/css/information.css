@@ -16,7 +16,7 @@ label {width:100px; float:left; text-transform: capitalize;}
 .information-change-password label {width:150px;}
 
 .information-delete-account-notice {text-align: center;}
-.information-delete-account-check-password-container {margin:0 auto !important; width:fit-content;}
+.information-delete-account-check-password-container {margin:0 auto !important; display: none; width: fit-content;}
 #information-delete-account-check-password-comment label {width:120px;}
 
 .information-change-nickname-btn-container {padding-left:100px;}

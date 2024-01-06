@@ -45,17 +45,22 @@ public class UserApiController {
     @DeleteMapping("/user/{userId}")
     public ResponseEntity<Void> deleteAccount(HttpServletRequest request,
     HttpServletResponse response, @PathVariable Long userId) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.getId().equals(userId)) {
-            articleService.deleteArticlesByAuthorId(user.getId());
-            //logout
-            SecurityContextLogoutHandler handler = new SecurityContextLogoutHandler();
-            handler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
-            //delete account
-            userService.delete(userId);
+        try {
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (user.getId().equals(userId)) {
+                articleService.deleteArticlesByAuthorId(user.getId());
+                //logout
+                SecurityContextLogoutHandler handler = new SecurityContextLogoutHandler();
+                handler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+                //delete account
+                userService.delete(userId);
+            }
+            // redirect in frontend.
+            return ResponseEntity.ok().build();
         }
-        // redirect in frontend.
-        return ResponseEntity.ok().build();
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @PutMapping("/user/nickname")
