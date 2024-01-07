@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 
@@ -98,19 +99,25 @@ public class ArticleViewController {
     }
 
     @GetMapping("/new-article")
-    public String newArticle(@RequestParam(required = false) Long id, Model model, Authentication authentication) {
+    public String newArticle(@RequestParam(required = false) Long id, Model model,
+                             RedirectAttributes attributes, Authentication authentication) {
         // Set categories
         addAllCategory(model);
 
         if (id == null) {
+            if (model.getAttribute("categories") == null) {
+                attributes.addFlashAttribute("error", "404 ERROR, Category doesn't exist");
+                // addFlashAttribute in RedirectAttributes: input something like model.addAttribute in redirect url.
+                return "redirect:/home";
+            }
             model.addAttribute("newArticle", new ArticleViewResponse());
         } else {
             Article foundArticle = articleService.getArticle(id);
             if (foundArticle.getAuthor().getId().equals(((User)authentication.getPrincipal()).getId())) {
                 model.addAttribute("newArticle", new ArticleViewResponse(articleService.getArticle(id)));
             } else {
-                model.addAttribute("errorMessage", "401 ERROR, You're not writer.");
-                return viewArticle(model, id, authentication);
+                attributes.addFlashAttribute("error", "401 ERROR, You're not writer.");
+                return "redirect:/article/" + id;
             }
         }
         securityUtils.checkAndAddLoginInfo(model, authentication);

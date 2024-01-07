@@ -15,9 +15,9 @@
         <div class="new-article-category-container">
             <label for="new-article-category">category: </label>
             <select name="category" id="new-article-category">
-                <option class="new-article-categories" th:if="${categories.size()} == 0">---</option>
+                <option class="new-article-categories" th:if="${categories} == null">---<option>
                 <option class="new-article-categories"
-                        th:if="${categories}" th:each="category : ${categories}"
+                        th:if="${categories.size()}" th:each="category : ${categories}"
                         th:value="${category.path}" th:text="${category.name}"></option>
             </select>
         </div>

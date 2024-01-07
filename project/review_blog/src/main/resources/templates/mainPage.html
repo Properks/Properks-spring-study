@@ -96,9 +96,9 @@
 
         </div>
     </div>
-    <input type="hidden" id="error-message" th:if="${errorMessage}" th:value="${errorMessage}">
+    <input type="hidden" id="error-message" th:if="${error}" th:value="${error}">
 <script th:src="@{/js/mainPage.js}"></script>
-<script th:if="${errorMessage}">
+<script th:if="${error}">
     alert(document.getElementById('error-message').value);
 </script>
 </body>
