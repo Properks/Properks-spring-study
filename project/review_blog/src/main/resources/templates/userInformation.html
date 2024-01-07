@@ -108,7 +108,8 @@
                                 Are you sure you want to delete it?</p>
 
                             <div class="information-delete-account-btn-container">
-                                <button type="button" id="information-delete-account-cancel-btn">cancel</button>
+                                <button type="button" id="information-delete-account-cancel-btn"
+                                        th:onclick="|location.href='@{/user/info(tab='my_info')}'|">cancel</button>
                                 <button type="button" id="information-delete-account-submit-btn">submit</button>
                             </div>
                         </div>
