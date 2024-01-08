@@ -5,6 +5,7 @@ import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.dto.category.UpdateCategoryRequest;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -113,7 +114,7 @@ public class CategoryService {
         if (!(isValid(request.getOriginPath())
                 && isValid(TreeUtilForCategory.getPathWithoutLeaf(request.getNewPath()))
                 && isExist(originCategoryName))) { // When Category path is invalid or Category doesn't exist
-            return null;
+            throw new IllegalArgumentException("Invalid category path");
         }
 
         Category foundCategory = findCategory(originCategoryName);
@@ -127,7 +128,7 @@ public class CategoryService {
         }
 
         if (!foundCategory.getChildren().isEmpty()) { // When Category has one or more child category for updating path
-            return null;
+            throw new DataIntegrityViolationException("Category has one or more children");
         }
         else if (originCategoryName.equals(newCategoryName)) { // update only path
             foundCategory.setParent(findCategory(TreeUtilForCategory.getParentOfLeaf(request.getNewPath())));

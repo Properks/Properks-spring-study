@@ -19,8 +19,13 @@ public class CategoryApiController {
 
     @PostMapping("/api/category")
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody CreateCategoryRequest request) {
-        CategoryResponse savedCategory = new CategoryResponse(categoryService.createCategory(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
+        try {
+            CategoryResponse savedCategory = new CategoryResponse(categoryService.createCategory(request));
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
+        }
+        catch(IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @GetMapping("/api/category")
@@ -34,20 +39,35 @@ public class CategoryApiController {
 
     @GetMapping("/api/category/{name}")
     public ResponseEntity<CategoryResponse> getCategory(@PathVariable String name) {
-        CategoryResponse foundCategory = new CategoryResponse(categoryService.findCategory(name));
-        return ResponseEntity.ok().body(foundCategory);
+        try {
+            CategoryResponse foundCategory = new CategoryResponse(categoryService.findCategory(name));
+            return ResponseEntity.ok().body(foundCategory);
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @DeleteMapping("/api/category/{name}")
     public ResponseEntity<Void> deleteCategory(@PathVariable String name) {
-        categoryService.deleteCategory(name);
-        return ResponseEntity.ok().build();
+        try {
+            categoryService.deleteCategory(name);
+            return ResponseEntity.ok().build();
+        }
+        catch(IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @PutMapping("/api/category")
     public ResponseEntity<CategoryResponse> updateCategory(@RequestBody UpdateCategoryRequest request) {
-        CategoryResponse updatedCategory = new CategoryResponse(categoryService.updateCategory(request));
-        return ResponseEntity.ok().body(updatedCategory);
+        try {
+            CategoryResponse updatedCategory = new CategoryResponse(categoryService.updateCategory(request));
+            return ResponseEntity.ok().body(updatedCategory);
+        }
+        catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
 }
