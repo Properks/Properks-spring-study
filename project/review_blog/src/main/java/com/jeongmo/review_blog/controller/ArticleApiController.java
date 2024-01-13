@@ -21,54 +21,89 @@ public class ArticleApiController {
     // POST
     @PostMapping("/api/article")
     public ResponseEntity<FindArticleResponse> postArticle(@RequestBody CreateArticleRequest request) {
-        FindArticleResponse savedArticle = new FindArticleResponse(articleService.createArticle(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedArticle);
+        try {
+            FindArticleResponse savedArticle = new FindArticleResponse(articleService.createArticle(request));
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedArticle);
+        }
+        catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     // GET
     @GetMapping("/api/article/{id}")
     public ResponseEntity<FindArticleResponse> getArticle(@PathVariable Long id) {
-        FindArticleResponse foundArticle = new FindArticleResponse(articleService.getArticle(id));
-        return ResponseEntity.ok().body(foundArticle);
+        try {
+            FindArticleResponse foundArticle = new FindArticleResponse(articleService.getArticle(id));
+            return ResponseEntity.ok().body(foundArticle);
+        }
+        catch(Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/api/articles")
     public ResponseEntity<List<FindArticleResponse>> getArticles() {
-        List<FindArticleResponse> foundArticles = articleService.getArticles()
-                .stream().map(FindArticleResponse::new)
-                .toList();
-        return ResponseEntity.ok().body(foundArticles);
+        try {
+            List<FindArticleResponse> foundArticles = articleService.getArticles()
+                    .stream().map(FindArticleResponse::new)
+                    .toList();
+            return ResponseEntity.ok().body(foundArticles);
+        }
+        catch(Exception e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/api/articles/category")
     public ResponseEntity<List<FindArticleResponse>> getArticlesWithCategory(@RequestParam Long categoryId) {
-        List<FindArticleResponse> foundArticles = articleService.getArticlesByCategory(categoryId)
-                .stream()
-                .map(FindArticleResponse::new)
-                .toList();
-        return ResponseEntity.ok().body(foundArticles);
+        try {
+            List<FindArticleResponse> foundArticles = articleService.getArticlesByCategory(categoryId)
+                    .stream()
+                    .map(FindArticleResponse::new)
+                    .toList();
+            return ResponseEntity.ok().body(foundArticles);
+        }
+        catch(Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/api/articles/user")
     public ResponseEntity<List<FindArticleResponse>> getArticlesByUser(@RequestParam String nickname) {
-        List<FindArticleResponse> foundArticle = articleService.getArticleByUser(nickname)
-                .stream()
-                .map(FindArticleResponse::new)
-                .toList();
-        return ResponseEntity.ok().body(foundArticle);
+        try {
+            List<FindArticleResponse> foundArticle = articleService.getArticleByUser(nickname)
+                    .stream()
+                    .map(FindArticleResponse::new)
+                    .toList();
+            return ResponseEntity.ok().body(foundArticle);
+        }
+        catch(Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     //PUT
     @PutMapping("/api/article/{id}")
     public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody UpdateArticleRequest request) {
-        Article updatedArticle = articleService.updateArticle(id, request);
-        return ResponseEntity.ok().body(updatedArticle);
+        try {
+            Article updatedArticle = articleService.updateArticle(id, request);
+            return ResponseEntity.ok().body(updatedArticle);
+        }
+        catch(Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     //DELETE
     @DeleteMapping("/api/article/{id}")
     public ResponseEntity<Void> deleteArticle(@PathVariable Long id) {
-        articleService.deleteArticle(id);
-        return ResponseEntity.ok().build();
+        try {
+            articleService.deleteArticle(id);
+            return ResponseEntity.ok().build();
+        }
+        catch(Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
