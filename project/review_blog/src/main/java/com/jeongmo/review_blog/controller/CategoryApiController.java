@@ -30,11 +30,16 @@ public class CategoryApiController {
 
     @GetMapping("/api/category")
     public ResponseEntity<List<CategoryResponse>> getCategories() {
-        List<CategoryResponse> list = categoryService.findAllCategory()
-                .stream()
-                .map(CategoryResponse::new)
-                .toList();
-        return ResponseEntity.ok().body(list);
+        try {
+            List<CategoryResponse> list = categoryService.findAllCategory()
+                    .stream()
+                    .map(CategoryResponse::new)
+                    .toList();
+            return ResponseEntity.ok().body(list);
+        }
+        catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/api/category/{name}")

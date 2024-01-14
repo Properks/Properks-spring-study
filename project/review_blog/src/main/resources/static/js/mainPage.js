@@ -9,9 +9,19 @@ if (deleteButton) {
             if (confirm('Delete this article?')) {
                 let articleId = document.getElementById('article-view-id').value;
                 fetch('/api/article/' + articleId, {method: 'DELETE'})
-                    .then(() => {
-                        alert('Delete article successfully');
-                        location.replace('/home');
+                    .then(response => {
+                        if (response.status === 200) {
+                            alert('Delete article successfully');
+                            location.replace('/home');
+                        }
+                        else if (response.status === 400) {
+                            alert('Fail to delete article (Bad Request)');
+                            location.replace('/article/' + articleId);
+                        }
+                        else {
+                            alert('Fail to delete article (Unknown error: ' + response.status + ')');
+                            location.replace('/article/' + articleId);
+                        }
                     })
             }
         } else {alert("Cannot delete someone else's");}
@@ -48,9 +58,19 @@ if (modifyButton) {
                 content: articleContent
             })
         })
-            .then(() => {
-                alert('Modify article successfully');
-                location.replace('/article/' + articleId);
+            .then(response => {
+                if (response.status === 200) {
+                    alert('Modify article successfully');
+                    location.replace('/article/' + articleId);
+                }
+                else if (response.status === 400) {
+                    alert('Fail to modify article (Bad Request)');
+                    location.replace('/article/' + articleId);
+                }
+                else {
+                    alert('Fail to modify article (Unknown error: ' + response.status + ')');
+                    location.replace('/article/' + articleId);
+                }
             })
     })
 }
@@ -75,9 +95,19 @@ if (createButton) {
                 category: category
             })
         })
-            .then(() => {
-                alert('Create article successfully');
-                location.replace('/home');
+            .then(response => {
+                if (response.status === 200) {
+                    alert('Create article successfully');
+                    location.replace('/home');
+                }
+                else if (response.status === 400) {
+                    alert('Fail to create article (Bad Request)')
+                    location.replace('/new-article');
+                }
+                else {
+                    alert('Fail to create article (Unknown error: ' + response.status + ')');
+                    location.replace('/new-article');
+                }
             })
     })
 }
@@ -145,8 +175,18 @@ if (categoryButton) {
         })
         // fetch('/api/category/' + path, {method: 'POST'})
             .then(response => {
-                alert("Success to create category");
-                location.replace('/home');
+                if (response.status === 200) {
+                    alert("Success to create category");
+                    location.replace('/home');
+                }
+                else if (response.status === 400) {
+                    alert('Fail to create category (Bad Request)');
+                    location.replace('/home');
+                }
+                else {
+                    alert('Fail to create category (Unknown error: ' + response.status + ')');
+                    location.replace('/home');
+                }
             })
 
     })
