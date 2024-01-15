@@ -96,7 +96,7 @@ if (createButton) {
             })
         })
             .then(response => {
-                if (response.status === 200) {
+                if (response.status === 201) {
                     alert('Create article successfully');
                     location.replace('/home');
                 }
@@ -175,7 +175,7 @@ if (categoryButton) {
         })
         // fetch('/api/category/' + path, {method: 'POST'})
             .then(response => {
-                if (response.status === 200) {
+                if (response.status === 201) {
                     alert("Success to create category");
                     location.replace('/home');
                 }
