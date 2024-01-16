@@ -10,12 +10,11 @@ import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -125,5 +124,37 @@ public class ArticleService {
     @Transactional
     public void deleteArticlesByAuthorId(Long id) {
         articleRepository.deleteByAuthorId(id);
+    }
+
+    /**
+     * Search in article
+     *
+     * @param categoryId The category id of article which you want to find
+     * @param titleContent The keywords of title or content which you want to find (Containing)
+     * @param nickname The nickname of article writer (Exactly same)
+     * @param writer The nickname of article writer (Containing)
+     */
+    public List<Article> searchArticles(Long categoryId, String titleContent, String nickname, String writer) {
+        List<Article> articles = getArticles();
+        if (titleContent != null) {
+            List<String> keyword = Arrays.asList(titleContent.split(" "));
+            articles = articleRepository.getArticleByTitleInOrContentIn(keyword, keyword);
+        }
+        else if (writer != null) {
+            articles = articleRepository.getArticleByAuthor_NicknameContaining(writer);
+        }
+        if (nickname != null){
+            articles = articles
+                    .stream()
+                    .filter(article -> article.getAuthor().getNickname().equals(nickname))
+                    .toList();
+        }
+        if (categoryId != null) {
+            articles = articles
+                    .stream()
+                    .filter(article -> article.getCategory().getId().equals(categoryId))
+                    .toList();
+        }
+        return articles;
     }
 }

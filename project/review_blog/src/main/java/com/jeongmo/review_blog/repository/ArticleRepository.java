@@ -16,4 +16,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> getArticleByAuthor_Id(Long id);
 
     void deleteByAuthorId(Long id);
+
+    List<Article> getArticleByTitleInOrContentIn(List<String> titleKeywords, List<String> contentKeywords);
+
+    List<Article> getArticleByAuthor_NicknameContaining(String keyword);
 }

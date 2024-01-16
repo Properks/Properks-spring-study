@@ -41,37 +41,19 @@ public class ArticleViewController {
                            @RequestParam(required = false, defaultValue = "10") Integer size,
                            @RequestParam(required = false) Long categoryId,
                            @RequestParam(required = false) String nickname,
+                           @RequestParam(required = false) String titleContent,
+                           @RequestParam(required = false) String writer,
                            Model model,
                            Authentication authentication) {
         // Set categories
         addAllCategory(model);
 
         // Get articles
-        List<ArticleViewResponse> articles;
-        if (nickname != null){
-            articles = new ArrayList<>(articleService.getArticleByUser(nickname)
-                    .stream()
-                    .map(ArticleViewResponse::new)
-                    .toList());
-            if (categoryId != null) {
-                articles = new ArrayList<>(articles
-                        .stream()
-                        .filter(article -> article.getCategory().getId().equals(categoryId))
-                        .toList());
-            }
-        }
-        else if (categoryId != null) {
-            articles = new ArrayList<>(articleService.getArticlesByCategory(categoryId)
-                    .stream()
-                    .map(ArticleViewResponse::new)
-                    .toList());
-        }
-        else {
-            articles = new ArrayList<>(articleService.getArticles()
-                    .stream()
-                    .map(ArticleViewResponse::new)
-                    .toList());
-        }
+        List<ArticleViewResponse> articles = new ArrayList<>(articleService.searchArticles(
+                categoryId, titleContent, nickname, writer)
+                .stream()
+                .map(ArticleViewResponse::new)
+                .toList());
 
         securityUtils.checkAndAddLoginInfo(model, authentication);
 
