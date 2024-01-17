@@ -13,9 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -137,8 +135,12 @@ public class ArticleService {
     public List<Article> searchArticles(Long categoryId, String titleContent, String nickname, String writer) {
         List<Article> articles = getArticles();
         if (titleContent != null) {
-            List<String> keyword = Arrays.asList(titleContent.split(" "));
-            articles = articleRepository.getArticleByTitleInOrContentIn(keyword, keyword);
+            String[] keywords = titleContent.split(" ");
+            Set<Article> result = new HashSet<>(); // Avoid to duplicate
+            for (String keyword : keywords) { // Add article which have at least a keyword.to Set
+                result.addAll(articleRepository.getArticleByTitleContainingOrContentContaining(keyword, keyword));
+            }
+            articles = new ArrayList<>(result);
         }
         else if (writer != null) {
             articles = articleRepository.getArticleByAuthor_NicknameContaining(writer);
