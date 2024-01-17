@@ -56,11 +56,11 @@
             </span>
         </div>
     </div>
-    <div class="article-list-search-article-container" th:if="${articles.size()} != 0" >
+    <div class="article-list-search-article-container">
         <div class="article-list-search-article-body">
             <select name="search-category" id="article-list-search-category" >
                 <option value="titleContent">title + content</option>
-                <option value="author">author</option>
+                <option value="writer">author</option>
             </select>
             <input id="article-list-search-parameter" type="text">
             <button type="button" id="article-list-search-btn">search</button>

@@ -216,6 +216,18 @@ if (categoryInUrl) {
     showCategoryInList.textContent = 'Category: All';
 }
 
+//Search article
+const searchButton = document.getElementById('article-list-search-btn');
+if (searchButton) {
+    searchButton.addEventListener('click', () => {
+        let searchCategory = document.getElementById('article-list-search-category').value;
+        let searchQuery = document.getElementById('article-list-search-parameter').value;
+        if (searchQuery !== "") {
+            location.replace('/home?' + searchCategory + '=' + searchQuery);
+        }
+    })
+}
+
 // Check Special characters
 function containsSpecialCharacters(str) {
     let regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
