@@ -228,6 +228,19 @@ if (searchButton) {
     })
 }
 
+//Show searched word
+const searchedWordInURL = new URLSearchParams(location.search);
+const searchedWord = document.getElementById('article-list-searched-word');
+if (searchedWordInURL.has('titleContent')) {
+    searchedWord.textContent = searchedWordInURL.get('titleContent');
+}
+else if (searchedWordInURL.has('writer')) {
+    searchedWord.textContent = searchedWordInURL.get('writer');
+}
+else {
+    searchedWord.textContent = 'none';
+}
+
 // Check Special characters
 function containsSpecialCharacters(str) {
     let regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
