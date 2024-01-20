@@ -28,7 +28,7 @@ public class Article {
     /**
      * The content of article
      */
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "MEDIUMTEXT")
     private String content;
 
     /**

@@ -12,18 +12,18 @@ CREATE TABLE IF NOT EXISTS category (
     FOREIGN KEY (parent_id) REFERENCES category (id)
     );
 CREATE TABLE IF NOT EXISTS article (
-                                       id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                                       title VARCHAR(255),
-    content TEXT,
-    author_id BIGINT,
-    category_id BIGINT,
-    FOREIGN KEY (author_id) REFERENCES user (id),
-    FOREIGN KEY (category_id) REFERENCES category (id)
-    );
+                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                         title VARCHAR(255),
+                         content MEDIUMTEXT,
+                         author_id BIGINT,
+                         category_id BIGINT,
+                         created_at DATETIME,
+                         updated_at DATETIME,
+                         FOREIGN KEY (author_id) REFERENCES User(id),
+                         FOREIGN KEY (category_id) REFERENCES Category(id)
+);
 
 
-
-ALTER TABLE article ALTER COLUMN content CLOB; -- Data type of content in article is changed from VARCHAR to text
 --
 -- CREATE PROCEDURE INSERT_USER(IN userEmail VARCHAR(255), IN userPassword VARCHAR(255), IN userNickname VARCHAR(255))
 -- BEGIN
