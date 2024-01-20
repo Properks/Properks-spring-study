@@ -18,6 +18,12 @@
             <p id="article-view-author" th:text="|Writer: ${viewArticle.author.getNicknameWithoutCode()}|"></p>
             <p id="article-view-author-hover" th:text="${viewArticle.author.nickname}"></p>
         </div>
+        <div class="article-view-time-container">
+            <p id="article-view-created-time"
+               th:text="|Created at: ${#temporals.format(viewArticle.createdAt, 'yyyy-MM-dd HH:mm')}|"></p>
+            <p id="article-view-updated-time" th:if="${viewArticle.updatedAt != null}"
+               th:text="|Updated at: ${#temporals.format(article.updatedAt, 'yyyy-MM-dd HH:mm')}|"></p>
+        </div>
         <div class="article-view-content-container">
             <section class="article-view-section">
                 <p th:text="${viewArticle.content}"></p>

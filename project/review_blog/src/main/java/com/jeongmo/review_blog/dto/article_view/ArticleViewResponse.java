@@ -6,6 +6,8 @@ import com.jeongmo.review_blog.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
  * The DTO for response of article view
  */
@@ -17,6 +19,8 @@ public class ArticleViewResponse {
     private String content;
     private User author;
     private Category category;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     /**
      * The constructor with Article
@@ -29,5 +33,7 @@ public class ArticleViewResponse {
         this.content = article.getContent();
         this.author = article.getAuthor();
         this.category = article.getCategory();
+        this.createdAt = article.getCreatedAt();
+        this.updatedAt = article.getUpdatedAt();
     }
 }

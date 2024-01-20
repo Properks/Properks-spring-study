@@ -1,6 +1,7 @@
 .article-view-section {display: block;}
-.article-view-author-container {text-align: right; position: relative;}
+.article-view-author-container, .article-view-time-container {text-align: right; position: relative;}
 .article-list-search-article-body {width: fit-content; margin: 0 auto; display: flex;}
+.article-view-author-container *, .article-view-time-container * {margin:0;}
 
 #article-view-author {margin: 0;}
 #article-view-author-hover {margin:0; display: none; position: absolute; width: 100px; text-align: center; top: 100%; right: 0; border-radius: 8px; background: #333; color: #fff; font-size: 12px}
