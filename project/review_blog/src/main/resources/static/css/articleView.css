@@ -4,7 +4,7 @@
 .article-view-author-container *, .article-view-time-container * {margin:0;}
 
 #article-view-author {margin: 0;}
-#article-view-author-hover {margin:0; display: none; position: absolute; width: 100px; text-align: center; top: 100%; right: 0; border-radius: 8px; background: #333; color: #fff; font-size: 12px}
+#article-view-author-hover {margin:0; display: none; position: absolute; width: 100px; text-align: center; bottom: 100%; right: 0; border-radius: 8px; background: #333; color: #fff; font-size: 12px}
 #article-view-container {margin: 5px; padding:10px; border: 1px solid black; border-radius: 1rem}
 #article-view-delete-article-btn, #article-view-modify-article-btn {margin:3px; float: right}
 
