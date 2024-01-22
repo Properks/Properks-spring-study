@@ -47,6 +47,7 @@ if (modifyButton) {
         let articleId = document.getElementById('new-article-id').value;
         let articleTitle = document.getElementById('new-article-title').value;
         let articleContent = document.getElementById('new-article-content').value;
+        let categoryPath = document.getElementById('new-article-category').value;
 
         fetch('/api/article/' + articleId, {
             method : 'PUT',
@@ -55,7 +56,8 @@ if (modifyButton) {
             },
             body : JSON.stringify({
                 title: articleTitle,
-                content: articleContent
+                content: articleContent,
+                category: categoryPath
             })
         })
             .then(response => {
@@ -207,13 +209,15 @@ if (sidebarElements) {
 //Show category in article list
 const categoryInUrl = new URLSearchParams(location.search).get('categoryId');
 const showCategoryInList = document.getElementById('show-selected-category');
-if (categoryInUrl) {
-    let categoryId =
-        Array.from(sidebarElements).map(item => item.querySelector('.category-id'))
-            .find(item => item.value === categoryInUrl)
-    showCategoryInList.textContent = 'Category: ' + categoryId.getAttribute('category-name');
-} else {
-    showCategoryInList.textContent = 'Category: All';
+if (showCategoryInList) {
+    if (categoryInUrl) {
+        let categoryId =
+            Array.from(sidebarElements).map(item => item.querySelector('.category-id'))
+                .find(item => item.value === categoryInUrl)
+        showCategoryInList.textContent = 'Category: ' + categoryId.getAttribute('category-name');
+    } else {
+        showCategoryInList.textContent = 'Category: All';
+    }
 }
 
 //Search article
@@ -231,14 +235,16 @@ if (searchButton) {
 //Show searched word
 const searchedWordInURL = new URLSearchParams(location.search);
 const searchedWord = document.getElementById('article-list-searched-word');
-if (searchedWordInURL.has('titleContent')) {
-    searchedWord.textContent = searchedWordInURL.get('titleContent');
-}
-else if (searchedWordInURL.has('writer')) {
-    searchedWord.textContent = searchedWordInURL.get('writer');
-}
-else {
-    searchedWord.textContent = 'none';
+if (searchedWord) {
+    if (searchedWordInURL.has('titleContent')) {
+        searchedWord.textContent = searchedWordInURL.get('titleContent');
+    }
+    else if (searchedWordInURL.has('writer')) {
+        searchedWord.textContent = searchedWordInURL.get('writer');
+    }
+    else {
+        searchedWord.textContent = 'none';
+    }
 }
 
 // Check Special characters
