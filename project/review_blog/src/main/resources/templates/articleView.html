@@ -28,7 +28,9 @@
         </div>
         <div class="article-view-content-container">
             <section class="article-view-section">
-                <p th:text="${viewArticle.content}"></p>
+                <div th:each="line : ${#strings.arraySplit(viewArticle.content, '&#10')}">
+                    <p th:text="${line}"></p>
+                </div>
             </section>
         </div>
     </article>
