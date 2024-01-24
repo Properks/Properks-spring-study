@@ -206,6 +206,19 @@ if (sidebarElements) {
     }
 }
 
+//All category
+const allCategory = document.getElementById('sidebar-all-category');
+if (allCategory) {
+    allCategory.addEventListener('click', () => {
+        let url = new URLSearchParams(location.search);
+        let query = 'categoryId';
+        if (url.has(query)) {
+            url.delete(query)
+        }
+        location.replace('/home?' + url.toString());
+    })
+}
+
 //Show category in article list
 const categoryInUrl = new URLSearchParams(location.search).get('categoryId');
 const showCategoryInList = document.getElementById('show-selected-category');

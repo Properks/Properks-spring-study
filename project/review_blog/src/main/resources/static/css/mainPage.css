@@ -5,7 +5,7 @@
 
 .contents-container {margin:5px; padding:5px; border: 1px double black; display: flex;}
 .sidebar-container {padding:5px; width: 20%; border: 1px solid black; background: beige; align-items: start;}
-.sidebar-content {width:90%; margin-left: 5%; margin-right: 5%;}
+.sidebar-content, #sidebar-all-category {width:90%; margin-left: 5%; margin-right: 5%;}
 .sidebar-title h3, .article-title h3 {margin:0; text-align: center; text-transform: capitalize;}
 
 .sidebar-title {margin: 5px; border-bottom:1px solid black;}

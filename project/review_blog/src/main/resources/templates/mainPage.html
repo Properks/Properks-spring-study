@@ -49,6 +49,7 @@
                     <div class="sidebar-title">
                         <h3>side bar</h3>
                     </div>
+                    <div id="sidebar-all-category">All</div>
                     <div class="sidebar-content" th:if="${categories}">
                         <div class="sidebar" th:each="category: ${categories}">
                             <input type="hidden" class="category-id" th:value="${category.id}"
