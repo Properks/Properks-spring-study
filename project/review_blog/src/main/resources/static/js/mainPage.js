@@ -239,8 +239,13 @@ if (searchButton) {
     searchButton.addEventListener('click', () => {
         let searchCategory = document.getElementById('article-list-search-category').value;
         let searchQuery = document.getElementById('article-list-search-parameter').value;
+        let url = new URLSearchParams(location.search);
         if (searchQuery !== "") {
             location.replace('/home?' + searchCategory + '=' + searchQuery);
+        }
+        else if (url.has('titleContent') || url.has('writer')) {
+            url.delete((url.has('titleContent')) ? 'titleContent' : 'writer');
+            location.replace('/home?' + url.toString())
         }
     })
 }
