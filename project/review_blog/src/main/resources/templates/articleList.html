@@ -43,6 +43,10 @@
             </div>
         </div>
     </div>
+    <div class="article-list-create-button-container">
+        <button type="button" id="article-list-create-article-btn"
+                th:onclick="|location.href='@{/new-article}'|">new article</button>
+    </div>
     <div class="article-list-page-container" th:if="${articles.size()} != 0">
         <input id="article-list-total-page" type="hidden" th:value="${totalPage}">
         <div id="article-list-page-decrease">

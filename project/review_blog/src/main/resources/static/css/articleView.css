@@ -1,6 +1,5 @@
 .article-view-section {display: block;}
 .article-view-author-container, .article-view-time-container {text-align: right; position: relative;}
-.article-list-search-article-body {width: fit-content; margin: 0 auto; display: flex;}
 .article-view-author-container *, .article-view-time-container * {margin:0;}
 
 #article-view-author {margin: 0;}
@@ -9,7 +8,3 @@
 #article-view-delete-article-btn, #article-view-modify-article-btn {margin:3px; float: right}
 
 #article-view-author:hover + #article-view-author-hover {display: block;}
-
-#article-list-search-parameter {width: 200px; margin: 3px;}
-#article-list-search-category {width:70px; margin: 3px; text-transform: capitalize}
-#article-list-search-btn {width:70px; margin: 3px; text-transform: capitalize}
