@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class UpdateCategoryRequest {
-    private String originPath;
-    private String newPath;
+    private Long categoryId;
+    private Long newParent;
+    private String newName;
 }

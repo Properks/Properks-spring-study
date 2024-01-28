@@ -11,20 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class CreateCategoryRequest {
-    private String pathOfCategory;
-
-    public String parent() {
-        return TreeUtilForCategory.getParentOfLeaf(this.pathOfCategory);
-    }
-
-    public String name() {
-        return TreeUtilForCategory.getLeafCategory(this.pathOfCategory);
-    }
-
-    public Category toEntity(Category parent) {
-        return Category.builder()
-                .name(name())
-                .parent(parent)
-                .build();
-    }
+    private Long parentId;
+    private String name;
 }

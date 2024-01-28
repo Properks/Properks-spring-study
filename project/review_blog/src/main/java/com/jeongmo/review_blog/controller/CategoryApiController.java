@@ -42,10 +42,10 @@ public class CategoryApiController {
         }
     }
 
-    @GetMapping("/api/category/{name}")
-    public ResponseEntity<CategoryResponse> getCategory(@PathVariable String name) {
+    @GetMapping("/api/category/{id}")
+    public ResponseEntity<CategoryResponse> getCategory(@PathVariable Long id) {
         try {
-            CategoryResponse foundCategory = new CategoryResponse(categoryService.findCategory(name));
+            CategoryResponse foundCategory = new CategoryResponse(categoryService.findCategory(id));
             return ResponseEntity.ok().body(foundCategory);
         }
         catch (IllegalArgumentException e) {
@@ -53,10 +53,10 @@ public class CategoryApiController {
         }
     }
 
-    @DeleteMapping("/api/category/{name}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable String name) {
+    @DeleteMapping("/api/category/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         try {
-            categoryService.deleteCategory(name);
+            categoryService.deleteCategory(id);
             return ResponseEntity.ok().build();
         }
         catch(IllegalArgumentException e) {

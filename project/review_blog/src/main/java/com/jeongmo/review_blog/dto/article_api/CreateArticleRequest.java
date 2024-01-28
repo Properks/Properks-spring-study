@@ -20,9 +20,9 @@ public class CreateArticleRequest {
     private String content;
 
     /**
-     * Category path ( root_child1_child2.... form )
+     * The id of category
      */
-    private String category;
+    private Long category;
 
     /**
      * Build this to article

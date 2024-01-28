@@ -23,5 +23,5 @@ public class UpdateArticleRequest {
     /**
      * The new id of Category
      */
-    private String category;
+    private Long category;
 }

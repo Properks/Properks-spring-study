@@ -184,7 +184,7 @@ class CategoryServiceTest {
         categoryRepository.save(category);
 
         //when
-        boolean isValid = categoryService.isExist(categoryName);
+        boolean isValid = categoryService.isExistedName(categoryName);
 
         //then
         assertThat(isValid).isTrue();
@@ -194,7 +194,7 @@ class CategoryServiceTest {
         categoryRepository.flush();
 
         //when
-        boolean isInvalid = categoryService.isExist(categoryName);
+        boolean isInvalid = categoryService.isExistedName(categoryName);
 
         //then
         assertThat(isInvalid).isFalse();
