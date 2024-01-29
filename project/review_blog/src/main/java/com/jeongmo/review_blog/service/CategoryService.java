@@ -71,7 +71,7 @@ public class CategoryService {
     /**
      * Delete category by name. If the category value is null or does not exist or has children, it cannot be deleted.
      *
-     * @param  name The name of category which will be deleted.
+     * @param id The id of category which will be deleted.
      */
     public void deleteCategory(Long id) {
         if (id == null || !isValid(id)) {throw new IllegalArgumentException("Invalid category");}
@@ -96,13 +96,15 @@ public class CategoryService {
         Category updatedCategory = categoryRepository.findById(request.getCategoryId()).orElseThrow( // find category
                 () -> new IllegalArgumentException("Category isn't existed")
         );
-        if (updatedCategory.getId().equals(request.getNewParent()) || !isValid(request.getNewParent())) { // Parent
-            // error
-            throw new IllegalArgumentException("Invalid parent id");
-        }
-        if (!request.getNewParent().equals(updatedCategory.getParent().getId())) { // When parent is changed
-            Category parent = findCategory(request.getNewParent());
-            updatedCategory.setParent(parent);
+        if (request.getNewParent() != null) {
+            if (updatedCategory.getId().equals(request.getNewParent()) || !isValid(request.getNewParent())) { // Parent
+                // error
+                throw new IllegalArgumentException("Invalid parent id");
+            }
+            if (!request.getNewParent().equals(updatedCategory.getParent().getId())) { // When parent is changed
+                Category parent = findCategory(request.getNewParent());
+                updatedCategory.setParent(parent);
+            }
         }
         return updatedCategory.update(request.getNewName());
     }
@@ -130,7 +132,7 @@ public class CategoryService {
      * @return The boolean, true: valid, false: category doesn't exist
      */
     public boolean isValid(Long id) {
-        return categoryRepository.existsById(id);
+        return id == null || categoryRepository.existsById(id);
     }
 
     /**

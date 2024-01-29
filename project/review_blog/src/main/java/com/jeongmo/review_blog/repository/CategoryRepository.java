@@ -1,6 +1,7 @@
 package com.jeongmo.review_blog.repository;
 
 import com.jeongmo.review_blog.domain.Category;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,10 +13,12 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     /**
-     * Find Category with name
+     * Find Category with id and EntityGraph to read children
      */
     @EntityGraph(attributePaths = { "children" })
-    Optional<Category> findByName(String name);
+    @Override
+    @NotNull
+    Optional<Category> findById(@NotNull Long id);
 
     /**
      * Find All root categories.

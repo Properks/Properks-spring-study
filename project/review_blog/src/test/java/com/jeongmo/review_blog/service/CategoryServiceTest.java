@@ -35,15 +35,14 @@ class CategoryServiceTest {
     void createCategoryWithoutParent() {
         //given
         final String categoryName = "CategoryName";
-        final String parentName = null;
-        final CreateCategoryRequest request = new CreateCategoryRequest(categoryName);
+        final CreateCategoryRequest request = new CreateCategoryRequest(null, categoryName);
 
         //when
         Category savedCategory = categoryService.createCategory(request);
 
         //then
         assertThat(savedCategory.getName()).isEqualTo(categoryName);
-        assertThat(savedCategory.getParent()).isEqualTo(null);
+        assertThat(savedCategory.getParent()).isNull();
 
     }
 
@@ -54,17 +53,17 @@ class CategoryServiceTest {
         final String categoryName = "CategoryName";
         final String parentName = "ParentCategory";
         final String secondName = "A SecondCategory";
-        categoryRepository.save(Category.builder()
+        Category parent = categoryRepository.save(Category.builder()
                 .name(parentName)
                 .parent(null)
                 .build());
 
         //when
-        Category savedCategory = categoryService.createCategory(new CreateCategoryRequest(parentName + "_" + categoryName));
-        Category secondCategory = categoryService.createCategory(new CreateCategoryRequest(parentName + "_" + secondName));
+        Category savedCategory = categoryService.createCategory(new CreateCategoryRequest(parent.getId(), categoryName));
+        Category secondCategory = categoryService.createCategory(new CreateCategoryRequest(parent.getId(), secondName));
 
         //then
-        Category parentCategory = categoryRepository.findByName(parentName).get();
+        Category parentCategory = categoryRepository.findById(parent.getId()).get();
 
         assertThat(savedCategory.getName()).isEqualTo(categoryName);
         assertThat(secondCategory.getName()).isEqualTo(secondName);
@@ -84,16 +83,14 @@ class CategoryServiceTest {
     void createCategoryInvalidParent() {
         //given
         final String categoryName = "category";
-        final String invalidParentName = "invalid";
-        final String exceptionMessage = "Invalid parent category in request";
-        final CreateCategoryRequest request = new CreateCategoryRequest(invalidParentName + "_" + categoryName);
+        final CreateCategoryRequest request = new CreateCategoryRequest((long)-1, categoryName);
 
         //when
-        categoryService.createCategory(request);
+        assertThrows(IllegalArgumentException.class,() -> categoryService.createCategory(request));
 
         //then
-        Category foundCategory = categoryRepository.findByName(categoryName).orElse(null);
-        assertThat(foundCategory).isNull();
+        List<Category> foundCategory = categoryRepository.findAll();
+        assertThat(foundCategory).isEmpty();
 
     }
 
@@ -107,7 +104,7 @@ class CategoryServiceTest {
                 .build());
 
         //when
-        Category foundCategory = categoryService.findCategory(categoryName);
+        Category foundCategory = categoryService.findCategory(savedCategory.getId());
 
         //then
         assertThat(foundCategory.getId()).isEqualTo(savedCategory.getId());
@@ -121,14 +118,14 @@ class CategoryServiceTest {
     void findOneInvalidCategory() {
         //given
         final String categoryName = "categoryName";
-        final String nameParameter = "Category";
-        final String exceptionMessage = "Invalid category";
+        final String exceptionMessage = "Not found category has -1";
         categoryRepository.save(Category.builder()
                 .name(categoryName)
                 .build());
 
         //when
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> categoryService.findCategory(nameParameter));
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> categoryService.findCategory((long)-1));
 
         //then
         assertThat(exception.getMessage()).isEqualTo(exceptionMessage);
@@ -157,7 +154,7 @@ class CategoryServiceTest {
         List<CategoryResponse> list = categoryService.findAllCategory().stream().map(CategoryResponse::new).toList();
 
         //then
-        category = categoryRepository.findByName(categoryName).get();
+        category = categoryRepository.findById(category.getId()).get();
         assertThat(list).hasSize(3);
         assertThat(list.get(0).getId()).isEqualTo(category.getId());
         assertThat(list.get(0).getName()).isEqualTo(category.getName());
@@ -208,23 +205,15 @@ class CategoryServiceTest {
         *  parent - Category
         *         - sibling
         */
-        final String categoryName = "Category";
         final String parentName = "parent";
-        final String siblingName = "sibling";
-        final String path = "parent_Category";
-        final String invalidPath = "sibling_Category";
         Category parent = categoryRepository.save(Category.builder().name(parentName).build());
-        Category category = categoryRepository.save(Category.builder().name(categoryName).parent(parent).build());
-        Category sibling = categoryRepository.save(Category.builder().name(siblingName).parent(parent).build());
 
         //when
-        boolean isValid = categoryService.isValid(path);
-        boolean isInvalid = categoryService.isValid(invalidPath);
-        boolean noParentInPath = categoryService.isValid(siblingName);
+        boolean isValid = categoryService.isValid(parent.getId());
+        boolean noParentInPath = categoryService.isValid((long)-1);
 
         //then
         assertThat(isValid).isTrue();
-        assertThat(isInvalid).isFalse();
         assertThat(noParentInPath).isFalse();
     }
 
@@ -238,7 +227,7 @@ class CategoryServiceTest {
                 .build());
 
         //when
-        categoryService.deleteCategory(categoryName);
+        categoryService.deleteCategory(savedCategory.getId());
 
         //then
         assertThat(categoryRepository.findAll()).isEmpty();
@@ -262,7 +251,7 @@ class CategoryServiceTest {
 
         //when
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> categoryService.deleteCategory(categoryName));
+                () -> categoryService.deleteCategory(category.getId()));
 
         //then
         assertThat(exception.getMessage()).isEqualTo(exceptionMessage);
@@ -274,16 +263,9 @@ class CategoryServiceTest {
         //given
         final String categoryName = "Category";
         final String updatedNameOfCategory = "Category1";
-        final String categoryPath = "Category";
-        final String newCategoryPath = "Category1";
 
         final String childName = "Child";
         final String updatedNameOfChild= "Child1";
-        final String childPath = "Category1_Child"; // After updated category
-        final String newChildPath = "Category1_Child1";
-
-        final UpdateCategoryRequest categoryRequest = new UpdateCategoryRequest(categoryPath, newCategoryPath);
-        final UpdateCategoryRequest childRequest = new UpdateCategoryRequest(childPath, newChildPath);
 
         Category parent = categoryRepository.save(Category.builder()
                 .name(categoryName)
@@ -293,13 +275,16 @@ class CategoryServiceTest {
                 .parent(parent)
                 .build());
 
+        final UpdateCategoryRequest categoryRequest = new UpdateCategoryRequest(parent.getId(), null, updatedNameOfCategory);
+        final UpdateCategoryRequest childRequest = new UpdateCategoryRequest(child.getId(), parent.getId(), updatedNameOfChild);
+
         //when
         categoryService.updateCategory(categoryRequest);
         categoryService.updateCategory(childRequest);
 
         //then
-        Category newCategory = categoryRepository.findByName(updatedNameOfCategory).get();
-        Category newChild = categoryRepository.findByName(updatedNameOfChild).get();
+        Category newCategory = categoryRepository.findById(parent.getId()).get();
+        Category newChild = categoryRepository.findById(child.getId()).get();
 
         assertThat(newCategory.getId()).isEqualTo(parent.getId());
         assertThat(newChild.getId()).isEqualTo(child.getId());
@@ -318,27 +303,25 @@ class CategoryServiceTest {
         final String secondCategoryName = "Category2";
 
         final String childName = "Child";
-        final String childPath = "Category_Child"; // After updated category
-        final String newChildPath = "Category2_Child";
 
         Category parent = categoryRepository.save(Category.builder()
                 .name(categoryName)
                 .build());
-        categoryRepository.save(Category.builder()
+        Category child = categoryRepository.save(Category.builder()
                 .name(childName)
                 .parent(parent)
                 .build());
-        categoryRepository.save(Category.builder()
+        Category parent2 = categoryRepository.save(Category.builder()
                 .name(secondCategoryName)
                 .build());
 
         //when
-        categoryService.updateCategory(new UpdateCategoryRequest(childPath, newChildPath));
+        categoryService.updateCategory(new UpdateCategoryRequest(child.getId(), parent2.getId(), childName));
 
         //then
-        Category updatedCategory = categoryRepository.findByName(childName).get();
-        Category newParentCategory = categoryRepository.findByName(secondCategoryName).get();
-        Category oldParentCategory = categoryRepository.findByName(categoryName).get();
+        Category updatedCategory = categoryRepository.findById(child.getId()).get();
+        Category newParentCategory = categoryRepository.findById(parent2.getId()).get();
+        Category oldParentCategory = categoryRepository.findById(parent.getId()).get();
 
         assertThat(updatedCategory.getParent().getId()).isEqualTo(newParentCategory.getId());
         assertThat(newParentCategory.getChildren().stream().map(Category::getId)).contains(updatedCategory.getId());
@@ -356,27 +339,25 @@ class CategoryServiceTest {
 
         final String childName = "Child";
         final String newChildName = "New Child";
-        final String originPath = "Category_Child";
-        final String newPath = "Category2_New Child";
 
         Category parent = categoryRepository.save(Category.builder()
                 .name(categoryName)
                 .build());
-        categoryRepository.save(Category.builder()
+        Category child = categoryRepository.save(Category.builder()
                 .name(childName)
                 .parent(parent)
                 .build());
-        categoryRepository.save(Category.builder()
+        Category parent2 = categoryRepository.save(Category.builder()
                 .name(secondCategoryName)
                 .build());
 
         //when
-        categoryService.updateCategory(new UpdateCategoryRequest(originPath, newPath));
+        categoryService.updateCategory(new UpdateCategoryRequest(child.getId(), parent2.getId(), newChildName));
 
         //then
-        Category updatedCategory = categoryRepository.findByName(newChildName).get();
-        Category newParentCategory = categoryRepository.findByName(secondCategoryName).get();
-        Category oldParentCategory = categoryRepository.findByName(categoryName).get();
+        Category updatedCategory = categoryRepository.findById(child.getId()).get();
+        Category newParentCategory = categoryRepository.findById(parent2.getId()).get();
+        Category oldParentCategory = categoryRepository.findById(parent.getId()).get();
 
         assertThat(updatedCategory.getName()).isEqualTo(newChildName);
         assertThat(newParentCategory.getChildren().get(0).getName()).isEqualTo(updatedCategory.getName());
@@ -384,51 +365,6 @@ class CategoryServiceTest {
         assertThat(updatedCategory.getParent().getId()).isEqualTo(newParentCategory.getId()); // check path
         assertThat(newParentCategory.getChildren().stream().map(Category::getId)).contains(updatedCategory.getId());
         assertThat(oldParentCategory.getChildren()).isEmpty();
-
-    }
-
-    @Test
-    @DisplayName("updateInvalidPath(): Fail to update with invalid path")
-    void updateInvalidPath() {
-        //given
-        // Try to change child name
-        final String categoryName = "Category";
-        final String childName = "Child";
-        final String originPath = "Category_Child";
-        final String newPath = "Category_Child1";
-
-//      originPath = "Category_Child";
-        final String invalidOriginPath = "category_child";
-        final String notExistName = "Category_child"; // lowercase category name
-        final String invalidNewPath = "category_child";
-        Category parent = categoryRepository.save(Category.builder()
-                .name(categoryName)
-                .build());
-        categoryRepository.save(Category.builder()
-                .name(childName)
-                .parent(parent)
-                .build());
-
-        //when
-        Category result1 = categoryService.updateCategory(new UpdateCategoryRequest(invalidOriginPath, newPath));
-        Category result2 = categoryService.updateCategory(new UpdateCategoryRequest(notExistName, newPath));
-        Category result3 = categoryService.updateCategory(new UpdateCategoryRequest(originPath, invalidNewPath));
-
-        //then
-        Category parentCategory = categoryRepository.findByName(categoryName).get();
-        Category childCategory = categoryRepository.findByName(childName).get();
-
-        List<Category> children = parentCategory.getChildren();
-
-        assertNull(result1);
-        assertNull(result2);
-        assertNull(result3);
-
-        assertThat(parentCategory.getName()).isEqualTo(categoryName);
-        assertThat(children).hasSize(1);
-        assertThat(children.stream().map(Category::getId)).contains(childCategory.getId());
-        assertThat(childCategory.getName()).isEqualTo(childName);
-        assertThat(childCategory.getParent().getId()).isEqualTo(parentCategory.getId());
 
     }
 
@@ -449,16 +385,16 @@ class CategoryServiceTest {
                 .name(categoryName)
                 .parent(parent)
                 .build());
-        categoryRepository.save(Category.builder()
+        Category child = categoryRepository.save(Category.builder()
                 .name(childName)
                 .parent(category)
                 .build());
 
         //when
 
-        String resultOfParent = categoryService.getPath(parentName);
-        String resultOfCategory= categoryService.getPath(categoryName);
-        String resultOfChild = categoryService.getPath(childName);
+        String resultOfParent = categoryService.getPath(parent.getId());
+        String resultOfCategory= categoryService.getPath(category.getId());
+        String resultOfChild = categoryService.getPath(child.getId());
 
         //then
         assertThat(resultOfParent).isEqualTo(parentPath);
