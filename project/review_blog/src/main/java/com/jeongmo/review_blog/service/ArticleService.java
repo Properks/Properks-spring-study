@@ -6,7 +6,6 @@ import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.article_api.CreateArticleRequest;
 import com.jeongmo.review_blog.dto.article_api.UpdateArticleRequest;
 import com.jeongmo.review_blog.repository.ArticleRepository;
-import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -31,14 +30,12 @@ public class ArticleService {
     public Article createArticle(@NotNull CreateArticleRequest request) {
         User author = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Category foundCategory;
 
-        if (categoryService.isValid(request.getCategory())) {
-            // If it already exists, find it.
-             foundCategory = categoryService.findCategory(request.getCategory());
-        } else {
+        if (!categoryService.isValid(request.getCategoryId())) {
             throw new IllegalArgumentException("Invalid category path");
         }
+        // If it already exists, find it.
+        Category foundCategory = categoryService.findCategory(request.getCategoryId());
         return articleRepository.save(request.toEntity(author, foundCategory));
     }
 
@@ -67,14 +64,12 @@ public class ArticleService {
         return articleRepository.getArticleByCategory_Id(id);
     }
 
-    public List<Article> getArticleByUser(String nickname) {
+    public List<Article> getArticleByUser(Long id) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (nickname.equals(user.getNickname())) {
-            return articleRepository.getArticleByAuthor_Id(user.getId());
-        }
-        else {
+        if (!id.equals(user.getId())) {
             throw new IllegalArgumentException("Information of Nickname and Authentication is different");
         }
+        return articleRepository.getArticleByAuthor_Id(user.getId());
     }
 
     /**
@@ -89,7 +84,7 @@ public class ArticleService {
     public Article updateArticle(Long id, UpdateArticleRequest request) {
         Article updatedArticle = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot found Article for updating"));
-        if (categoryService.isValid(request.getCategory())) {
+        if (!categoryService.isValid(request.getCategory())) {
             throw new IllegalArgumentException("Invalid new category");
         }
         Category newCategory = categoryService.findCategory(request.getCategory());

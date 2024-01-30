@@ -4,6 +4,7 @@ import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.dto.category.CategoryResponse;
 import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.dto.category.UpdateCategoryRequest;
+import com.jeongmo.review_blog.repository.ArticleRepository;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,8 +26,12 @@ class CategoryServiceTest {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    ArticleRepository articleRepository;
+
     @BeforeEach
     void initRepository() {
+        articleRepository.deleteAll();
         categoryRepository.deleteAll();
     }
 

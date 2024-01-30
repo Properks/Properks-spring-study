@@ -67,34 +67,27 @@ class ArticleServiceTest {
         Category parent = categoryRepository.save(Category.builder()
                 .name(categoryName)
                 .build());
-        categoryRepository.save(Category.builder()
+        Category category = categoryRepository.save(Category.builder()
                 .name(childCategory)
                 .parent(parent)
                 .build());
         final String validCategoryPath = "Category_childCategory";
-        final String invalidPathAtParent = "category_childCategory";
-        final String invalidPathAtChild = "Category_child";
 
-        CreateArticleRequest validRequest = new CreateArticleRequest(title, content, validCategoryPath);
-        CreateArticleRequest invalidParent = new CreateArticleRequest(title, content, invalidPathAtParent);
-        CreateArticleRequest invalidChild = new CreateArticleRequest(title, content, invalidPathAtChild);
+        CreateArticleRequest validRequest = new CreateArticleRequest(title, content, category.getId());
+        CreateArticleRequest invalidCategory = new CreateArticleRequest(title, content, (long)-1);
 
         //when
         Article result = articleService.createArticle(validRequest);
         Exception resultWithInvalidParent = assertThrows(IllegalArgumentException.class,
-                () -> articleService.createArticle(invalidParent));
-        Exception resultWithInvalidChild = assertThrows(IllegalArgumentException.class,
-                () -> articleService.createArticle(invalidChild));
+                () -> articleService.createArticle(invalidCategory));
 
         //then
-        Category category = categoryRepository.findByName(childCategory).get();
         assertThat(result.getTitle()).isEqualTo(title);
         assertThat(result.getContent()).isEqualTo(content);
         assertThat(result.getCategory().getId()).isEqualTo(category.getId());
         assertThat(result.getAuthor().getId()).isEqualTo(user.getId());
 
         assertThat(resultWithInvalidParent.getMessage()).isEqualTo("Invalid category path");
-        assertThat(resultWithInvalidChild.getMessage()).isEqualTo("Invalid category path");
 
         SecurityContextHolder.clearContext();
         assertThrows(NullPointerException.class,
@@ -111,7 +104,7 @@ class ArticleServiceTest {
         Category category = categoryRepository.save(Category.builder()
                 .name(categoryName)
                 .build());
-        CreateArticleRequest create = new CreateArticleRequest(title, content, categoryName);
+        CreateArticleRequest create = new CreateArticleRequest(title, content, category.getId());
         Long articleId = articleRepository.save(Article.builder()
                 .title(title)
                 .content(content)
@@ -238,7 +231,7 @@ class ArticleServiceTest {
                 .build());
 
         //when
-        List<Article> result = articleService.getArticleByUser(user.getNickname());
+        List<Article> result = articleService.getArticleByUser(user.getId());
 
         //then
         assertThat(result).hasSize(2);

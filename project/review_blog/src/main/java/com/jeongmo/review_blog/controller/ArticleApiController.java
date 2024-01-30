@@ -70,9 +70,9 @@ public class ArticleApiController {
     }
 
     @GetMapping("/api/articles/user")
-    public ResponseEntity<List<FindArticleResponse>> getArticlesByUser(@RequestParam String nickname) {
+    public ResponseEntity<List<FindArticleResponse>> getArticlesByUser(@RequestParam Long id) {
         try {
-            List<FindArticleResponse> foundArticle = articleService.getArticleByUser(nickname)
+            List<FindArticleResponse> foundArticle = articleService.getArticleByUser(id)
                     .stream()
                     .map(FindArticleResponse::new)
                     .toList();

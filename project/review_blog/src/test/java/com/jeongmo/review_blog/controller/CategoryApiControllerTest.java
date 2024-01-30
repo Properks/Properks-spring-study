@@ -5,6 +5,7 @@ import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.domain.User;
 import com.jeongmo.review_blog.dto.category.CreateCategoryRequest;
 import com.jeongmo.review_blog.dto.category.UpdateCategoryRequest;
+import com.jeongmo.review_blog.repository.ArticleRepository;
 import com.jeongmo.review_blog.repository.CategoryRepository;
 import com.jeongmo.review_blog.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +37,9 @@ class CategoryApiControllerTest {
     CategoryRepository categoryRepository;
 
     @Autowired
+    ArticleRepository articleRepository;
+
+    @Autowired
     protected MockMvc mockMvc;
 
     @Autowired
@@ -51,6 +55,7 @@ class CategoryApiControllerTest {
 
     @BeforeEach
     void init() {
+        articleRepository.deleteAll();
         categoryRepository.deleteAll();
 //        userRepository.deleteAll();
 
@@ -72,7 +77,7 @@ class CategoryApiControllerTest {
         //given
         final String url = "/api/category";
         final String requestPath = "category";
-        final CreateCategoryRequest request = new CreateCategoryRequest(requestPath);
+        final CreateCategoryRequest request = new CreateCategoryRequest(null, requestPath);
         final String requestBody = objectMapper.writeValueAsString(request);
 
         //when
@@ -108,22 +113,22 @@ class CategoryApiControllerTest {
         Category parent1 = categoryRepository.save(Category.builder()
                 .name(category1)
                 .build());
-        categoryRepository.save(Category.builder().name(childName1).parent(parent1).build());
+        Category child1 = categoryRepository.save(Category.builder().name(childName1).parent(parent1).build());
         Category parent2 = categoryRepository.save(Category.builder()
                 .name(category2)
                 .build());
-        categoryRepository.save(Category.builder().name(childName3).parent(parent2).build());
-        categoryRepository.save(Category.builder().name(childName2).parent(parent1).build());
+        Category child3 = categoryRepository.save(Category.builder().name(childName3).parent(parent2).build());
+        Category child2 = categoryRepository.save(Category.builder().name(childName2).parent(parent1).build());
 
         //when
         ResultActions result = mockMvc.perform(get(url));
 
         //then
-        parent1 = categoryRepository.findByName(category1).get();
-        parent2 = categoryRepository.findByName(category2).get();
-        Category child1 = categoryRepository.findByName(childName1).get();
-        Category child2 = categoryRepository.findByName(childName2).get();
-        Category child3 = categoryRepository.findByName(childName3).get();
+        parent1 = categoryRepository.findById(parent1.getId()).get();
+        parent2 = categoryRepository.findById(parent2.getId()).get();
+        child1 = categoryRepository.findById(child1.getId()).get();
+        child2 = categoryRepository.findById(child2.getId()).get();
+        child3 = categoryRepository.findById(child3.getId()).get();
 
         result
                 .andExpect(status().isOk())
@@ -144,22 +149,22 @@ class CategoryApiControllerTest {
     @DisplayName("getCategory(): Success to get a category")
     void getCategory() throws Exception{
         //given
-        final String url = "/api/category/{name}";
+        final String url = "/api/category/{id}";
         final String categoryName = "category";
         final String childName = "child";
         Category parent = categoryRepository.save(Category.builder()
                 .name(categoryName)
                 .build());
-        categoryRepository.save(Category.builder()
+        Category child = categoryRepository.save(Category.builder()
                 .name(childName)
                 .parent(parent)
                 .build());
 
         //when
-        ResultActions result = mockMvc.perform(get(url, categoryName));
+        ResultActions result = mockMvc.perform(get(url, parent.getId()));
 
         //then
-        parent = categoryRepository.findByName(categoryName).get();
+        parent = categoryRepository.findById(parent.getId()).get();
         result
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(parent.getId()))
@@ -167,10 +172,10 @@ class CategoryApiControllerTest {
                 .andExpect(jsonPath("$.height").value(0));
 
         //when
-        result = mockMvc.perform(get(url, childName));
+        result = mockMvc.perform(get(url, child.getId()));
 
         //then
-        Category child = categoryRepository.findByName(childName).get();
+        child = categoryRepository.findById(child.getId()).get();
         result
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(child.getId()))
@@ -183,18 +188,19 @@ class CategoryApiControllerTest {
     @DisplayName("deleteCategory(): Success to delete category")
     void deleteCategory() throws Exception{
         //given
-        final String url = "/api/category/{name}";
+        final String url = "/api/category/{id}";
         final String categoryName = "Category";
-        categoryRepository.save(Category.builder()
+        Category category = categoryRepository.save(Category.builder()
                 .name(categoryName)
                 .build());
 
         //when
-        ResultActions result = mockMvc.perform(delete(url, categoryName));
+        ResultActions result = mockMvc.perform(delete(url, category.getId()));
 
         //then
         List<Category> list = categoryRepository.findAll();
 
+        result.andExpect(status().isOk());
         assertThat(list).isEmpty();
 
     }
@@ -210,21 +216,19 @@ class CategoryApiControllerTest {
         final String childName = "child";
         final String newChildName = "new Child";
 
-        final String originalPath = "category_child";
-        final String newPath = "category2_new Child";
-
         Category parent = categoryRepository.save(Category.builder()
                 .name(categoryName)
                 .build());
-        categoryRepository.save(Category.builder()
+        Category category = categoryRepository.save(Category.builder()
                 .name(childName)
                 .parent(parent)
                 .build());
-        categoryRepository.save(Category.builder()
+        Category parent2 = categoryRepository.save(Category.builder()
                 .name(categoryName2)
                 .build());
 
-        String request = objectMapper.writeValueAsString(new UpdateCategoryRequest(originalPath, newPath));
+        String request = objectMapper.writeValueAsString(new UpdateCategoryRequest(category.getId(), parent2.getId(),
+                newChildName));
 
         //when
         ResultActions result = mockMvc.perform(put(url)
@@ -232,9 +236,9 @@ class CategoryApiControllerTest {
                 .content(request));
 
         //then
-        Category newParent = categoryRepository.findByName(categoryName2).get();
-        Category oldParent = categoryRepository.findByName(categoryName).get();
-        Category updatedCategory = categoryRepository.findByName(newChildName).get();
+        Category newParent = categoryRepository.findById(parent2.getId()).get();
+        Category oldParent = categoryRepository.findById(parent.getId()).get();
+        Category updatedCategory = categoryRepository.findById(category.getId()).get();
         result
                 .andExpect(status().isOk());
 

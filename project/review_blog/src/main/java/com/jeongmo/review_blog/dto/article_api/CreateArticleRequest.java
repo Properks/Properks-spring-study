@@ -3,7 +3,6 @@ package com.jeongmo.review_blog.dto.article_api;
 import com.jeongmo.review_blog.domain.Article;
 import com.jeongmo.review_blog.domain.Category;
 import com.jeongmo.review_blog.domain.User;
-import com.jeongmo.review_blog.util.tree.TreeUtilForCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,7 @@ public class CreateArticleRequest {
     /**
      * The id of category
      */
-    private Long category;
+    private Long categoryId;
 
     /**
      * Build this to article

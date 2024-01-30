@@ -65,7 +65,7 @@ class ArticleApiControllerTest {
         user = userRepository.save(User.builder()
                 .email("test@email.com")
                 .password("test1234")
-                .nickname("username")
+                .nickname("username#00000")
                 .build());
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user,
                 user.getPassword(), user.getAuthorities()));
@@ -79,20 +79,20 @@ class ArticleApiControllerTest {
         final String title = "title1";
         final String content = "content1";
         final String categoryName = "Category";
-        final CreateArticleRequest request = new CreateArticleRequest(title, content, categoryName);
-        final String requestBody = objectMapper.writeValueAsString(request);
-        categoryRepository.save(Category.builder()
+        Category category = categoryRepository.save(Category.builder()
                 .name(categoryName)
                 .build());
+        final CreateArticleRequest request = new CreateArticleRequest(title, content, category.getId());
+        final String requestBody = objectMapper.writeValueAsString(request);
 
 
         //when
-        mockMvc.perform(post(url)
+        ResultActions result = mockMvc.perform(post(url)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(requestBody))
-                .andExpect(status().isCreated()).andReturn();
+                        .content(requestBody));
 
         //then
+        result.andExpect(status().isCreated());
 
         List<Article> articleList = articleRepository.findAll();
 
@@ -217,7 +217,7 @@ class ArticleApiControllerTest {
     @Test
     void getArticlesByAuthor() throws Exception{
         //given
-        final String url = "/api/articles/user?nickname=";
+        final String url = "/api/articles/user?id=";
         final String categoryName1 = "Category1";
         final String categoryName2 = "Category2";
         Category category1 = categoryRepository.save(Category.builder()
@@ -246,7 +246,7 @@ class ArticleApiControllerTest {
                 .build());
 
         //when
-        ResultActions result1 = mockMvc.perform(get(url + user.getNicknameWithoutCode()));
+        ResultActions result1 = mockMvc.perform(get(url + user.getId()));
 
         //then
         result1
