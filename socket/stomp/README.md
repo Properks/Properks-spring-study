@@ -22,5 +22,5 @@
 <details>
 <summary>GIF</summary>
 
-![result](https://github.com/Properks/Start_Spring-boot/assets/76582572/e2258c75-2ef1-4622-8837-f8fc25b90fd2)
+![result](https://github.com/Properks/Start_Spring-boot/assets/76582572/9f9f35d0-f9b6-44e9-bfd9-ec0507671328)
 </details>
