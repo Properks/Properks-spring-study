@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>STOMP WebSocket Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+    <script>
+        var stompClient = null;
+
+        function connect() {
+            var socket = new SockJS('http://localhost:8080/socket');
+            stompClient = Stomp.over(socket);
+            // stompClient = Stomp.client('ws://localhost:8080/socket')
+
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+
+                stompClient.subscribe(
+                    // '/queue/' + sessionId + '/messages', (X)
+                    '/user/queue/messages',
+                    function (messageOutput) {
+                        showMessage(messageOutput.body);
+                    }
+                );
+
+                stompClient.subscribe(
+                    '/queue/notification',
+                    function (messageOutput) {
+                        showMessage(messageOutput.body)
+                    }
+                );
+
+            });
+        }
+
+        function sendToTeam() {
+            var content= document.getElementById('message').value;
+            console.log(content)
+
+            stompClient.send("/app/messages", {}, JSON.stringify({
+                sender: "user",
+                content: content,
+            }));
+        }
+
+        function sendToNotification() {
+            var content= document.getElementById('message').value;
+            console.log(content)
+
+            stompClient.send("/app/notification", {}, JSON.stringify({
+                sender: "user",
+                content: content,
+            }));
+        }
+
+        function register() {
+            stompClient.send("/app/register", {}, "register")
+        }
+
+        function showMessage(message) {
+            console.log("Recieved message: " + message)
+            var response = document.getElementById('response');
+            var p = document.createElement('p');
+            p.style.wordWrap = 'break-word';
+            p.appendChild(document.createTextNode(message));
+            response.appendChild(p);
+        }
+
+        function disconnect() {
+            stompClient.disconnect()
+        }
+
+        function getAuthentication() {
+            fetch("/users")
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json()
+                    }
+                    console.log(response);
+                })
+                .then(data => {
+                    document.getElementById("user-name").textContent = data.email;
+                }
+            )
+        }
+
+        connect()
+        getAuthentication()
+    </script>
+</head>
+<body>
+<h2>STOMP WebSocket Example</h2>
+<div>
+    <span>Username: </span>
+    <span id="user-name"></span>
+</div>
+<div>
+    <input type="text" id="message" />
+    <button onclick="sendToTeam()">send to team</button>
+    <button onclick="sendToNotification()">notice</button>
+    <button onclick="register()">register</button>
+    <button onclick="disconnect()">disconnect</button>
+</div>
+<div id="response"></div>
+</body>
+</html>
