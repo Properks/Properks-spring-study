@@ -16,12 +16,11 @@ public class WebSocketController {
 
     /**
      * 같은 세션에 있는 본인을 제외한 모든 팀에게 전달하기
-     * @param principal 유저 정보를 받기 위한 parameter
      * @param message 클라이언트에서 받은 JSON 형식의 메시지
      */
     @MessageMapping("/messages")
-    public void sendToTeam(Principal principal, Map<String, Object> message) {
-        webSocketService.sendMessage(principal, message);
+    public void sendToTeam(Map<String, Object> message) {
+        webSocketService.sendMessage(message);
     }
 
     /**

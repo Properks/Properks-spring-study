@@ -6,6 +6,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -27,14 +29,15 @@ public class WebSocketService {
 
     /**
      * 같은 세션에 있는 본인을 제외한 모든 팀에게 전달하기
-     * @param principal 본인 유저 정보
-     * @param message 보낼 메시지
+     * @param message 유저 정보 + 보낼 메시지
      */
-    public void sendMessage(Principal principal, Map<String, Object> message) {
+    public void sendMessage(Map<String, Object> message) {
+        String sender = message.get("sender").toString();
+        String content = message.get("content").toString();
         for (String username: sessions) {
-            if (!username.equals(principal.getName())) {
+            if (!username.equals(sender)) {
 
-                Map<String, Object> result = createResult(principal.getName(), message.get("content").toString());
+                Map<String, Object> result = createResult(sender, content);
 
                 messagingTemplate.convertAndSendToUser(username, "/queue/messages", result);
                 log.info(username + "에게 " + message + "를 보냄");
@@ -46,16 +49,18 @@ public class WebSocketService {
      * 모든 사람에게 보내기
      * @param message 모든 사람에게 보낼 메시지
      */
-    public void notice(String destination, String username, Map<String, Object> message) {
+    public void notice(String destination, String sender, Map<String, Object> message) {
         // 받은 데이터 가져오기
-        String sender = message.get("sender").toString();
+        boolean important = Boolean.parseBoolean(message.get("important").toString());
         String content = message.get("content").toString();
+        Date date = Date.from(Instant.parse(message.get("date").toString()));
 
         // log 찍기, 받은 데이터로 로직 처리
-        log.info("보낸 사람: " + sender);
         log.info("내용: " + content);
+        log.info("중요: " + important);
+        log.info("시간: " + date);
 
-        Map<String, Object> result = createResult(username, content);
+        Map<String, Object> result = createResult(sender, content);
 
         messagingTemplate.convertAndSend(destination, result);
     }

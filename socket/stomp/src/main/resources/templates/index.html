@@ -38,7 +38,7 @@
             console.log(content)
 
             stompClient.send("/app/messages", {}, JSON.stringify({
-                sender: "user",
+                sender: document.getElementById("user-name").textContent,
                 content: content,
             }));
         }
@@ -48,8 +48,10 @@
             console.log(content)
 
             stompClient.send("/app/notification", {}, JSON.stringify({
-                sender: "user",
+                important: true, // 중요도
                 content: content,
+                count: 1, // 알림 횟수
+                date: new Date()
             }));
         }
 
