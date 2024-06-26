@@ -1,4 +1,4 @@
-# Start_Spring-boot
+# Spring boot study
 
 이 프로젝트는 Spring Boot를 배우기 위한 스터디용 레포지토리입니다. 여러 개의 폴더로 구성되어 있으며, 각 폴더에는 특정 주제에 대한 예제 코드와 설명이 포함되어 있습니다.
 
