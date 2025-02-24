@@ -1,6 +1,5 @@
 package com.example.customformlogin.global.auth.filter;
 
-import com.example.customformlogin.domain.member.dto.request.MemberRequestDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,29 +27,29 @@ public class CustomJsonUsernamePasswordLoginFilter extends UsernamePasswordAuthe
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String contentType = request.getContentType();
         if (request.getMethod().equals(HttpMethod.POST.name()) && contentType != null && contentType.equals(MediaType.APPLICATION_JSON_VALUE)) {
-            MemberRequestDTO.LoginRequestDTO dto;
             try {
-                String content = getBodyInRequest(request);
-                dto = parseJson(content, MemberRequestDTO.LoginRequestDTO.class);
+                Map<String, String> requestBody = getBodyInRequest(request);
+                String username = requestBody.get(getUsernameParameter());
+                username = username != null ? username.trim() : "";
+                String password = requestBody.get(getPasswordParameter());
+                password = password != null ? password.trim() : "";
+
+                UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(username, password);
+                this.setDetails(request, authRequest);
+                return this.getAuthenticationManager().authenticate(authRequest);
+
             } catch (IOException e) {
                 throw new AuthenticationServiceException("Json Parsing Error In Json Filter");
             } catch (Exception e) {
                 throw new AuthenticationServiceException("CustomJsonUsernamePasswordLoginFilter(" + e.getClass() + "): " + e.getMessage());
             }
-
-            UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(dto.getUsername(), dto.getPassword());
-            this.setDetails(request, authRequest);
-            return this.getAuthenticationManager().authenticate(authRequest);
         }
         return null;
     }
 
-    private String getBodyInRequest(HttpServletRequest request) throws IOException {
-        return new String((new HttpServletRequestWrapper(request)).getInputStream().readAllBytes());
-    }
-
-    private <T> T parseJson(String content, Class<T> cls) throws IOException {
+    private Map<String, String> getBodyInRequest(HttpServletRequest request) throws IOException{
+        String content = new String((new HttpServletRequestWrapper(request)).getInputStream().readAllBytes());
         ObjectMapper om = new ObjectMapper();
-        return om.readValue(content, cls);
+        return om.readValue(content, new TypeReference<>() {});
     }
 }
