@@ -4,6 +4,8 @@ import com.example.customformlogin.global.auth.filter.CustomJsonUsernamePassword
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.ForwardAuthenticationSuccessHandler;
+import org.springframework.security.web.context.SecurityContextRepository;
 
 public class CustomJsonUsernamePasswordLoginFilterConfigurer {
 
@@ -41,6 +43,16 @@ public class CustomJsonUsernamePasswordLoginFilterConfigurer {
 
     public CustomJsonUsernamePasswordLoginFilterConfigurer setPasswordParameter(String passwordParameter) {
         filter.setPasswordParameter(passwordParameter);
+        return this;
+    }
+
+    public CustomJsonUsernamePasswordLoginFilterConfigurer setSecurityContextRepository(SecurityContextRepository repository) {
+        filter.setSecurityContextRepository(repository);
+        return this;
+    }
+
+    public CustomJsonUsernamePasswordLoginFilterConfigurer setLoginSuccessfulUrl(String successfulUrl) {
+        filter.setAuthenticationSuccessHandler(new ForwardAuthenticationSuccessHandler(successfulUrl));
         return this;
     }
 

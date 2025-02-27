@@ -15,10 +15,12 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 @Configuration
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class SecurityConfig {
     private final String[] allowedUrl = {
             "/auth/signup",
             "/login",
+            "/home",
             "/",
     };
 
@@ -45,6 +48,10 @@ public class SecurityConfig {
                 )
                 .addFilterAt(customJsonUsernamePasswordLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(Customizer.withDefaults())
+                // 세션 생성 전략은 필요시에만
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                // SecurityContextHolderFilter의 repository를 HttpSessionSecurityContextRepository로 설정하여 CustomLoginFilter에서 저장한 SecurityContext 정보를 잘 불러올 수 있도록 설정
+                .securityContext(context -> context.securityContextRepository(new HttpSessionSecurityContextRepository()))
                 .csrf(CsrfConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
         ;
@@ -80,7 +87,10 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")
                 .setUsernameParameter("username")
                 .setPasswordParameter("password")
-                .successHandler(formLoginSuccessfulHandler)
+                // 기존은 RequestAttributeSecurityContextRepository로 요청마다 SecurityContext를 관리, HttpSessionSecurityContextRepository로 변경하여 세션별로 관리하도록 변경
+                .setSecurityContextRepository(new HttpSessionSecurityContextRepository())
+//                .successHandler(formLoginSuccessfulHandler)
+                .setLoginSuccessfulUrl("/home")
                 .failureHandler(formLoginFailureHandler)
                 .getFilter();
     }
