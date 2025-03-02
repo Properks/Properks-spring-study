@@ -49,7 +49,9 @@ public class JwtTokenFilter extends AbstractTokenFilter {
         }
 
         UserDetails userDetails = customDetailService.loadUserByUsername(username);
-        return JwtTokenAuthenticationToken.authenticate(userDetails, token, userDetails.getAuthorities());
+        JwtTokenAuthenticationToken authentication = JwtTokenAuthenticationToken.authenticate(userDetails, token, userDetails.getAuthorities());
+        authentication.setDetails(userDetails);
+        return authentication;
     }
 
     @Override
