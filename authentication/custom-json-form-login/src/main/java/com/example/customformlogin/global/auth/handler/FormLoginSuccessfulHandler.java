@@ -3,6 +3,7 @@ package com.example.customformlogin.global.auth.handler;
 import com.example.customformlogin.domain.member.dto.response.MemberResponseDTO;
 import com.example.customformlogin.global.auth.jwt.JwtUtil;
 import com.example.customformlogin.global.payload.CustomResponse;
+import com.example.customformlogin.global.util.RedisUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,13 +23,17 @@ import java.io.IOException;
 public class FormLoginSuccessfulHandler implements AuthenticationSuccessHandler {
 
     private final JwtUtil jwtUtil;
+    private final RedisUtil redisUtil;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         UserDetails details = (UserDetails) authentication.getPrincipal();
+        String accessToken = jwtUtil.createAccessToken(details);
+        String refreshToken = jwtUtil.createRefreshToken(details);
+        redisUtil.addRefreshToken(details, refreshToken, jwtUtil.getRefreshExpiration());
         MemberResponseDTO.LoginResponseDTO responseDTO = MemberResponseDTO.LoginResponseDTO.builder()
-                .accessToken(jwtUtil.createAccessToken(details))
-                .refreshToken(jwtUtil.createRefreshToken(details))
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
         log.info("로그인 성공 ({})", authentication.getName());
         ObjectMapper om = new ObjectMapper();
