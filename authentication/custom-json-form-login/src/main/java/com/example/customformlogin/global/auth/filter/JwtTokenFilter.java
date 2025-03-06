@@ -5,6 +5,7 @@ import com.example.customformlogin.global.auth.jwt.JwtUtil;
 import com.example.customformlogin.global.auth.principal.JwtTokenAuthenticationToken;
 import com.example.customformlogin.global.auth.service.CustomDetailService;
 import com.example.customformlogin.global.payload.CustomResponse;
+import com.example.customformlogin.global.util.RedisUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,18 +28,20 @@ public class JwtTokenFilter extends AbstractTokenFilter {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer ";
     private final JwtUtil jwtUtil;
+    private final RedisUtil redisUtil;
     private final CustomDetailService customDetailService;
 
     @Autowired
-    public JwtTokenFilter(JwtUtil jwtUtil, CustomDetailService customDetailService) {
+    public JwtTokenFilter(JwtUtil jwtUtil, RedisUtil redisUtil, CustomDetailService customDetailService) {
         super(AUTHORIZATION_HEADER, TOKEN_PREFIX);
         this.jwtUtil = jwtUtil;
+        this.redisUtil = redisUtil;
         this.customDetailService = customDetailService;
     }
 
     @Override
     protected boolean validToken(String token) {
-        return jwtUtil.isValid(token);
+        return jwtUtil.isValid(token) && !redisUtil.isBlackList(token);
     }
 
     @Override

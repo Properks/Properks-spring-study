@@ -19,13 +19,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Slf4j
+@Getter
 public abstract class AbstractTokenFilter extends OncePerRequestFilter {
 
     private final String authorizationHeader;
     private final String tokenPrefix;
     private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
-
-    @Getter
     private SecurityContextRepository securityContextRepository = new RequestAttributeSecurityContextRepository();
 
     protected AbstractTokenFilter(String authorizationHeader, String tokenPrefix) {
