@@ -2,6 +2,7 @@ package com.example.customformlogin.global.config;
 
 import com.example.customformlogin.global.auth.filter.CustomJsonUsernamePasswordLoginFilter;
 import com.example.customformlogin.global.auth.filter.JwtTokenFilter;
+import com.example.customformlogin.global.auth.filter.JwtTokenLogoutFilter;
 import com.example.customformlogin.global.auth.filter.configurer.CustomJsonUsernamePasswordLoginFilterConfigurer;
 import com.example.customformlogin.global.auth.handler.FormLoginFailureHandler;
 import com.example.customformlogin.global.auth.handler.FormLoginSuccessfulHandler;
@@ -11,16 +12,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.SecurityContextHolderFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class SecurityConfig {
     private final FormLoginFailureHandler formLoginFailureHandler;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtTokenFilter jwtTokenFilter;
+    private final JwtTokenLogoutFilter jwtTokenLogoutFilter;
 
     private final String[] allowedUrl = {
             "/auth/signup",
@@ -47,10 +49,11 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
 //                        .anyRequest().permitAll()
                 )
-                .formLogin(Customizer.withDefaults())
+                .formLogin(FormLoginConfigurer::disable)
                 .addFilterAt(customJsonUsernamePasswordLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtTokenFilter, SecurityContextHolderFilter.class)
-                .securityContext(context -> context.securityContextRepository(jwtTokenFilter.getSecurityContextRepository()))
+                .addFilterBefore(jwtTokenLogoutFilter, LogoutFilter.class)
+                .addFilterBefore(jwtTokenFilter, JwtTokenLogoutFilter.class)
+//                .securityContext(context -> context.securityContextRepository(jwtTokenFilter.getSecurityContextRepository()))
                 // 세션 생성 전략은 필요시에만
 //                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 // SecurityContextHolderFilter의 repository를 HttpSessionSecurityContextRepository로 설정하여 CustomLoginFilter에서 저장한 SecurityContext 정보를 잘 불러올 수 있도록 설정
