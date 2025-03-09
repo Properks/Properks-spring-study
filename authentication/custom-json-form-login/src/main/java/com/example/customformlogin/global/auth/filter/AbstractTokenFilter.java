@@ -71,6 +71,7 @@ public abstract class AbstractTokenFilter extends OncePerRequestFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         SecurityContext context = securityContextHolderStrategy.createEmptyContext();
         context.setAuthentication(authentication);
+        securityContextHolderStrategy.setContext(context);
         securityContextRepository.saveContext(context, request, response);
     }
 
