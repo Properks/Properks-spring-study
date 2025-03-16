@@ -4,7 +4,6 @@ import com.example.springrestdocs.config.JwtTestConfig;
 import com.example.springrestdocs.config.RestDocsConfiguration;
 import com.example.springrestdocs.config.SecurityTestConfig;
 import com.example.springrestdocs.config.jwt.util.JwtProvider;
-//import com.example.springrestdocs.entity.Member;
 import jakarta.servlet.Filter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +27,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.snippet.Attributes.key;
 
-@Import({RestDocsConfiguration.class, JwtTestConfig.class, SecurityTestConfig.class})
+@Import({RestDocsConfiguration.class})
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs
 @ActiveProfiles("test")
@@ -40,8 +39,8 @@ public abstract class AbstractRestDocsTests {
     @Autowired
     protected RestDocumentationResultHandler restDocs;
 
-    @Autowired
-    protected JwtProvider jwtProvider;
+//    @Autowired
+//    protected JwtProvider jwtProvider;
 
 //    @Autowired
 //    protected Filter filterChain;
@@ -62,7 +61,7 @@ public abstract class AbstractRestDocsTests {
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .build();
         setCommonResponse();
-//        setToken();
+        setToken();
     }
 
     private void setCommonResponse() {
@@ -74,9 +73,10 @@ public abstract class AbstractRestDocsTests {
         );
     }
 
-//    private void setToken() {
+    private void setToken() {
 //        this.token = "Bearer " + jwtProvider.createAccessToken(Member.builder().id(1L).username("username").password("password").build());
-//    }
+        this.token = "token";
+    }
 
     protected final Attributes.Attribute defaultValue(String value) {
         return key("defaultValue").value(value);
