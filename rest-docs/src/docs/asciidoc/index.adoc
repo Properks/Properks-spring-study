@@ -1,0 +1,17 @@
+= Spring REST Docs Test
+:doctype: book
+:source-highlighter: prettify
+:toc: left
+:toc-title: 목차
+:app-name: REST Docs test
+:toclevels: 2
+:seclinks:
+
+// == 테스트용 API
+// include::{docfile}/../test.adoc[]
+
+== 게시글 API
+include::{docfile}/../article.adoc[]
+
+// == Health Check API
+// include::{docfile}/../healthCheck.adoc[]

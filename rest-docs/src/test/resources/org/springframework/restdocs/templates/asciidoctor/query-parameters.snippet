@@ -1,0 +1,12 @@
+|===
+|Paramemters|Description|Required|Default Value
+
+{{#parameters}}
+|{{#tableCellContent}}`+{{name}}+`{{/tableCellContent}}
+|{{#tableCellContent}}{{description}}{{/tableCellContent}}
+    |{{#tableCellContent}}{{#required}}{{required}}{{/required}}{{^required}}-{{/required}}{{/tableCellContent}}
+    |{{#tableCellContent}}{{#defaultValue}}{{defaultValue}}{{/defaultValue}}{{^defaultValue}}-{{/defaultValue}}{{/tableCellContent}}
+
+{{/parameters}}
+
+|===

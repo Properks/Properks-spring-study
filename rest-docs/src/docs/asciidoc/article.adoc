@@ -1,0 +1,76 @@
+=== 게시글 생성
+게시글 작성하는 API
+
+// ==== Curl
+// include::{snippets}/article-controller-test/create-article/curl-request.adoc[]
+
+==== Request Header
+include::{snippets}/article-controller-test/create-article/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/article-controller-test/create-article/request-fields.adoc[]
+
+==== Request
+include::{snippets}/article-controller-test/create-article/http-request.adoc[]
+
+==== Response Body
+include::{snippets}/article-controller-test/create-article/response-fields.adoc[]
+
+==== result
+include::{snippets}/article-controller-test/create-article/response-fields-result.adoc[]
+
+==== Response
+include::{snippets}/article-controller-test/create-article/http-response.adoc[]
+
+==== 제목이 없는 경우
+include::{snippets}/article-controller-test/fail-to-create-article-no-title/http-response.adoc[]
+
+==== 내용이 없는 경우
+include::{snippets}/article-controller-test/fail-to-create-article-no-content/http-response.adoc[]
+
+---
+=== 게시글 전체 조회
+
+==== Request Header
+include::{snippets}/article-controller-test/get-articles/request-headers.adoc[]
+
+==== Query Parameter
+include::{snippets}/article-controller-test/get-articles/query-parameters.adoc[]
+
+==== Request
+include::{snippets}/article-controller-test/get-articles/http-request.adoc[]
+
+==== Response Body
+include::{snippets}/article-controller-test/get-articles/response-fields.adoc[]
+
+==== Result
+include::{snippets}/article-controller-test/get-articles/response-fields-result.adoc[]
+
+==== items
+include::{snippets}/article-controller-test/get-articles/response-fields-result.items.adoc[]
+
+==== Response
+include::{snippets}/article-controller-test/get-articles/http-response.adoc[]
+
+
+
+
+---
+=== 게시글 상세 조회
+==== Path Parameters
+include::{snippets}/article-controller-test/get-article/path-parameters.adoc[]
+
+==== Request
+include::{snippets}/article-controller-test/get-article/http-request.adoc[]
+
+==== Response Body
+include::{snippets}/article-controller-test/get-article/response-fields.adoc[]
+
+==== result
+include::{snippets}/article-controller-test/get-article/response-fields-result.adoc[]
+
+==== Response Body
+include::{snippets}/article-controller-test/get-article/http-response.adoc[]
+
+==== 게시글이 없는 경우
+include::{snippets}/article-controller-test/fail-to-find-article/http-response.adoc[]
