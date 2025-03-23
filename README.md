@@ -6,8 +6,9 @@
 
 이 레포지토리는 Spring Boot의 다양한 기능을 학습하고 테스트해보기 위한 코드를 포함하고 있습니다. 각 주제별로 폴더를 나누어 예제 코드를 관리합니다.
 
+---
 
-### `basic-of-spring-boot`
+### basic-of-spring-boot
 
 `basic` 폴더에는 책으로 배운 Spring Boot의 기초 개념을 학습한 예제 코드가 포함되어 있습니다.
 
@@ -17,8 +18,18 @@
 - **OAuth2**
 - **DB 설계**
 
-### `socket`
+---
+
+### socket
 
 `socket` 폴더에는 Spring Boot를 사용하여 소켓 통신을 구현한 예제 코드가 포함되어 있습니다.
 
 - **Socket을 이용한 실시간 데이터 전송**
+
+---
+
+### authentication
+
+`authentication` 폴더에는 인증에 관해 구현된 예제 코드가 포함되어 있습니다.
+
+- **Form Login 방식을 JSON 타입으로 받아서 로그인 처리, JwtTokenFilter 모듈화 포함**
