@@ -7,11 +7,11 @@
 :toclevels: 2
 :seclinks:
 
-// == 테스트용 API
-// include::{docfile}/../test.adoc[]
+== 테스트용 API
+include::{docfile}/../test.adoc[]
 
 == 게시글 API
 include::{docfile}/../article.adoc[]
 
-// == Health Check API
-// include::{docfile}/../healthCheck.adoc[]
+== Health Check API
+include::{docfile}/../healthCheck.adoc[]
