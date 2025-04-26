@@ -32,4 +32,4 @@
 
 `authentication` 폴더에는 인증에 관해 구현된 예제 코드가 포함되어 있습니다.
 
-- **Form Login 방식을 JSON 타입으로 받아서 로그인 처리, JwtTokenFilter 모듈화 포함**
+- **Form Login 방식을 JSON 타입으로 받아서 로그인 처리하는 Filter 구현, JwtTokenFilter 추상화 포함**
