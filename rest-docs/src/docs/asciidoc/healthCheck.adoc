@@ -1,0 +1,10 @@
+=== Health Check
+
+==== Request Header
+include::{snippets}/health-check-controller-test/health-check/request-headers.adoc[]
+
+==== Request
+include::{snippets}/health-check-controller-test/health-check/http-request.adoc[]
+
+==== Response
+include::{snippets}/health-check-controller-test/health-check/http-response.adoc[]

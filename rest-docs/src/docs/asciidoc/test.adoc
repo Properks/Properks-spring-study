@@ -1,0 +1,9 @@
+=== Test
+==== Curl
+include::{snippets}/test-controller-test/test/curl-request.adoc[]
+
+==== Request
+include::{snippets}/test-controller-test/test/http-request.adoc[]
+
+==== Response
+include::{snippets}/test-controller-test/test/http-response.adoc[]
