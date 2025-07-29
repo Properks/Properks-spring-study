@@ -7,3 +7,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+
+jwt:
+  secret: ${JWT_SECRET}
+  time:
+    access-token: 3600000
+    refresh-token: 10000000
