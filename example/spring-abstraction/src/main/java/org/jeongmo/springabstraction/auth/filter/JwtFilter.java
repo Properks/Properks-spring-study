@@ -52,7 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private void handleException(HttpServletResponse response, Exception e) throws IOException {
-        response.setStatus(400);
+        response.setStatus(401);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(response.getOutputStream(), "인증 실패했습니다.");
