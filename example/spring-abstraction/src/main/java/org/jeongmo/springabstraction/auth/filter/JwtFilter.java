@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String header = request.getHeader(AUTHORIZATION_HEADER);
-        if (header != null && header.startsWith(TOKEN_PREFIX)) {
-            String token = header.substring(TOKEN_PREFIX.length());
+        String token = extractTokenInHeader(request);
+        if (token != null) {
             try {
                 Long userId = jwtUtil.getUserId(token);
                 Member member = memberRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("사용자를 찾지 못했습니다."));
@@ -49,6 +49,29 @@ public class JwtFilter extends OncePerRequestFilter {
         else {
             filterChain.doFilter(request, response);
         }
+    }
+
+    private String extractTokenInHeader(HttpServletRequest request) {
+        String header = request.getHeader(AUTHORIZATION_HEADER);
+        if (header != null && header.startsWith(TOKEN_PREFIX)) {
+            return header.substring(TOKEN_PREFIX.length());
+        }
+        return null;
+    }
+
+    private String extractTokenInCookie(HttpServletRequest request) {
+        String token = null;
+        // 아래 end까지를 Util로 빼면서 더 refactoring 가능
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(AUTHORIZATION_HEADER)) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+        // end
+        return token; // 쿠키의 경우 prefix를 보통 안 넣어서 바로 return 하는 방식, 만약 있다면 처리 후 반환
     }
 
     private void handleException(HttpServletResponse response, Exception e) throws IOException {
