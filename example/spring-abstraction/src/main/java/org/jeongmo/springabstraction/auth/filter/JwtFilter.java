@@ -39,7 +39,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 UserDetails userDetails = new CustomUserDetails(member);
                 Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                successAuthentication(authentication);
                 filterChain.doFilter(request, response);
             } catch (Exception e) {
                 handleException(response, e);
@@ -48,6 +49,10 @@ public class JwtFilter extends OncePerRequestFilter {
         else {
             filterChain.doFilter(request, response);
         }
+    }
+
+    private void successAuthentication(Authentication authentication) {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private void handleException(HttpServletResponse response, Exception e) throws IOException {
