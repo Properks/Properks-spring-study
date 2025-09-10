@@ -4,13 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.jeongmo.springabstraction.auth.domain.CustomUserDetails;
 import org.jeongmo.springabstraction.auth.token.JwtUtil;
 import org.jeongmo.springabstraction.auth.token.TokenExtractor;
+import org.jeongmo.springabstraction.auth.token.TokenUtil;
 import org.jeongmo.springabstraction.domain.member.entity.Member;
 import org.jeongmo.springabstraction.domain.member.repository.MemberRepository;
 import org.springframework.http.MediaType;
@@ -23,9 +23,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class JwtFilter extends OncePerRequestFilter {
+public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil;
+    private final TokenUtil tokenUtil;
     private final MemberRepository memberRepository;
     private final TokenExtractor tokenExtractor;
 
@@ -34,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = tokenExtractor.extractToken(request);
         if (token != null) {
             try {
-                Long userId = jwtUtil.getUserId(token);
+                Long userId = tokenUtil.getUserId(token);
                 Member member = memberRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("사용자를 찾지 못했습니다."));
 
                 UserDetails userDetails = new CustomUserDetails(member);

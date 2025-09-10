@@ -2,8 +2,7 @@ package org.jeongmo.springabstraction.auth.config;
 
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
-import org.jeongmo.springabstraction.auth.filter.JwtFilter;
-import org.jeongmo.springabstraction.auth.token.CookieTokenExtractor;
+import org.jeongmo.springabstraction.auth.filter.TokenAuthenticationFilter;
 import org.jeongmo.springabstraction.auth.token.HeaderTokenExtractor;
 import org.jeongmo.springabstraction.auth.token.JwtUtil;
 import org.jeongmo.springabstraction.auth.token.TokenExtractor;
@@ -41,7 +40,7 @@ public class SecurityConfig {
 
     @Bean
     Filter tokenFilter() {
-        return new JwtFilter(jwtUtil, memberRepository, tokenExtractor());
+        return new TokenAuthenticationFilter(jwtUtil, memberRepository, tokenExtractor());
     }
 
     @Bean

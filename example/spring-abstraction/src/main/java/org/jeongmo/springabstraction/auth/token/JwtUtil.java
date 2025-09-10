@@ -14,7 +14,7 @@ import java.time.Instant;
 import java.util.Date;
 
 @Component
-public class JwtUtil {
+public class JwtUtil implements TokenUtil {
 
     private final SecretKey secretKey;
     @Getter
@@ -28,14 +28,17 @@ public class JwtUtil {
         this.refreshExpiration = Duration.ofMillis(jwtConfigData.getTime().getRefreshToken());
     }
 
+    @Override
     public String createAccessToken(Member member) {
         return createToken(member, accessExpiration);
     }
 
+    @Override
     public String createRefreshToken(Member member) {
         return createToken(member, refreshExpiration);
     }
 
+    @Override
     public Long getUserId(String token) {
         try {
             return getClaims(token).getPayload().get("id", Long.class);
